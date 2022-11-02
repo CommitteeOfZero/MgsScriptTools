@@ -1,4 +1,4 @@
-﻿namespace MgsScriptTools;
+namespace MgsScriptTools;
 
 class MstStringEncoding {
 	Tree<char, GlyphSpec> _regularTree = new();
@@ -52,7 +52,7 @@ class MstStringEncoding {
 
 			int index = 0;
 			Tree<char, GlyphSpec> cursor = italic ? _italicTree : _regularTree;
-			while (cursor.HasBranches) {
+			while (index < chunk.Length && cursor.HasBranches) {
 				var next = cursor[chunk[index++]];
 				if (next is null)
 					break;
