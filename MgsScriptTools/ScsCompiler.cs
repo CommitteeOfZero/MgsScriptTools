@@ -62,6 +62,9 @@ class ScsCompiler {
 				_stream.Write(raw);
 				break;
 			}
+			default: {
+				throw new NotImplementedException(part.GetType().Name);
+			}
 		}
 	}
 
