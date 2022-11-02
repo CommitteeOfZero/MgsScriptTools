@@ -1,4 +1,4 @@
-namespace MgsScriptTools;
+﻿namespace MgsScriptTools;
 
 class MstStringEncoding {
 	Tree<char, GlyphSpec> _regularTree = new();
@@ -67,7 +67,8 @@ class MstStringEncoding {
 
 			if (longestMatch is null) {
 				string style = italic ? "italic" : "regular";
-				throw new Exception($"No {style} glyph available for {chunk[..1]}");
+				char ch = chunk[0];
+				throw new Exception($"No {style} glyph available for {ch} (U+{(int)ch:X04})");
 			}
 			tokens.Add(new MesStringGlyph(longestMatch.Index));
 			chunk = chunk[maxLength..];
