@@ -154,13 +154,13 @@ public class ScsSyntax {
 			if (_reader.Has(0) && !ParseUtils.TrySkip(_reader, '\n')) {
 				if (!ParseUtils.SkipHSpaceComments(_reader))
 					throw new ParsingException($"Unexpected character: {_reader.Peek(0)}");
-				while (true) {
-					operands.Add(ExpressionSyntax.Parse(_reader));
-					ParseUtils.SkipHSpaceComments(_reader);
-					if (!_reader.Has(0) || ParseUtils.TrySkip(_reader, '\n'))
-						break;
+				while (_reader.Has(0) && !ParseUtils.TrySkip(_reader, '\n')) {
+					if (operands.Count > 0) {
 					if (!ParseUtils.TrySkip(_reader, ','))
 						throw new ParsingException($"Unexpected character: {_reader.Peek(0)}");
+					ParseUtils.SkipHSpaceComments(_reader);
+				}
+					operands.Add(ExpressionSyntax.Parse(_reader));
 					ParseUtils.SkipHSpaceComments(_reader);
 				}
 			}
