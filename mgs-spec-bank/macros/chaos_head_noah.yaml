@@ -1,0 +1,111 @@
+- name: CHAload
+  operands: [expression, expression]
+  body:
+  - name: CHAloadAtlas
+    operands:
+    - kind: value
+      index: 0
+    - kind: value
+      index: 1
+  - name: CharaLayerLoad
+    operands: []
+
+- name: MesMsbRA
+  operands: [expression, expression, expression]
+  body:
+  - name: MesSetSavePointRA
+    operands:
+    - kind: value
+      index: 2
+  - name: MessWindowOpen
+    operands: []
+  - name: MessWindowOpenedWait
+    operands: []
+  - name: MesVoiceWait
+    operands: []
+  - name: MesSetMesMsb
+    operands:
+    - kind: value
+      index: 0
+    - kind: value
+      index: 1
+  - name: MesMain
+    operands: []
+
+- name: Mes2VMsbRA
+  operands: [expression, expression, expression, expression, expression]
+  body:
+  - name: MesSetRA
+    operands:
+    - kind: value
+      index: 4
+  - name: MessWindowOpen
+    operands: []
+  - name: MessWindowOpenedWait
+    operands: []
+  - name: MesVoiceWait
+    operands: []
+  - name: Mes2VSetMesMsb
+    operands:
+    - kind: value
+      index: 0
+    - kind: value
+      index: 1
+    - kind: value
+      index: 2
+    - kind: value
+      index: 3
+  - name: MesMain
+    operands: []
+
+- name: AutoSaveRA
+  operands: [expression]
+  body:
+  - name: AutoSave_FF
+    operands: []
+  - name: AutoSaveSetSavePointRA
+    operands:
+    - kind: value
+      index: 0
+  - name: AutoSaveMain
+    operands: []
+  - name: Save_2E
+    operands: []
+  - name: Save_2F
+    operands: []
+  - name: Save_28
+    operands: []
+  - name: Save_29
+    operands: []
+
+- name: SetSavePointRA
+  operands: [expression]
+  body:
+  - name: AutoSave_FF
+    operands: []
+  - name: AutoSaveSetSavePointRA
+    operands:
+    - kind: value
+      index: 0
+  - name: SetSavePointMain
+    operands: []
+
+- name: Select
+  operands: [expression]
+  body:
+  - name: Select_00
+    operands: []
+  - name: Save_2E
+    operands: []
+  - name: Save_2F
+    operands: []
+  - name: Save_28
+    operands: []
+  - name: Save_29
+    operands: []
+  - name: Select_01
+    operands: []
+  - name: Select_02
+    operands:
+    - kind: value
+      index: 0

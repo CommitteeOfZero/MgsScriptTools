@@ -1,0 +1,217 @@
+instructions:
+  base:
+    - instructions/base/base_00.yaml
+    - instructions/base/base_01.yaml
+    - instructions/base/base_02.yaml
+    - instructions/base/base_10.yaml
+    - instructions/base/base_extra.yaml
+
+  11eyes:
+    - instructions/11eyes.yaml
+
+  chaos_head_noah:
+    - instructions/chaos_head_noah.yaml
+
+  robotics_notes:
+    - instructions/robotics_notes.yaml
+
+  steins_gate:
+    - instructions/steins_gate.yaml
+
+macros:
+  chaos_head_noah: macros/chaos_head_noah.yaml
+
+charset:
+  chaos_head_noah: charset/chaos_head_noah.json
+  chaos_head_noah-extended: charset/chaos_head_noah-extended.json
+
+flags:
+  11eyes_360:
+    new_memberwrite: no
+    new_save: no
+    new_loaddata: no
+    new_voicestop: no
+    new_bgmplay: no
+    new_bgmstop: no
+    new_presence: no
+    new_pressstart: no
+    new_playmovie: no
+    new_titlemenu: no
+    new_setdic: no
+    new_seplay: no
+    new_setevflag: no
+    new_sseplay: no
+    new_scriptload: no
+
+    return_addresses: no
+    mescls: no
+    movie_01_27: no
+    initnameid: no
+    bgrelease: no
+    chaload: yes
+
+  steins_gate_360:
+    new_memberwrite: yes
+    new_save: yes
+    new_loaddata: yes
+    new_voicestop: yes
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_presence: yes
+    new_pressstart: yes
+    new_playmovie: yes
+    new_titlemenu: yes
+    new_setdic: no
+    new_seplay: no
+    new_setevflag: no
+    new_sseplay: no
+    new_scriptload: no
+
+    return_addresses: no
+    mescls: no
+    movie_01_27: no
+    initnameid: yes
+    bgrelease: yes
+    chaload: yes
+
+  robotics_notes_360:
+    new_memberwrite: yes
+    new_save: yes
+    new_loaddata: yes
+    new_voicestop: yes
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_seplay: yes
+    new_presence: yes
+    new_pressstart: yes
+    new_playmovie: yes
+    new_titlemenu: yes
+    new_setevflag: no
+    new_sseplay: no
+    new_scriptload: no
+
+    return_addresses: yes
+    mescls: yes
+    movie_01_27: no
+    initnameid: yes
+    bgrelease: yes
+    chaload: no
+
+  steins_gate_steam:
+    new_memberwrite: yes
+    new_save: yes
+    new_loaddata: yes
+    new_voicestop: yes
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_seplay: yes
+    new_presence: yes
+    new_pressstart: yes
+    new_playmovie: yes
+    new_titlemenu: yes
+    new_setevflag: no
+    new_sseplay: no
+    new_scriptload: no
+
+    return_addresses: yes
+    mescls: yes
+    movie_01_27: no
+    initnameid: yes
+    bgrelease: yes
+    chaload: yes
+
+  robotics_notes_steam:
+    new_memberwrite: yes
+    new_save: yes
+    new_loaddata: yes
+    new_voicestop: yes
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_presence: yes
+    new_pressstart: yes
+    new_playmovie: yes
+    new_titlemenu: yes
+    new_setdic: yes
+    new_seplay: yes
+    new_setevflag: no
+    new_sseplay: no
+    new_scriptload: no
+
+    return_addresses: yes
+    mescls: yes
+    movie_01_27: no
+    initnameid: yes
+    bgrelease: yes
+    chaload: no
+
+  memories_off_8:
+    new_memberwrite: yes
+    new_save: yes
+    new_loaddata: yes
+    new_voicestop: yes
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_presence: yes
+    new_pressstart: yes
+    new_playmovie: yes
+    new_titlemenu: yes
+    new_setdic: yes
+    new_seplay: yes
+    new_setevflag: yes
+    new_sseplay: no
+    new_scriptload: no
+
+    return_addresses: yes
+    mescls: yes
+    movie_01_27: yes
+    initnameid: yes
+    bgrelease: yes
+    chaload: yes
+
+  chaos_head_switch:
+    new_memberwrite: yes
+    new_save: yes
+    new_loaddata: yes
+    new_voicestop: yes
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_presence: yes
+    new_pressstart: no
+    new_playmovie: yes
+    new_titlemenu: yes
+    new_setdic: yes
+    new_seplay: yes
+    new_setevflag: yes
+    new_sseplay: yes
+    new_scriptload: no
+
+    return_addresses: yes
+    mescls: yes
+    movie_01_27: yes
+    initnameid: yes
+    bgrelease: yes
+    chaload: yes
+
+  chaos_head_steam:
+    new_memberwrite: yes
+    new_save: yes
+    new_loaddata: yes
+    new_voicestop: yes
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_presence: yes
+    new_pressstart: no
+    new_playmovie: yes
+    new_titlemenu: yes
+    new_setdic: yes
+    new_seplay: yes
+    new_setevflag: yes
+    new_sseplay: yes
+    new_scriptload: yes
+
+    return_addresses: yes
+    mescls: yes
+    movie_01_27: yes
+    initnameid: yes
+    bgrelease: yes
+    chaload: yes

@@ -1,0 +1,795 @@
+- pattern: 00 00
+  name: End
+  operands: []
+  flags: []
+
+- pattern: 00 01
+  name: CreateThread
+  operands: [calc, calc, int16]
+  flags: []
+
+- pattern: 00 04
+  name: ScriptLoad
+  operands: [calc, calc]
+  flags: [~new_scriptload]
+
+- pattern: 00 04 00
+  name: ScriptLoad
+  operands: [calc, calc]
+  flags: [new_scriptload]
+
+- pattern: 00 04 01
+  name: ScriptLoad_01
+  operands: [calc, calc]
+  flags: [new_scriptload]
+
+- pattern: 00 05
+  name: Wait
+  operands: [calc]
+  flags: []
+
+- pattern: 00 06
+  name: Halt
+  operands: []
+  flags: []
+
+- pattern: 00 07
+  name: Jump
+  operands: [int16]
+  flags: []
+
+- pattern: 00 08
+  name: JumpTable
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 00 0A 00
+  name: IfInv
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 00 0A 01
+  name: If
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 00 0B
+  name: Call
+  operands: [int16]
+  flags: [~return_addresses]
+
+- pattern: 00 0B
+  name: CallRA
+  operands: [int16, int16]
+  flags: [return_addresses]
+
+- pattern: 00 0C
+  name: JumpFar
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 00 0D
+  name: CallFar
+  operands: [calc, int16]
+  flags: [~return_addresses]
+
+- pattern: 00 0D
+  name: CallFarRA
+  operands: [calc, int16, int16]
+  flags: [return_addresses]
+
+- pattern: 00 0E
+  name: Return
+  operands: []
+  flags: []
+
+- pattern: 00 0F
+  name: Loop
+  operands: [int16, calc]
+  flags: []
+
+- pattern: 00 10 00
+  name: FlagOffJump
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 00 10 01
+  name: FlagOnJump
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 00 11 00
+  name: FlagOffWait
+  operands: [calc]
+  flags: []
+
+- pattern: 00 11 01
+  name: FlagOnWait
+  operands: [calc]
+  flags: []
+
+- pattern: 00 12
+  name: SetFlag
+  operands: [calc]
+  flags: []
+
+- pattern: 00 13
+  name: ResetFlag
+  operands: [calc]
+  flags: []
+
+- pattern: 00 14
+  name: CopyFlag
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 00 15 01
+  name: KeyOnJump
+  operands: [calc, calc, int16]
+  flags: []
+
+- pattern: 00 15 03
+  name: KeyOnJump2
+  operands: [calc, calc, int16]
+  flags: []
+
+- pattern: 80 18
+  name: _MemberWrite
+  operands: [int8, int32]
+  flags: [~new_memberwrite]
+
+- pattern: 00 18
+  name: _MemberWrite
+  operands: [calc, calc]
+  flags: [new_memberwrite]
+
+- pattern: 00 19
+  name: ThreadControl
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 00 1A
+  name: GetSelfPointer
+  operands: []
+  flags: []
+
+- pattern: 00 1B
+  name: LoadJump
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 00 1F
+  name: Switch
+  operands: [calc]
+  flags: []
+
+- pattern: 00 20
+  name: Case
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 00 21
+  name: BGMplay
+  operands: [calc, calc]
+  flags: [~new_bgmplay]
+
+- pattern: 00 21 00
+  name: BGMplayNL
+  operands: [calc]
+  flags: [new_bgmplay]
+
+- pattern: 00 21 01
+  name: BGMplay
+  operands: [calc]
+  flags: [new_bgmplay]
+
+- pattern: 00 21 02
+  name: BGMplayFL
+  operands: [calc, calc]
+  flags: [new_bgmplay]
+
+- pattern: 00 21 0A
+  name: BGMplayNF
+  operands: [calc]
+  flags: [new_bgmplay]
+
+- pattern: 00 22
+  name: BGMstop
+  operands: []
+  flags: [~new_bgmstop]
+
+- pattern: 00 22 00
+  name: BGMstop
+  operands: []
+  flags: [new_bgmstop]
+
+- pattern: 00 23 00
+  name: SEplay
+  operands: [calc, calc]
+  flags: [~new_seplay]
+
+- pattern: 00 23 01
+  name: SEplay2
+  operands: [calc, calc]
+  flags: [~new_seplay]
+
+- pattern: 00 23 02
+  name: SEplay3
+  operands: [calc, calc]
+  flags: [~new_seplay]
+
+- pattern: 00 23 00 00
+  name: SEplay
+  operands: [calc, calc]
+  flags: [new_seplay]
+
+- pattern: 00 23 01 00
+  name: SEplay2
+  operands: [calc, calc]
+  flags: [new_seplay]
+
+- pattern: 00 23 02 00
+  name: SEplay3
+  operands: [calc, calc]
+  flags: [new_seplay]
+
+- pattern: 00 24 00
+  name: SEstop
+  operands: []
+  flags: []
+
+- pattern: 00 24 01
+  name: SEstop2
+  operands: []
+  flags: []
+
+- pattern: 00 24 02
+  name: SEstop3
+  operands: []
+  flags: []
+
+- pattern: 00 25
+  name: PadAct
+  operands: [calc, calc, calc]
+  flags: []
+
+- pattern: 00 26
+  name: SSEplay
+  operands: [calc]
+  flags: [~new_sseplay]
+
+- pattern: 00 26 01
+  name: SSEplay
+  operands: [calc]
+  flags: [new_sseplay]
+
+- pattern: 00 28
+  name: CopyThreadWork
+  operands: [calc, calc, calc, calc]
+  flags: []
+
+- pattern: 00 29 00
+  name: UPLdeviceSelectUI_00
+  operands: []
+  flags: []
+
+- pattern: 00 29 01
+  name: UPLdeviceSelectUI_01
+  operands: []
+  flags: []
+
+- pattern: 00 29 03
+  name: UPLallContextReset
+  operands: []
+  flags: []
+
+# same in both old and new Save
+- pattern: 00 2A 10
+  name: SaveSelectFile
+  operands: []
+  flags: []
+
+- pattern: 00 2A 00
+  name: DeviceCheck
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 01
+  name: LoadContentsFile
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 02
+  name: LoadPlayData
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 03
+  name: LoadSystem
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 04
+  name: LoadFileSaveData
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 05
+  name: LoadSystemOR
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 07
+  name: Save_07
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 0A
+  name: SaveContentsFileOW
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 0C
+  name: SavePlayData
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 0D
+  name: SaveSystem
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 14
+  name: FlashSaveFileBuffer
+  operands: []
+  flags: [~new_save]
+
+- pattern: 00 2A 00
+  name: SaveSystemDataStart
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 01
+  name: SaveSystemDataWait
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 04
+  name: LoadSystemDataExtract
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 05
+  name: Save_05
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 06
+  name: Save_06
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 07
+  name: Save_07
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 0B
+  name: LoadFsaveDataExtract
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 0C
+  name: LoadMsaveDataExtract
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 1E
+  name: Save_1E
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 1F
+  name: Save_1F
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 28
+  name: Save_28
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 29
+  name: Save_29
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 2E
+  name: Save_2E
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 2F
+  name: Save_2F
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 32
+  name: Save_32
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 33
+  name: Save_33
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 3C
+  name: SaveAllStart
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 3D
+  name: SaveAllWait
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 46
+  name: LoadAllStart
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 47
+  name: LoadAllWait
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 50
+  name: CheckSaveDataStart
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 51
+  name: CheckSaveDataWait
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 96
+  name: SetLastSaveRootAuto
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2B
+  name: SaveIconLoad
+  operands: [calc]
+  flags: []
+
+- pattern: 00 2C
+  name: BGMflag
+  operands: [calc]
+  flags: []
+
+- pattern: 00 2E
+  name: Presence
+  operands: [calc]
+  flags: [~new_presence]
+
+- pattern: 00 2E 00
+  name: Presence
+  operands: [calc]
+  flags: [new_presence]
+
+- pattern: 00 2E 01
+  name: PresenceEx
+  operands: [calc]
+  flags: [new_presence]
+
+- pattern: 00 2F 01
+  name: SetAchievement
+  operands: [calc]
+  flags: []
+
+- pattern: 00 30 00
+  name: SetPlayer
+  operands: []
+  flags: []
+
+- pattern: 00 30 01
+  name: ResetPlayer
+  operands: []
+  flags: []
+
+- pattern: 00 31
+  name: VoiceTableLoad
+  operands: [calc]
+  flags: []
+
+- pattern: 00 32
+  name: SetPadCustom
+  operands: []
+  flags: []
+
+- pattern: 00 33
+  name: Mwait
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 00 34
+  name: Terminate
+  operands: []
+  flags: []
+
+- pattern: 00 37 00
+  name: VoicePlay
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 00 37 01
+  name: VoicePlay2
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 00 37 02
+  name: VoicePlay3
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 00 37 03
+  name: VoicePlay4
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 00 38 00
+  name: VoiceStop
+  operands: []
+  flags: [~new_voicestop]
+
+- pattern: 00 38 00
+  name: VoiceStop
+  operands: [calc]
+  flags: [new_voicestop]
+
+- pattern: 00 38 01
+  name: VoiceStop2
+  operands: [calc]
+  flags: [new_voicestop]
+
+- pattern: 00 38 02
+  name: VoiceStop3
+  operands: [calc]
+  flags: [new_voicestop]
+
+- pattern: 00 38 03
+  name: VoiceStop4
+  operands: [calc]
+  flags: [new_voicestop]
+
+- pattern: 00 39 00
+  name: VoicePlayWait
+  operands: []
+  flags: []
+
+- pattern: 00 3A 00
+  name: BGMduelPlay
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 00 3A 01
+  name: BGMduelPlay_01
+  operands: []
+  flags: []
+
+- pattern: 00 3B 00
+  name: ADXstart
+  operands: []
+  flags: []
+
+- pattern: 00 3B 01
+  name: ADXpause
+  operands: []
+  flags: []
+
+- pattern: 00 3E
+  name: ResetSoundAll
+  operands: []
+  flags: []
+
+- pattern: 00 3F
+  name: ADXloadStop
+  operands: []
+  flags: []
+
+- pattern: 00 42
+  name: SetX360SysMesPos
+  operands: [calc]
+  flags: []
+
+- pattern: 00 43 00
+  name: SystemMesInit
+  operands: []
+  flags: []
+
+- pattern: 00 43 01
+  name: SystemMesInitTitle
+  operands: []
+  flags: []
+
+- pattern: 00 43 02
+  name: SystemMesInit2
+  operands: [calc]
+  flags: []
+
+- pattern: 00 43 03
+  name: SystemMesSetMesScx
+  operands: [int16]
+  flags: []
+
+- pattern: 00 43 04
+  name: SystemMesSetSelScx
+  operands: [int16]
+  flags: []
+
+- pattern: 00 43 05
+  name: SystemMesMain
+  operands: []
+  flags: []
+
+- pattern: 00 43 06
+  name: SystemMesFadeIn
+  operands: []
+  flags: []
+
+- pattern: 00 43 07
+  name: SystemMesFadeOut
+  operands: []
+  flags: []
+
+- pattern: 00 43 09
+  name: SystemMes_09
+  operands: [calc]
+  flags: []
+
+- pattern: 00 43 0B
+  name: SystemMesInitTitleEx
+  operands: []
+  flags: []
+
+- pattern: 00 43 0C
+  name: SystemMes_0C
+  operands: [calc]
+  flags: []
+
+- pattern: 00 43 0D
+  name: SystemMesSetMesExScx
+  operands: [int16]
+  flags: []
+
+- pattern: 00 43 0E
+  name: SystemMesSetSelExScx
+  operands: [int16]
+  flags: []
+
+- pattern: 00 43 0F
+  name: SystemMes_0F
+  operands: []
+  flags: []
+
+- pattern: 00 43 10
+  name: SystemMes_10
+  operands: []
+  flags: []
+
+- pattern: 00 43 11
+  name: SystemMes_11
+  operands: []
+  flags: []
+
+- pattern: 00 43 83
+  name: SystemMesSetMesMsb
+  operands: [calc]
+  flags: []
+
+- pattern: 00 43 84
+  name: SystemMesSetSelMsb
+  operands: [calc]
+  flags: []
+
+- pattern: 00 43 8D
+  name: SystemMesSetMesExMsb
+  operands: [calc]
+  flags: []
+
+- pattern: 00 43 8E
+  name: SystemMesSetSelExMsb
+  operands: [calc]
+  flags: []
+
+- pattern: 00 44 00
+  name: SystemMenuInit
+  operands: []
+  flags: []
+
+- pattern: 00 44 01
+  name: SystemMenuMain
+  operands: []
+  flags: []
+
+#- pattern: 00 45
+#  name: GetNowTime
+#  operands: []
+#  flags: []
+
+- pattern: 00 46
+  name: GetSystemStatus
+  operands: [calc]
+  flags: []
+
+- pattern: 00 4A 00
+  name: DebugEditerInit
+  operands: []
+  flags: []
+
+- pattern: 00 4A 01
+  name: DebugEditerMain
+  operands: []
+  flags: []
+
+- pattern: 00 4B 00
+  name: SysSEinit
+  operands: []
+  flags: []
+
+- pattern: 00 4C 00
+  name: Unk_00_4C_00
+  operands: [calc]
+  flags: []
+
+- pattern: 00 4C 01
+  name: Unk_00_4C_01
+  operands: []
+  flags: []
+
+- pattern: 00 50 00
+  name: PressStart
+  operands: [int16, int16]
+  flags: [~new_pressstart]
+
+- pattern: 00 50 00
+  name: PressStart
+  operands: [calc, calc]
+  flags: [new_pressstart]
+
+- pattern: 00 50 05
+  name: PressStart_05
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 00 50 07
+  name: PressStart_07
+  operands: []
+  flags: []
+
+- pattern: 00 52 01
+  name: Unk_00_52_01
+  operands: [calc, int16, int16]
+  flags: []
+
+- pattern: 00 53 01
+  name: ControlOnJump
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 00 55 00
+  name: Unk_00_55_00
+  operands: [calc]
+  flags: []
+
+- pattern: 00 56 01
+  name: GetControl
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 00 5E
+  name: Unk_00_5E
+  operands: [calc]
+  flags: []

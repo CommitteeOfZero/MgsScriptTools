@@ -1,0 +1,9 @@
+- pattern: 10 38 14
+  name: Rn_10_38_14
+  operands: []
+  flags: []
+
+- pattern: 10 38 15
+  name: Rn_10_38_15
+  operands: [calc, calc, calc, calc]
+  flags: []

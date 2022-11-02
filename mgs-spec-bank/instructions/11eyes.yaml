@@ -1,0 +1,29 @@
+- pattern: 10 32 00
+  name: CVinit
+  operands: []
+  flags: []
+
+- pattern: 10 32 01
+  name: CVmain
+  operands: []
+  flags: []
+
+- pattern: 10 32 02
+  name: CVsaveGame
+  operands: []
+  flags: []
+
+- pattern: 10 32 03
+  name: CVloadGame
+  operands: []
+  flags: []
+
+- pattern: 10 32 04
+  name: CVinit2
+  operands: []
+  flags: []
+
+- pattern: 10 32 05
+  name: CVsaveSystemFlag
+  operands: []
+  flags: []

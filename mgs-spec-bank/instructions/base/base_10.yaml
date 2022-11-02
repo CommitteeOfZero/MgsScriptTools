@@ -1,0 +1,584 @@
+- pattern: 10 00
+  name: MSinit
+  operands: [calc]
+  flags: []
+
+- pattern: 10 01
+  name: BGload
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 10 02
+  name: BGswap
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 10 04 00
+  name: BGsetLink
+  operands: [calc, calc, calc]
+  flags: []
+
+- pattern: 10 04 01
+  name: BGsetLink2
+  operands: [calc, calc, calc]
+  flags: []
+
+- pattern: 10 05
+  name: BGrelease
+  operands: [calc]
+  flags: [~chaload, bgrelease]
+
+- pattern: 10 05 00
+  name: CHAloadAtlas  # placeholder name
+  operands: [calc, calc]
+  flags: [chaload]
+
+- pattern: 10 05 01
+  name: CHAloadTexture
+  operands: [calc, calc]
+  flags: [chaload]
+
+- pattern: 10 06
+  name: CHAswap
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 10 07
+  name: BGcopy
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 10 08
+  name: CHAcopy
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 10 0B
+  name: CharaLayerLoad
+  operands: []
+  flags: []
+
+- pattern: 10 0D 00
+  name: CHAmoveInit
+  operands: []
+  flags: []
+
+- pattern: 10 0D 01
+  name: CHAmoveSetSeq
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 10 0D 02
+  name: CHAmoveWait
+  operands: [calc]
+  flags: []
+
+- pattern: 10 0D 03
+  name: CHAmoveExec
+  operands: []
+  flags: []
+
+- pattern: 10 0D 04
+  name: CHAmoveChkEnd
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 10 0D 05
+  name: CHAmoveSetDirect
+  operands: [calc, calc, calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 0E
+  name: SkebLoad
+  operands: [calc]
+  flags: []
+
+- pattern: 10 0F
+  name: EVload
+  operands: [calc, calc, calc]
+  flags: [~bgrelease]
+
+- pattern: 10 10
+  name: EVinit
+  operands: [calc, calc]
+  flags: [~bgrelease]
+
+- pattern: 10 10
+  name: BGrelease
+  operands: [calc]
+  flags: [chaload, bgrelease]
+
+- pattern: 10 11 00
+  name: EVset
+  operands: [calc, calc, calc]
+  flags: [~bgrelease]
+
+- pattern: 10 11 01
+  name: EVsetEx
+  operands: [calc, calc, calc, calc, calc, calc, calc]
+  flags: [~bgrelease]
+
+- pattern: 10 11
+  name: CHArelease
+  operands: [calc]
+  flags: [bgrelease]
+
+- pattern: 10 12
+  name: EVend
+  operands: []
+  flags: [~bgrelease]
+
+- pattern: 10 13 00
+  name: OptionInit
+  operands: []
+  flags: []
+
+- pattern: 10 13 01
+  name: OptionMain
+  operands: []
+  flags: []
+
+- pattern: 10 13 04
+  name: OptionDefault
+  operands: []
+  flags: []
+
+- pattern: 10 13 05
+  name: OptionDefaultAll
+  operands: []
+  flags: []
+
+- pattern: 10 14 01
+  name: SystemDataAllReset
+  operands: []
+  flags: []
+
+- pattern: 10 1A 00
+  name: HelpInit
+  operands: []
+  flags: []
+
+- pattern: 10 1A 01
+  name: HelpMain
+  operands: []
+  flags: []
+
+- pattern: 10 1A 0A
+  name: ManualInit
+  operands: []
+  flags: []
+
+- pattern: 10 1A 0B
+  name: ManualMain
+  operands: []
+  flags: []
+
+- pattern: 10 1B 00
+  name: AchievementInit
+  operands: []
+  flags: []
+
+- pattern: 10 1B 01
+  name: AchievementMain
+  operands: []
+  flags: []
+
+- pattern: 10 1D 00
+  name: SoundMenuInit
+  operands: []
+  flags: []
+
+- pattern: 10 1D 01
+  name: SoundMenuMain
+  operands: []
+  flags: []
+
+- pattern: 10 1F 00
+  name: AlbumInit
+  operands: []
+  flags: []
+
+- pattern: 10 1F 01
+  name: AlbumMain
+  operands: []
+  flags: []
+
+- pattern: 10 1F 02
+  name: AlbumSetEVCG
+  operands: []
+  flags: []
+
+- pattern: 10 20 00
+  name: MovieModeInit
+  operands: []
+  flags: []
+
+- pattern: 10 20 01
+  name: MovieModeMain
+  operands: []
+  flags: []
+
+- pattern: 10 21 00
+  name: ClistInit
+  operands: []
+  flags: []
+
+- pattern: 10 21 01
+  name: ClistMain
+  operands: []
+  flags: []
+
+- pattern: 10 21 03
+  name: ClistInit2
+  operands: []
+  flags: []
+
+- pattern: 10 22 00
+  name: AutoSaveMain
+  operands: []
+  flags: []
+
+- pattern: 10 22 02
+  name: AutoSave_02
+  operands: []
+  flags: []
+
+- pattern: 10 22 03
+  name: AutoSave_03
+  operands: []
+  flags: []
+
+- pattern: 10 22 05
+  name: SetSavePointMain
+  operands: []
+  flags: []
+
+- pattern: 10 22 0A
+  name: AutoSaveSetSavePoint  # placeholder name
+  operands: []
+  flags: [~return_addresses]
+
+- pattern: 10 22 0A
+  name: AutoSaveSetSavePointRA  # placeholder name
+  operands: [int16]
+  flags: [return_addresses]
+
+- pattern: 10 22 FF
+  name: AutoSave_FF
+  operands: []
+  flags: []
+
+- pattern: 10 23 00 00
+  name: QLoadMenuInit
+  operands: []
+  flags: []
+
+- pattern: 10 23 00 01
+  name: SaveMenuInit
+  operands: []
+  flags: []
+
+- pattern: 10 23 00 02
+  name: LoadMenuInit
+  operands: []
+  flags: []
+
+- pattern: 10 23 01
+  name: SaveMenuMain
+  operands: []
+  flags: []
+
+- pattern: 10 23 02
+  name: SaveMenuResetThumbnail
+  operands: []
+  flags: []
+
+- pattern: 10 23 14
+  name: SaveMenuLockCancel
+  operands: []
+  flags: []
+
+- pattern: 10 24
+  name: LoadData
+  operands: [calc]
+  flags: [~new_loaddata]
+
+- pattern: 10 24 00
+  name: LoadData
+  operands: [calc, calc]
+  flags: [new_loaddata]
+
+- pattern: 10 24 01
+  name: LoadDataAdr
+  operands: []
+  flags: [new_loaddata]
+
+- pattern: 10 25 00
+  name: Unk_10_25_00
+  operands: []
+  flags: []
+
+- pattern: 10 25 01
+  name: Unk_10_25_01
+  operands: []
+  flags: []
+
+- pattern: 10 27
+  name: SetDic
+  operands: [calc]
+  flags: [~new_setdic]
+
+- pattern: 10 27 00
+  name: SetDic
+  operands: [calc]
+  flags: [new_setdic]
+
+- pattern: 10 27 01
+  name: SetDic2
+  operands: [calc, calc]
+  flags: [new_setdic]
+
+- pattern: 10 27 02
+  name: SetDic_02
+  operands: [calc]
+  flags: [new_setdic]
+
+- pattern: 10 28
+  name: SetPlayMode
+  operands: [calc]
+  flags: []
+
+- pattern: 10 2A 00
+  name: SetBgCutin
+  operands: [calc, calc, calc]
+  flags: []
+
+- pattern: 10 2A 01
+  name: SetBgCutin2
+  operands: [calc, calc, calc]
+  flags: []
+
+- pattern: 10 2D
+  name: AchChkTitle
+  operands: []
+  flags: []
+
+- pattern: 10 29
+  name: SetEVflag
+  operands: [calc]
+  flags: [~new_setevflag]
+
+- pattern: 10 29 00
+  name: SetEVflag
+  operands: [calc]
+  flags: [new_setevflag]
+
+- pattern: 10 30 00
+  name: EffCapInit
+  operands: []
+  flags: []
+
+- pattern: 10 30 01
+  name: EffCapSet
+  operands: [calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 30 0A
+  name: EffectWaveInit
+  operands: []
+  flags: []
+
+- pattern: 10 30 0B
+  name: EffectWaveSet
+  operands: [calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 32 00
+  name: InitNameID
+  operands: [int16]
+  flags: [initnameid]
+
+- pattern: 10 33 00
+  name: EncycDataInit
+  operands: [int16, int16]
+  flags: []
+
+- pattern: 10 33 01
+  name: EncycMenuInit
+  operands: []
+  flags: []
+
+- pattern: 10 33 02
+  name: EncycMenuMain
+  operands: []
+  flags: []
+
+- pattern: 10 33 03
+  name: EncycMenuEnd
+  operands: []
+  flags: []
+
+- pattern: 10 33 04
+  name: EncycMenuSet
+  operands: []
+  flags: []
+
+- pattern: 10 34
+  name: TitleMenu
+  operands: []
+  flags: [~new_titlemenu]
+
+- pattern: 10 34 00
+  name: TitleMenuInit
+  operands: []
+  flags: [new_titlemenu]
+
+- pattern: 10 34 01
+  name: TitleMenuMain
+  operands: []
+  flags: [new_titlemenu]
+
+- pattern: 10 34 02
+  name: TitleMenuReturnTitleInit
+  operands: []
+  flags: [new_titlemenu]
+
+- pattern: 10 34 04
+  name: TitleMenuChangeBG
+  operands: []
+  flags: [new_titlemenu]
+
+- pattern: 10 3C 00
+  name: FACEload
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 10 3D
+  name: FACErelease
+  operands: [calc]
+  flags: []
+
+- pattern: 10 3F 00
+  name: MouseModeInit
+  operands: []
+  flags: []
+
+- pattern: 10 3F 01
+  name: MouseModeSetTitleMenu
+  operands: []
+  flags: []
+
+- pattern: 10 3F 02
+  name: MouseModeResetTitleMenu
+  operands: []
+  flags: []
+
+- pattern: 10 3F 03
+  name: MouseModeSetSaveMenu
+  operands: []
+  flags: []
+
+- pattern: 10 3F 04
+  name: MouseModeResetSaveMenu
+  operands: []
+  flags: []
+
+- pattern: 10 3F 05
+  name: MouseModeSetTips
+  operands: []
+  flags: []
+
+- pattern: 10 3F 06
+  name: MouseModeResetTips
+  operands: []
+  flags: []
+
+- pattern: 10 3F 07
+  name: MouseModeSetCGlibrary
+  operands: []
+  flags: []
+
+- pattern: 10 3F 08
+  name: MouseModeResetCGlibrary
+  operands: []
+  flags: []
+
+- pattern: 10 3F 09
+  name: MouseModeSetMovieMenu
+  operands: []
+  flags: []
+
+- pattern: 10 3F 0A
+  name: MouseModeResetMovieMenu
+  operands: []
+  flags: []
+
+- pattern: 10 3F 0B
+  name: MouseModeSetMusicMenu
+  operands: []
+  flags: []
+
+- pattern: 10 3F 0C
+  name: MouseModeResetMusicMenu
+  operands: []
+  flags: []
+
+- pattern: 10 3F 0D
+  name: MouseModeSetGameMain
+  operands: []
+  flags: []
+
+- pattern: 10 3F 0E
+  name: MouseModeResetGameMain
+  operands: []
+  flags: []
+
+- pattern: 10 3F 11
+  name: MouseModeSetSysMenu
+  operands: []
+  flags: []
+
+- pattern: 10 3F 12
+  name: MouseModeResetSysMenu
+  operands: []
+  flags: []
+
+- pattern: 10 3F 13
+  name: MouseModeSetBacklog
+  operands: []
+  flags: []
+
+- pattern: 10 3F 14
+  name: MouseModeResetBacklog
+  operands: []
+  flags: []
+
+- pattern: 10 3F 15
+  name: MouseModeSetConfig
+  operands: []
+  flags: []
+
+- pattern: 10 3F 16
+  name: MouseModeResetConfig
+  operands: []
+  flags: []
+
+- pattern: 10 3F 17
+  name: MouseModeSetHelp
+  operands: []
+  flags: []
+
+- pattern: 10 3F 18
+  name: MouseModeResetHelp
+  operands: []
+  flags: []
+
+- pattern: 10 3F 1B
+  name: MouseModeSetClearList
+  operands: []
+  flags: []
+
+- pattern: 10 3F 1C
+  name: MouseModeResetClearList
+  operands: []
+  flags: []

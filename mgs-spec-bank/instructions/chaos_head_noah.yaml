@@ -1,0 +1,194 @@
+- pattern: 10 37 01
+  name: Noah_01
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 10 37 0A
+  name: Noah_0A
+  operands: [calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 37 0B
+  name: Noah_0B
+  operands: [calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 37 0C
+  name: Noah_0C
+  operands: []
+  flags: []
+
+- pattern: 10 37 0D
+  name: Noah_0D
+  operands: [calc, calc, calc]
+  flags: []
+
+- pattern: 10 37 10
+  name: Noah_10
+  operands: [calc, calc, calc]
+  flags: []
+
+- pattern: 10 37 12
+  name: Noah_12
+  operands: [calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 37 13
+  name: Noah_13
+  operands: [calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 37 14
+  name: Noah_14
+  operands: []
+  flags: []
+
+- pattern: 10 37 16
+  name: Noah_16
+  operands: []
+  flags: []
+
+- pattern: 10 37 17
+  name: Noah_17
+  operands: []
+  flags: []
+
+- pattern: 10 37 18
+  name: Noah_18
+  operands: []
+  flags: []
+
+- pattern: 10 37 1A
+  name: Noah_1A
+  operands: []
+  flags: []
+
+- pattern: 10 37 1E
+  name: Noah_1E
+  operands: []
+  flags: []
+
+- pattern: 10 37 1F
+  name: Noah_1F
+  operands: []
+  flags: []
+
+- pattern: 10 37 20
+  name: Noah_20
+  operands: []
+  flags: []
+
+- pattern: 10 37 21
+  name: Noah_21
+  operands: []
+  flags: []
+
+- pattern: 10 37 22
+  name: Noah_22
+  operands: []
+  flags: []
+
+- pattern: 10 37 28
+  name: Noah_28
+  operands: []
+  flags: []
+
+- pattern: 10 37 29
+  name: Noah_29
+  operands: []
+  flags: []
+
+- pattern: 10 37 2A
+  name: Noah_2A
+  operands: []
+  flags: []
+
+- pattern: 10 37 2B
+  name: Noah_2B
+  operands: []
+  flags: []
+
+- pattern: 10 37 2C
+  name: Noah_2C
+  operands: []
+  flags: []
+
+- pattern: 10 37 32
+  name: Noah_32
+  operands: []
+  flags: []
+
+- pattern: 10 37 33
+  name: Noah_33
+  operands: []
+  flags: []
+
+- pattern: 10 37 34
+  name: Noah_34
+  operands: []
+  flags: []
+
+- pattern: 10 37 35
+  name: Noah_35
+  operands: []
+  flags: []
+
+- pattern: 10 37 37
+  name: Noah_37
+  operands: [calc]
+  flags: []
+
+- pattern: 10 37 50
+  name: Noah_50
+  operands: [calc, calc, calc, calc, calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 37 52
+  name: Noah_52
+  operands: [calc, calc, calc, calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 37 53
+  name: Noah_53
+  operands: [calc, calc, calc, calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 37 64
+  name: Noah_64
+  operands: [calc]
+  flags: []
+
+- pattern: 10 37 6E
+  name: Noah_6E
+  operands: []
+  flags: []
+
+- pattern: 10 37 78
+  name: Noah_78
+  operands: []
+  flags: []
+
+- pattern: 10 37 8C
+  name: Noah_8C
+  operands: []
+  flags: []
+
+- pattern: 10 37 8D
+  name: Noah_8D
+  operands: []
+  flags: []
+
+- pattern: 10 37 8E
+  name: Noah_8E
+  operands: []
+  flags: []
+
+- pattern: 10 37 8F
+  name: Noah_8F
+  operands: []
+  flags: []
+
+- pattern: 10 37 90
+  name: Noah_90
+  operands: []
+  flags: []
