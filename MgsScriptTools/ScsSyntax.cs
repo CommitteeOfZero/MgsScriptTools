@@ -111,12 +111,19 @@ public class ScsSyntax {
 			char ch = _reader.Peek(0);
 			if (IsInstructionNameStart(ch)) {
 				string name = ParseInstructionName();
+				switch (name) {
+					case "hex": {
+						return new ScsRaw(ParseRaw());
+					}
+					default: {
 				Expression[] operands = ParseOperands();
 				var insn = new Instruction {
 					Name = name,
 					Operands = operands,
 				};
 				return new ScsInstruction(insn);
+					}
+				}
 			} else if (IsDigit(ch)) {
 				int index = ParseNumber();
 				if (!ParseUtils.TrySkip(_reader, ':'))
@@ -160,6 +167,19 @@ public class ScsSyntax {
 			return operands.ToArray();
 		}
 
+		byte[] ParseRaw() {
+			MemoryStream buffer = new();
+			if (_reader.Has(0) && !ParseUtils.TrySkip(_reader, '\n')) {
+				if (!ParseUtils.SkipHSpaceComments(_reader))
+					throw new ParsingException($"Unexpected character: {_reader.Peek(0)}");
+				while (_reader.Has(0) && !ParseUtils.TrySkip(_reader, '\n')) {
+					buffer.WriteByte(ParseHexByte());
+					ParseUtils.SkipHSpaceComments(_reader);
+				}
+			}
+			return buffer.ToArray();
+		}
+
 		ScsPart ParseEvalInstruction() {
 			var expression = ExpressionSyntax.Parse(_reader);
 			ParseUtils.SkipHSpaceComments(_reader);
@@ -191,6 +211,23 @@ public class ScsSyntax {
 			while (IsDigit(_reader.Peek(0)))
 				s += _reader.Next();
 			return int.Parse(s);
+		}
+
+		byte ParseHexByte() {
+			int high = ParseNibble();
+			int low = ParseNibble();
+			return (byte)((high << 4) | low);
+		}
+
+		int ParseNibble() {
+			char ch = _reader.Peek(0);
+			if (ch is >= '0' and <= '9')
+				return (_reader.Next() - '0') + 0x0;
+			if (ch is >= 'A' and <= 'Z')
+				return (_reader.Next() - 'A') + 0xA;
+			if (ch is >= 'a' and <= 'z')
+				return (_reader.Next() - 'a') + 0xA;
+			throw new ParsingException($"Unexpected character: {ch}");
 		}
 
 		bool IsInstructionNameStart(char c) {

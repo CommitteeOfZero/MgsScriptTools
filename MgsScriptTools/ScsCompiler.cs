@@ -58,6 +58,10 @@ class ScsCompiler {
 				_returnAddressTable[index] = offset;
 				break;
 			}
+			case ScsRaw { Value: byte[] raw }: {
+				_stream.Write(raw);
+				break;
+			}
 		}
 	}
 
