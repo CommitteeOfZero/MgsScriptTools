@@ -13,7 +13,7 @@ public class MesStringSpec {
 			new(0x04, MesCommandKind.Color, OperandKind.Calc),
 			//new(0x04, MesCommandKind.Color, OperandKind.UInt8), // TODO: move out to the spec bank
 			new(0x05, MesCommandKind.E),
-			new(0x06, MesCommandKind.Unk_06),
+			new(0x06, MesCommandKind.K),
 			new(0x07, MesCommandKind.Wait, OperandKind.UInt8),
 			new(0x08, MesCommandKind.PauseEndPage),
 			new(0x09, MesCommandKind.RubyStart),
@@ -23,7 +23,7 @@ public class MesStringSpec {
 			
 			new(0x0E, MesCommandKind.LineSync),
 			new(0x0F, MesCommandKind.LineCenter),
-			new(0x10, MesCommandKind.LineLight),
+			new(0x10, MesCommandKind.LineL),
 			new(0x11, MesCommandKind.LineFloat, OperandKind.Int16),
 			new(0x12, MesCommandKind.Space, OperandKind.Int16),
 			new(0x13, MesCommandKind.PrintHankaku, OperandKind.Int16),
@@ -40,7 +40,7 @@ public class MesStringSpec {
 			new(0x1E, MesCommandKind.RubyCenter),
 			new(0x1F, MesCommandKind.Newline_1F),
 
-			new(0x31, MesCommandKind.LineRight),
+			new(0x31, MesCommandKind.LineR),
 		};
 		foreach (var spec in specs) {
 			_kinds[spec.Kind] = spec;
@@ -86,7 +86,7 @@ public enum MesCommandKind {
 	PauseEndLine, // wait for key, then end line
 	Color, // set the text color to `arg0`
 	E, // breaks the line at the end
-	Unk_06, // unknown
+	K, // unknown
 	Wait, // wait for `arg0` frames
 	PauseEndPage, // wait for key, then end page
 	RubyStart,
@@ -96,7 +96,7 @@ public enum MesCommandKind {
 
 	LineSync, // unconfirmed, seems to display lines in parallel
 	LineCenter, // seems to align the line to the center
-	LineLight, // seems to align the line to the right
+	LineL, // seems to align the line to the right
 	LineFloat, // seems to move the line vertically
 	Space, // seems to moves the line horizontally
 	PrintHankaku, // display the value of `$W(arg0)`
@@ -112,5 +112,5 @@ public enum MesCommandKind {
 	RubyCenter,
 	Newline_1F, // break line
 
-	LineRight, // seems to align the line to the right
+	LineR, // seems to align the line to the right
 }

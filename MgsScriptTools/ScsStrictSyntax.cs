@@ -92,7 +92,7 @@ class ScsStrictSyntax : MstStringSyntax {
 				MesCommandKind.PauseEndLine => "p",
 				MesCommandKind.Color => "c",
 				MesCommandKind.E => "e",
-				MesCommandKind.Unk_06 => "unk06",
+				MesCommandKind.K => "k",
 				MesCommandKind.Wait => "w",
 				MesCommandKind.PauseEndPage => "pe",
 				MesCommandKind.RubyStart => "rs",
@@ -102,7 +102,7 @@ class ScsStrictSyntax : MstStringSyntax {
 
 				MesCommandKind.LineSync => "ls",
 				MesCommandKind.LineCenter => "lc",
-				MesCommandKind.LineLight => "ll",
+				MesCommandKind.LineL => "ll",
 				MesCommandKind.LineFloat => "lf",
 				MesCommandKind.Space => "sp",
 				MesCommandKind.PrintHankaku => "ph",
@@ -118,7 +118,7 @@ class ScsStrictSyntax : MstStringSyntax {
 				MesCommandKind.RubyCenter => "rc", // unconfirmed, possibly also "rm" - mono-ruby, or "rn" - nakatsuke
 				MesCommandKind.Newline_1F => "unk1F", // unknown
 
-				MesCommandKind.LineRight => "lr",
+				MesCommandKind.LineR => "lr",
 
 				_ => throw new NotImplementedException(kind.ToString()),
 			};
@@ -191,7 +191,7 @@ class ScsStrictSyntax : MstStringSyntax {
 				"p" => MesCommandKind.PauseEndLine,
 				"c" => MesCommandKind.Color,
 				"e" => MesCommandKind.E,
-				"unk06" => MesCommandKind.Unk_06,
+				"unk06" => MesCommandKind.K,
 				"w" => MesCommandKind.Wait,
 				"pe" => MesCommandKind.PauseEndPage,
 				"rs" => MesCommandKind.RubyStart,
@@ -201,7 +201,7 @@ class ScsStrictSyntax : MstStringSyntax {
 
 				"ls" => MesCommandKind.LineSync,
 				"lc" => MesCommandKind.LineCenter,
-				"ll" => MesCommandKind.LineLight,
+				"ll" => MesCommandKind.LineL,
 				"lf" => MesCommandKind.LineFloat,
 				"sp" => MesCommandKind.Space,
 				"ph" => MesCommandKind.PrintHankaku,
@@ -217,7 +217,7 @@ class ScsStrictSyntax : MstStringSyntax {
 				"rc" => MesCommandKind.RubyCenter,
 				"unk1F" => MesCommandKind.Newline_1F,
 
-				"lr" => MesCommandKind.LineRight,
+				"lr" => MesCommandKind.LineR,
 
 				_ => null,
 			};
