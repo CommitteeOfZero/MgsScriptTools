@@ -232,7 +232,7 @@ class Program {
 			using var file = File.Open(dstPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
 			Sc3File.Encode(file, dstFile);
 		} catch (Exception e) {
-			Console.Error.WriteLine($"\nError while compiling {srcName}: {e}");
+			Console.Error.WriteLine($"\nError while compiling {srcPath}: {e}");
 			return 1;
 		}
 
@@ -269,7 +269,7 @@ class Program {
 				Entries = dstStrings,
 			});
 		} catch (Exception e) {
-			Console.Error.WriteLine($"\nError while compiling {srcName}: {e}");
+			Console.Error.WriteLine($"\nError while compiling {srcPath}: {e}");
 			return 1;
 		}
 
@@ -308,17 +308,17 @@ class Program {
 				context.MstSyntax.Stringify(builder, dstStrings);
 				await File.WriteAllTextAsync(sctPath, builder.ToString(), new UTF8Encoding(false));
 			} catch (Exception e) {
-				Console.Error.WriteLine($"\nError while decompiling {srcName}: {e}");
+				Console.Error.WriteLine($"\nError while decompiling {srcPath}: {e}");
 			}
 			try {
 				StringBuilder builder = new();
 				ScsSyntax.Stringify(builder, dstParts);
 				await File.WriteAllTextAsync(dstPath, builder.ToString(), new UTF8Encoding(false));
 			} catch (Exception e) {
-				Console.Error.WriteLine($"\nError while decompiling {srcName}: {e}");
+				Console.Error.WriteLine($"\nError while decompiling {srcPath}: {e}");
 			}
 		} catch (Exception e) {
-			Console.Error.WriteLine($"\nError while decompiling {srcName}: {e}");
+			Console.Error.WriteLine($"\nError while decompiling {srcPath}: {e}");
 			return 1;
 		}
 
@@ -352,7 +352,7 @@ class Program {
 			context.MstSyntax.Stringify(builder, dstStrings);
 			await File.WriteAllTextAsync(dstPath, builder.ToString(), new UTF8Encoding(false));
 		} catch (Exception e) {
-			Console.Error.WriteLine($"\nError while decompiling {srcName}: {e}");
+			Console.Error.WriteLine($"\nError while decompiling {srcPath}: {e}");
 			return 1;
 		}
 
