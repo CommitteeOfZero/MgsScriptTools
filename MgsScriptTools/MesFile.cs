@@ -64,7 +64,8 @@ public struct MesFile {
 			if (!magic.SequenceEqual(Magic))
 				throw new Exception($"Invalid magic");
 
-			if (ReadInt() != 1)
+			int languages = ReadInt();
+			if (languages < 1)
 				throw new Exception($"Invalid languages count");
 
 			int entryCount = ReadInt();
@@ -74,23 +75,22 @@ public struct MesFile {
 			for (int i = 0; i < entryCount; i++) {
 				int id = ReadInt();
 				int offset = ReadInt();
+				for (int j = 1; j < languages; j++)
+					ReadInt();
+				// TODO: handle languages other than 0
 				table[i] = new MesTableEntry {
 					Id = id,
 					Offset = stringsStart + offset,
 				};
 			}
+			var lengthTable = ConstructLengthTable(table);
 
 			var entries = new MesFileEntry[entryCount];
 			for (int i = 0; i < table.Length; i++) {
-				//if (Tell() != table[i].Offset)
-				//	throw new Exception("Invalid file layout");
-				Seek(table[i].Offset);
-				int end;
-				if (i + 1 < table.Length)
-					end = table[i + 1].Offset;
-				else
-					end = (int)_stream.Length;
-				var buffer = new byte[end - Tell()];
+				int offset = table[i].Offset;
+				int end = lengthTable[offset];
+				Seek(offset);
+				var buffer = new byte[end - offset];
 				ReadExact(buffer);
 				entries[i] = new MesFileEntry {
 					Index = table[i].Id,
@@ -101,6 +101,22 @@ public struct MesFile {
 			return new MesFile {
 				Entries = entries,
 			};
+		}
+
+		Dictionary<int, int> ConstructLengthTable(MesTableEntry[] entries) {
+			SortedSet<int> offsets = new();
+			foreach (var entry in entries)
+				offsets.Add(entry.Offset);
+			Dictionary<int, int> table = new();
+			int lastOffset = -1;
+			foreach (var offset in offsets) {
+				if (lastOffset >= 0)
+					table[lastOffset] = offset;
+				lastOffset = offset;
+			}
+			if (lastOffset >= 0)
+				table[lastOffset] = (int)_stream.Length;
+			return table;
 		}
 
 		int ReadInt() {
