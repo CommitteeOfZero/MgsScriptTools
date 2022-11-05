@@ -1,0 +1,9 @@
+- pattern: 10 31 00
+  name: FirePowderStart
+  operands: [calc, calc, calc]
+  flags: []
+
+- pattern: 10 31 01
+  name: FirePowderStop
+  operands: []
+  flags: []

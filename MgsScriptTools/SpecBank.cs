@@ -135,7 +135,7 @@ class SpecBank {
 					(name, value) = (flag[1..], false);
 				else
 					(name, value) = (flag, true);
-				if (flags[name] != value)
+				if (!flags.ContainsKey(name) || flags[name] != value)
 					return false;
 			}
 			return true;

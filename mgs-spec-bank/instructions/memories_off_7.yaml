@@ -1,0 +1,34 @@
+- pattern: 10 31 00
+  name: HanabiInit
+  operands: [calc]
+  flags: []
+
+- pattern: 10 31 01
+  name: HanabiSet
+  operands: [calc, calc, calc, calc, calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 37 00
+  name: YubikiriStart_00
+  operands: []
+  flags: []
+
+- pattern: 10 37 01
+  name: YubikiriStart_01
+  operands: []
+  flags: []
+
+- pattern: 10 37 02
+  name: YubikiriMain
+  operands: []
+  flags: []
+
+- pattern: 10 37 03
+  name: YubikiriEnd_03
+  operands: []
+  flags: []
+
+- pattern: 10 37 04
+  name: YubikiriEnd_04
+  operands: []
+  flags: []

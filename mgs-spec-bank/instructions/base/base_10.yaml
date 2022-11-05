@@ -23,6 +23,16 @@
   operands: [calc, calc, calc]
   flags: []
 
+- pattern: 10 04 04
+  name: BGsetLinkEx
+  operands: [calc, calc, calc, calc]
+  flags: []
+
+- pattern: 10 04 05
+  name: BGsetLinkEx2
+  operands: [calc, calc, calc, calc]
+  flags: []
+
 - pattern: 10 05
   name: BGrelease
   operands: [calc]
@@ -97,6 +107,11 @@
   name: EVload
   operands: [calc, calc, calc]
   flags: [~bgrelease]
+
+- pattern: 10 0F
+  name: BGsetAnime
+  operands: []
+  flags: [bgrelease]
 
 - pattern: 10 10
   name: EVinit
@@ -233,6 +248,11 @@
   operands: []
   flags: []
 
+- pattern: 10 21 14
+  name: SetSceneTitleViewFlag
+  operands: [calc]
+  flags: []
+
 - pattern: 10 22 00
   name: AutoSaveMain
   operands: []
@@ -245,6 +265,11 @@
 
 - pattern: 10 22 03
   name: AutoSave_03
+  operands: []
+  flags: []
+
+- pattern: 10 22 04
+  name: AutoSave_04
   operands: []
   flags: []
 
@@ -348,6 +373,16 @@
   operands: [calc]
   flags: []
 
+- pattern: 10 29
+  name: SetEVflag
+  operands: [calc]
+  flags: [~new_setevflag]
+
+- pattern: 10 29 00
+  name: SetEVflag
+  operands: [calc]
+  flags: [new_setevflag]
+
 - pattern: 10 2A 00
   name: SetBgCutin
   operands: [calc, calc, calc]
@@ -362,16 +397,6 @@
   name: AchChkTitle
   operands: []
   flags: []
-
-- pattern: 10 29
-  name: SetEVflag
-  operands: [calc]
-  flags: [~new_setevflag]
-
-- pattern: 10 29 00
-  name: SetEVflag
-  operands: [calc]
-  flags: [new_setevflag]
 
 - pattern: 10 30 00
   name: EffCapInit
@@ -396,7 +421,7 @@
 - pattern: 10 32 00
   name: InitNameID
   operands: [int16]
-  flags: [initnameid]
+  flags: []
 
 - pattern: 10 33 00
   name: EncycDataInit
@@ -447,6 +472,21 @@
   name: TitleMenuChangeBG
   operands: []
   flags: [new_titlemenu]
+
+- pattern: 10 36 00
+  name: BGeffectSikaden
+  operands: [calc]
+  flags: []
+
+- pattern: 10 38
+  name: EFFyuge
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 10 3B 00
+  name: EndRollSetup
+  operands: []
+  flags: []
 
 - pattern: 10 3C 00
   name: FACEload

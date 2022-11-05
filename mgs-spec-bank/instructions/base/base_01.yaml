@@ -1,7 +1,17 @@
 - pattern: 01 00
   name: CreateSurface
   operands: [calc, calc]
-  flags: []
+  flags: [~new_createsurface]
+
+- pattern: 01 00 00
+  name: CreateAlphaSurface
+  operands: [calc, calc, calc]
+  flags: [new_createsurface]
+
+- pattern: 01 00 01
+  name: CreateSurface
+  operands: [calc, calc, calc]
+  flags: [new_createsurface]
 
 - pattern: 01 01
   name: ReleaseSurface
@@ -68,6 +78,11 @@
   operands: [int16, calc]
   flags: [return_addresses]
 
+- pattern: 01 09 02
+  name: MesSSetSavePoint
+  operands: [calc]
+  flags: [return_addresses]
+
 - pattern: 01 0A 03
   name: CalcSinL
   operands: [calc, calc, calc, calc]
@@ -89,12 +104,12 @@
   flags: [~mescls]
 
 - pattern: 01 0A 00
-  name: MesCls_00
+  name: MesCls
   operands: [calc]
   flags: [mescls]
 
 - pattern: 01 0A 01
-  name: MesCls_01
+  name: MesClsAll
   operands: []
   flags: [mescls]
 
@@ -105,6 +120,11 @@
 
 - pattern: 01 0A 05
   name: MesCls_05
+  operands: []
+  flags: [mescls]
+
+- pattern: 01 0A 07
+  name: MesResetAll
   operands: []
   flags: [mescls]
 
@@ -125,6 +145,16 @@
 
 - pattern: 01 0C 03
   name: Mes2VSetMesScx
+  operands: [calc, calc, calc, int16]
+  flags: []
+
+- pattern: 01 0C 08
+  name: MesSSetMesScx
+  operands: [calc, int16]
+  flags: []
+
+- pattern: 01 0C 0B
+  name: MesS2VSetMesScx
   operands: [calc, calc, calc, int16]
   flags: []
 
@@ -204,29 +234,29 @@
   flags: []
 
 - pattern: 01 11 02
-  name: MessWindowOpenedWait  # placeholder name
+  name: MessWindowOpenedWait
   operands: []
   flags: []
 
 - pattern: 01 11 03
-  name: MessWindowClosedWait  # placeholder name
+  name: MessWindowClosedWait
   operands: []
   flags: []
 
 #- pattern: 01 11 04
-#  name: MessWindowOpenEx  # placeholder name
+#  name: MessWindow_04
 #  operands: [calc]
 #  flags: []
 
 - pattern: 01 11 05
-  name: MessWindowCloseEx  # placeholder name
+  name: MessWindowCloseEx
   operands: [calc]
   flags: []
 
-#- pattern: 01 11 06
-#  name: MessWindowFastOpen
-#  operands: [calc]
-#  flags: []
+- pattern: 01 11 06
+  name: MessWindowOpenEx
+  operands: [calc]
+  flags: []
 
 - pattern: 01 11 07
   name: MessWindowFastClose
@@ -398,6 +428,11 @@
   operands: [calc]
   flags: []
 
+- pattern: 01 25 00
+  name: SetRevMesScx
+  operands: [int16]
+  flags: []
+
 - pattern: 01 25 03
   name: SetRevSysMesScx
   operands: [int16, calc, calc, calc]
@@ -416,6 +451,11 @@
 - pattern: 01 26 05 00
   name: PlayMovieMemoryLoopNoAudio
   operands: [calc]
+  flags: []
+
+- pattern: 01 26 63
+  name: PlayMovieMemoryRecover
+  operands: [calc, calc, calc]
   flags: []
 
 - pattern: 01 27

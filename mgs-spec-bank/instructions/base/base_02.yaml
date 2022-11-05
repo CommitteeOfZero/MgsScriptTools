@@ -1,9 +1,0 @@
-- pattern: 02 07
-  name: Unk_02_07
-  operands: [calc, int16]
-  flags: []
-
-- pattern: 02 19
-  name: Unk_02_19
-  operands: [calc]
-  flags: []

@@ -454,6 +454,26 @@
   operands: []
   flags: [new_save]
 
+- pattern: 00 2A 56
+  name: CheckFDClearData
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 57
+  name: LoadFDSystemDataExtract
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 58
+  name: CheckFDSaveDataStart
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A 59
+  name: CheckFDSaveDataWait
+  operands: []
+  flags: [new_save]
+
 - pattern: 00 2A 96
   name: SetLastSaveRootAuto
   operands: []
@@ -516,6 +536,11 @@
 
 - pattern: 00 34
   name: Terminate
+  operands: []
+  flags: []
+
+- pattern: 00 35
+  name: SignInUI
   operands: []
   flags: []
 
@@ -587,6 +612,26 @@
 - pattern: 00 3B 01
   name: ADXpause
   operands: []
+  flags: []
+
+- pattern: 00 3C 00
+  name: SEplayWait
+  operands: []
+  flags: []
+
+- pattern: 00 3C 01
+  name: SEplayWait2
+  operands: []
+  flags: []
+
+- pattern: 00 3C 02
+  name: SEplayWait3
+  operands: []
+  flags: []
+
+- pattern: 00 3D
+  name: DebugPrint
+  operands: [calc, calc]
   flags: []
 
 - pattern: 00 3E
@@ -740,18 +785,28 @@
   flags: []
 
 - pattern: 00 4C 00
-  name: Unk_00_4C_00
+  name: ScriptKeyWait_00
   operands: [calc]
   flags: []
 
 - pattern: 00 4C 01
-  name: Unk_00_4C_01
+  name: ScriptKeyWait_01
   operands: []
   flags: []
 
 - pattern: 00 50 00
   name: PressStart
   operands: [int16, int16]
+  flags: [~new_pressstart]
+
+- pattern: 00 50 03
+  name: ChkSignin
+  operands: [int16, int16, int16]
+  flags: [~new_pressstart]
+
+- pattern: 00 50 05
+  name: ResetActivePad
+  operands: []
   flags: [~new_pressstart]
 
 - pattern: 00 50 00
@@ -762,10 +817,30 @@
 - pattern: 00 50 05
   name: PressStart_05
   operands: [calc, calc]
-  flags: []
+  flags: [new_pressstart]
 
 - pattern: 00 50 07
   name: PressStart_07
+  operands: []
+  flags: [new_pressstart]
+
+- pattern: 00 51 00
+  name: GlobalSystemMessage_00
+  operands: [calc]
+  flags: []
+
+- pattern: 00 51 01
+  name: GlobalSystemMessage_01
+  operands: []
+  flags: []
+
+- pattern: 00 51 02
+  name: GlobalSystemMessage_02
+  operands: []
+  flags: []
+
+- pattern: 00 51 03
+  name: GlobalSystemMessage_03
   operands: []
   flags: []
 
@@ -789,7 +864,17 @@
   operands: [calc, int16]
   flags: []
 
+- pattern: 00 5A
+  name: SetMultiFileTable
+  operands: [int16]
+  flags: []
+
 - pattern: 00 5E
   name: Unk_00_5E
   operands: [calc]
+  flags: []
+
+- pattern: 00 5F 03
+  name: AddContentsCloseContents
+  operands: []
   flags: []

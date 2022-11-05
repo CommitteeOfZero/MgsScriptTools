@@ -1,0 +1,49 @@
+- pattern: 01 2C 00
+  name: RINNSInitRA
+  operands: [int16, int8, calc]
+  flags: []
+
+- pattern: 01 2C 81
+  name: RINNSAddMsb
+  operands: [calc, calc]
+  flags: []
+
+- pattern: 01 2C 91
+  name: RINNSTimeupLogMsb
+  operands: [calc]
+  flags: []
+
+- pattern: 01 2D 00
+  name: RINNS_00
+  operands: []
+  flags: []
+
+- pattern: 01 2D 01
+  name: RINNS_01
+  operands: []
+  flags: []
+
+- pattern: 01 2D 02
+  name: RINNS_02
+  operands: [calc]
+  flags: []
+
+- pattern: 01 2F 00
+  name: ChatInit
+  operands: []
+  flags: []
+
+- pattern: 01 2F 01
+  name: ChatAdd_01
+  operands: [calc, calc, calc, calc, int8]
+  flags: []
+
+- pattern: 01 2F 02
+  name: ChatAdd_02
+  operands: []
+  flags: []
+
+- pattern: 10 37 05
+  name: PhoneInit
+  operands: []
+  flags: []

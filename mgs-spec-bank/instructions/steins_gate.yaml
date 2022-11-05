@@ -1,4 +1,0 @@
-- pattern: 10 37 05
-  name: Sg_05
-  operands: [int16, int16]
-  flags: []
