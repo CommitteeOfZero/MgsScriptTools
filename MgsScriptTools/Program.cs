@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 
 using System.CommandLine;
 using System.CommandLine.Parsing;
@@ -123,6 +123,7 @@ class Program {
 				var config = ParseOptions(context.ParseResult);
 				context.ExitCode = await DoCompileCommand(config);
 			} catch (Exception e) {
+				context.ExitCode = 1;
 				Console.Error.WriteLine(e);
 			}
 		});
@@ -134,6 +135,7 @@ class Program {
 				var config = ParseOptions(context.ParseResult);
 				context.ExitCode = await DoDecompileCommand(config);
 			} catch (Exception e) {
+				context.ExitCode = 1;
 				Console.Error.WriteLine(e);
 			}
 		});
@@ -303,20 +305,23 @@ class Program {
 
 			Directory.CreateDirectory(dstDir);
 
+			List<Exception> exceptions = new();
 			try {
 				StringBuilder builder = new();
 				context.MstSyntax.Stringify(builder, dstStrings);
 				await File.WriteAllTextAsync(sctPath, builder.ToString(), new UTF8Encoding(false));
 			} catch (Exception e) {
-				Console.Error.WriteLine($"\nError while decompiling {srcPath}: {e}");
+				exceptions.Add(e);
 			}
 			try {
 				StringBuilder builder = new();
 				ScsSyntax.Stringify(builder, dstParts);
 				await File.WriteAllTextAsync(dstPath, builder.ToString(), new UTF8Encoding(false));
 			} catch (Exception e) {
-				Console.Error.WriteLine($"\nError while decompiling {srcPath}: {e}");
+				exceptions.Add(e);
 			}
+			if (exceptions.Count > 0)
+				throw new AggregateException(exceptions);
 		} catch (Exception e) {
 			Console.Error.WriteLine($"\nError while decompiling {srcPath}: {e}");
 			return 1;
