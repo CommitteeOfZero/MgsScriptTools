@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 using System.CommandLine;
 using System.CommandLine.Parsing;
@@ -151,23 +151,23 @@ class Program {
 			Console.Error.WriteLine($"Error: {e}");
 			return 1;
 		}
-		bool errorOccured = false;
+		bool errorOccurred = false;
 		foreach (var inputFile in paths) {
 			string path = Path.GetRelativePath(inputDir, inputFile);
 			if (Path.IsPathRooted(path))
 				continue;
 			switch (Path.GetExtension(inputFile)) {
 				case ".scs": {
-					errorOccured |= await CompileSc3(config, path) != 0;
+					errorOccurred |= await CompileSc3(config, path) != 0;
 					break;
 				}
 				case ".mst": {
-					errorOccured |= await CompileMes(config, path) != 0;
+					errorOccurred |= await CompileMes(config, path) != 0;
 					break;
 				}
 			}
 		}
-		return errorOccured ? 1 : 0;
+		return errorOccurred ? 1 : 0;
 	}
 
 	static async Task<int> DoDecompileCommand(CommandContext context) {
@@ -179,23 +179,23 @@ class Program {
 			Console.Error.WriteLine($"Error: {e}");
 			return 1;
 		}
-		bool errorOccured = false;
+		bool errorOccurred = false;
 		foreach (var inputFile in paths) {
 			string path = Path.GetRelativePath(inputDir, inputFile);
 			if (Path.IsPathRooted(path))
 				continue;
 			switch (Path.GetExtension(inputFile)) {
 				case ".scx" or ".scr": {
-					errorOccured |= await DecompileSc3(context, path) != 0;
+					errorOccurred |= await DecompileSc3(context, path) != 0;
 					break;
 				}
 				case ".msb": {
-					errorOccured |= await DecompileMes(context, path) != 0;
+					errorOccurred |= await DecompileMes(context, path) != 0;
 					break;
 				}
 			}
 		}
-		return errorOccured ? 1 : 0;
+		return errorOccurred ? 1 : 0;
 	}
 
 	static async Task<int> CompileSc3(CommandContext context, string srcName) {
