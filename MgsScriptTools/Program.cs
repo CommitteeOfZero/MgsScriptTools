@@ -187,7 +187,7 @@ class Program {
 			if (Path.IsPathRooted(path))
 				continue;
 			switch (Path.GetExtension(inputFile)) {
-				case ".scx" or ".scr": {
+				case ".scx": {
 					errorOccurred |= await DecompileSc3(context, path) != 0;
 					break;
 				}
@@ -202,7 +202,7 @@ class Program {
 
 	static async Task<int> CompileSc3(CommandContext context, string srcName) {
 		string sctName = Path.ChangeExtension(srcName, ".sct");
-		string dstName = Path.ChangeExtension(srcName, null);
+		string dstName = Path.ChangeExtension(srcName, ".scx");
 
 		string srcPath = Path.Join(context.DecompiledDirectory, srcName);
 		string sctPath = Path.Join(context.DecompiledDirectory, sctName);
@@ -242,7 +242,7 @@ class Program {
 	}
 
 	static async Task<int> CompileMes(CommandContext context, string srcName) {
-		string dstName = Path.ChangeExtension(srcName, null);
+		string dstName = Path.ChangeExtension(srcName, ".msb");
 
 		string srcPath = Path.Join(context.DecompiledDirectory, srcName);
 		string dstPath = Path.Join(context.CompiledDirectory, dstName);
@@ -279,8 +279,8 @@ class Program {
 	}
 
 	static async Task<int> DecompileSc3(CommandContext context, string srcName) {
-		string dstName = srcName + ".scs";
-		string sctName = srcName + ".sct";
+		string dstName = Path.ChangeExtension(srcName, ".scs");
+		string sctName = Path.ChangeExtension(srcName, ".sct");
 
 		string srcPath = Path.Join(context.CompiledDirectory, srcName);
 		string dstPath = Path.Join(context.DecompiledDirectory, dstName);
@@ -331,7 +331,7 @@ class Program {
 	}
 
 	static async Task<int> DecompileMes(CommandContext context, string srcName) {
-		string dstName = srcName + ".mst";
+		string dstName = Path.ChangeExtension(srcName, ".mst");
 
 		string srcPath = Path.Join(context.CompiledDirectory, srcName);
 		string dstPath = Path.Join(context.DecompiledDirectory, dstName);
