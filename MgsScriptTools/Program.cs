@@ -14,6 +14,8 @@ class Program {
 	class CommandContext {
 		public string CompiledDirectory = null!;
 		public string DecompiledDirectory = null!;
+		public string Sc3Extension = null!;
+		public string MesExtension = null!;
 		public MstSyntax MstSyntax = null!;
 		public MstStringEncoding MstStringEncoding = null!;
 		public MesStringEncoding MesStringEncoding = null!;
@@ -34,6 +36,18 @@ class Program {
 		) {
 			IsRequired = true,
 		};
+
+		var sc3ExtensionOption = new Option<string>(
+			name: "--sc3-extension",
+			getDefaultValue: () => "scx",
+			description: "The file extension to be used for compiled SC3 files."
+		);
+
+		var mesExtensionOption = new Option<string>(
+			name: "--mes-extension",
+			getDefaultValue: () => "msb",
+			description: "The file extension to be used for compiled MES files."
+		);
 
 		var bankDirectoryOption = new Option<string>(
 			name: "--bank-directory",
@@ -73,6 +87,8 @@ class Program {
 		var rootCommand = new RootCommand("A tool for compilation and decompilation of MAGES. engine scripts");
 		rootCommand.AddGlobalOption(compiledDirectoryOption);
 		rootCommand.AddGlobalOption(decompiledDirectoryOption);
+		rootCommand.AddGlobalOption(sc3ExtensionOption);
+		rootCommand.AddGlobalOption(mesExtensionOption);
 		rootCommand.AddGlobalOption(bankDirectoryOption);
 		rootCommand.AddGlobalOption(flagSetOption);
 		rootCommand.AddGlobalOption(instructionSetsOption);
@@ -82,6 +98,8 @@ class Program {
 		CommandContext ParseOptions(ParseResult result) {
 			var compiledDirectory = result.GetValueForOption(compiledDirectoryOption)!;
 			var decompiledDirectory = result.GetValueForOption(decompiledDirectoryOption)!;
+			var sc3Extension = result.GetValueForOption(sc3ExtensionOption)!;
+			var mesExtension = result.GetValueForOption(mesExtensionOption)!;
 			var bankDirectory = result.GetValueForOption(bankDirectoryOption)!;
 			var flagSet = result.GetValueForOption(flagSetOption)!;
 			var instructionSets = result.GetValueForOption(instructionSetsOption)!.Split(",");
@@ -110,6 +128,8 @@ class Program {
 			return new CommandContext {
 				CompiledDirectory = compiledDirectory,
 				DecompiledDirectory = decompiledDirectory,
+				Sc3Extension = $".{sc3Extension}",
+				MesExtension = $".{mesExtension}",
 				InstructionEncoding = instructionEncoding,
 				MstSyntax = mstSyntax,
 				MstStringEncoding = mstStringEncoding,
@@ -158,16 +178,11 @@ class Program {
 			string path = Path.GetRelativePath(inputDir, inputFile);
 			if (Path.IsPathRooted(path))
 				continue;
-			switch (Path.GetExtension(inputFile)) {
-				case ".scs": {
-					errorOccurred |= await CompileSc3(config, path) != 0;
-					break;
-				}
-				case ".mst": {
-					errorOccurred |= await CompileMes(config, path) != 0;
-					break;
-				}
-			}
+			string extension = Path.GetExtension(inputFile);
+			if (extension == ".scs")
+				errorOccurred |= await CompileSc3(config, path) != 0;
+			else if (extension == ".mst")
+				errorOccurred |= await CompileMes(config, path) != 0;
 		}
 		return errorOccurred ? 1 : 0;
 	}
@@ -186,23 +201,18 @@ class Program {
 			string path = Path.GetRelativePath(inputDir, inputFile);
 			if (Path.IsPathRooted(path))
 				continue;
-			switch (Path.GetExtension(inputFile)) {
-				case ".scx": {
-					errorOccurred |= await DecompileSc3(context, path) != 0;
-					break;
-				}
-				case ".msb": {
-					errorOccurred |= await DecompileMes(context, path) != 0;
-					break;
-				}
-			}
+			string extension = Path.GetExtension(inputFile);
+			if (extension == context.Sc3Extension)
+				errorOccurred |= await DecompileSc3(context, path) != 0;
+			else if (extension == context.MesExtension)
+				errorOccurred |= await DecompileMes(context, path) != 0;
 		}
 		return errorOccurred ? 1 : 0;
 	}
 
 	static async Task<int> CompileSc3(CommandContext context, string srcName) {
 		string sctName = Path.ChangeExtension(srcName, ".sct");
-		string dstName = Path.ChangeExtension(srcName, ".scx");
+		string dstName = Path.ChangeExtension(srcName, context.Sc3Extension);
 
 		string srcPath = Path.Join(context.DecompiledDirectory, srcName);
 		string sctPath = Path.Join(context.DecompiledDirectory, sctName);
@@ -242,7 +252,7 @@ class Program {
 	}
 
 	static async Task<int> CompileMes(CommandContext context, string srcName) {
-		string dstName = Path.ChangeExtension(srcName, ".msb");
+		string dstName = Path.ChangeExtension(srcName, context.MesExtension);
 
 		string srcPath = Path.Join(context.DecompiledDirectory, srcName);
 		string dstPath = Path.Join(context.CompiledDirectory, dstName);
