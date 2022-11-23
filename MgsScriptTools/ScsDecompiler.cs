@@ -78,7 +78,7 @@ public class ScsDecompiler {
 	void AnalyzeInstruction(Instruction instruction) {
 		switch (instruction.Name) {
 			case "SetMesModeFormat": {
-				SetLabelKind(instruction.Operands[1].GetInt(), ChunkKind.Int16Table);
+				SetLabelKind(instruction.Operands[1].GetInt(), ChunkKind.MesModeFormatTable);
 				break;
 			}
 			case "JumpTable": {
@@ -229,6 +229,10 @@ public class ScsDecompiler {
 					DecodeEncycSortTable();
 					break;
 				}
+				case ChunkKind.MesModeFormatTable: {
+					DecodeMesModeFormatTable();
+					break;
+				}
 				default: {
 					throw new NotImplementedException(Kind.ToString());
 				}
@@ -320,6 +324,40 @@ public class ScsDecompiler {
 			}
 
 			SetComplete();
+		}
+
+		void DecodeMesModeFormatTable() {
+			int index = 0;
+			while (Position < Length) {
+				var value0 = DecodeInt16();
+				string? comment = index switch {
+					 0 => "display mode",
+					 1 => "message window ID",
+					 2 => "message window position X",
+					 3 => "message window position Y",
+					 4 => "name display mode",
+					 5 => "max name width",
+					 6 => "name fixed position X",
+					 7 => "name fixed position Y",
+					 8 => "name character width",
+					 9 => "name character height",
+					10 => "max line width",
+					11 => "line icon mode",
+					12 => "line icon fixed position X",
+					13 => "line icon fixed position Y",
+					14 => "text character width",
+					15 => "text character height",
+					16 => "ruby character width",
+					17 => "ruby character height",
+					18 => "text line spacing",
+					19 => "ruby line spacing",
+					_ => null,
+				};
+				if (comment is not null)
+					AddComment(comment);
+				AddInsn("dw", value0);
+				index++;
+			}
 		}
 
 		Expression DecodeInt16() {
@@ -441,5 +479,6 @@ public class ScsDecompiler {
 		NameIdTable,
 		EncycDataTable,
 		EncycSortTable,
+		MesModeFormatTable,
 	}
 }
