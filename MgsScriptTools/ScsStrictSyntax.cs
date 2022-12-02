@@ -106,7 +106,7 @@ class ScsStrictSyntax : MstStringSyntax {
 				MesCommandKind.LineFloat => "lf",
 				MesCommandKind.Space => "sp",
 				MesCommandKind.PrintHankaku => "ph",
-				MesCommandKind.PrintZenkaku => "pz", // unconfirmed
+				MesCommandKind.PrintZenkaku => "pz",
 
 				MesCommandKind.Dictionary => "dic",
 
