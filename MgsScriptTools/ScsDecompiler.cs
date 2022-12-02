@@ -404,7 +404,9 @@ public class ScsDecompiler {
 		}
 
 		public void AddInsn(Instruction instruction) {
-			Body.Add(new ScsInstruction(instruction));
+			ScsInstruction scsInsn = new(instruction);
+			scsInsn.Offset = LastPosition;
+			Body.Add(scsInsn);
 			UpdateLastPosition();
 		}
 

@@ -20,6 +20,7 @@ class Program {
 		public MstStringEncoding MstStringEncoding = null!;
 		public MesStringEncoding MesStringEncoding = null!;
 		public InstructionEncoding InstructionEncoding = null!;
+		public bool GenerateSdb = false;
 	}
 
 	static async Task<int> Main(string[] args) {
@@ -84,6 +85,11 @@ class Program {
 			IsRequired = true,
 		};
 
+		var generateSdbOption = new Option<bool>(
+			name: "--generate-sdb",
+			description: "Enable generation of SDB files. (currently only works for decompilation)"
+		);
+
 		var rootCommand = new RootCommand("A tool for compilation and decompilation of MAGES. engine scripts");
 		rootCommand.AddGlobalOption(compiledDirectoryOption);
 		rootCommand.AddGlobalOption(decompiledDirectoryOption);
@@ -94,6 +100,7 @@ class Program {
 		rootCommand.AddGlobalOption(instructionSetsOption);
 		rootCommand.AddGlobalOption(charsetOption);
 		rootCommand.AddGlobalOption(stringSyntaxOption);
+		rootCommand.AddGlobalOption(generateSdbOption);
 
 		CommandContext ParseOptions(ParseResult result) {
 			var compiledDirectory = result.GetValueForOption(compiledDirectoryOption)!;
@@ -104,7 +111,8 @@ class Program {
 			var flagSet = result.GetValueForOption(flagSetOption)!;
 			var instructionSets = result.GetValueForOption(instructionSetsOption)!.Split(",");
 			var charsetName = result.GetValueForOption(charsetOption)!;
-			var stringSyntax = result.GetValueForOption(stringSyntaxOption)!;
+			var stringSyntax = result.GetValueForOption(stringSyntaxOption);
+			var generateSdb = result.GetValueForOption(generateSdbOption);
 
 			var bank = SpecBank.Load(bankDirectory);
 			var flags = bank.GetFlags(flagSet);
@@ -134,6 +142,7 @@ class Program {
 				MstSyntax = mstSyntax,
 				MstStringEncoding = mstStringEncoding,
 				MesStringEncoding = mesStringEncoding,
+				GenerateSdb = generateSdb,
 			};
 		}
 
@@ -291,10 +300,12 @@ class Program {
 	static async Task<int> DecompileSc3(CommandContext context, string srcName) {
 		string dstName = Path.ChangeExtension(srcName, ".scs");
 		string sctName = Path.ChangeExtension(srcName, ".sct");
+		string sdbName = Path.ChangeExtension(srcName, ".sdb");
 
 		string srcPath = Path.Join(context.CompiledDirectory, srcName);
 		string dstPath = Path.Join(context.DecompiledDirectory, dstName);
 		string sctPath = Path.Join(context.DecompiledDirectory, sctName);
+		string sdbPath = Path.Join(context.DecompiledDirectory, sdbName);
 
 		string dstDir = Path.GetDirectoryName(dstPath)!;
 
@@ -325,8 +336,13 @@ class Program {
 			}
 			try {
 				StringBuilder builder = new();
-				ScsSyntax.Stringify(builder, dstParts);
+				StringBuilder? sdbBuilder = null;
+				if (context.GenerateSdb)
+					sdbBuilder = new();
+				ScsSyntax.Stringify(builder, sdbBuilder, dstParts);
 				await File.WriteAllTextAsync(dstPath, builder.ToString(), new UTF8Encoding(false));
+				if (context.GenerateSdb)
+					await File.WriteAllTextAsync(sdbPath, sdbBuilder!.ToString(), new UTF8Encoding(false));
 			} catch (Exception e) {
 				exceptions.Add(e);
 			}

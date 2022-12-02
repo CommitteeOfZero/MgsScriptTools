@@ -4,8 +4,8 @@ using System.Text;
 namespace MgsScriptTools;
 
 public class ScsSyntax {
-	public static void Stringify(StringBuilder builder, ScsPart[] parts) {
-		new ScsSyntaxStringifier(builder).Stringify(parts);
+	public static void Stringify(StringBuilder builder, StringBuilder? sdbBuilder, ScsPart[] parts) {
+		new ScsSyntaxStringifier(builder, sdbBuilder).Stringify(parts);
 	}
 
 	public static ScsPart[] Parse(TextStream reader) {
@@ -14,9 +14,13 @@ public class ScsSyntax {
 
 	class ScsSyntaxStringifier {
 		StringBuilder _builder;
+		StringBuilder? _sdbBuilder;
+		int _row;
 
-		public ScsSyntaxStringifier(StringBuilder builder) {
+		public ScsSyntaxStringifier(StringBuilder builder, StringBuilder? sdbBuilder) {
 			_builder = builder;
+			_sdbBuilder = sdbBuilder;
+			_row = 1;
 		}
 
 		public void Stringify(ScsPart[] parts) {
@@ -26,67 +30,80 @@ public class ScsSyntax {
 
 		void StringifyPart(ScsPart part) {
 			switch (part) {
-				case ScsInstruction { Value: Instruction instruction }: {
-					if (instruction.Name == "Eval") {
-						_builder.Append('\t');
-						ExpressionSyntax.Stringify(_builder, instruction.Operands[0]);
-						_builder.Append(';');
-						_builder.Append('\n');
-					} else {
-						_builder.Append('\t');
-						_builder.Append(instruction.Name);
-						for (int i = 0; i < instruction.Operands.Length; i++) {
-							if (i != 0)
-								_builder.Append(',');
-							_builder.Append(' ');
-							ExpressionSyntax.Stringify(_builder, instruction.Operands[i]);
-						}
-						_builder.Append('\n');
-					}
+				case ScsInstruction { Value: Instruction instruction, Offset: int offset }: {
+					string s = FormatInstruction(instruction);
+					if (_sdbBuilder is not null)
+						_sdbBuilder.Append($"{offset,6},{_row,6}, {s}\n");
+					Append($"\t{s}\n");
 					break;
 				}
 				case ScsLabel { Value: int index }: {
-					_builder.Append(index);
-					_builder.Append(':');
-					_builder.Append('\n');
+					Append($"{index}");
+					Append(":");
+					Append("\n");
 					break;
 				}
 				case ScsReturnAddress { Value: int index }: {
-					_builder.Append('*');
-					_builder.Append(index);
-					_builder.Append(':');
-					_builder.Append('\n');
+					Append("*");
+					Append($"{index}");
+					Append(":");
+					Append("\n");
 					break;
 				}
 				case ScsError { Position: int position, Error: Exception error }: {
 					string message = error.ToString().ReplaceLineEndings("\n");
 					message = $"An error has occurred at 0x{position:X}: {message}";
 					foreach (var line in message.Split('\n'))
-						_builder.Append($"// {line}\n");
+						Append($"// {line}\n");
 					break;
 				}
 				case ScsComment { Value: string text }: {
 					foreach (var line in text.Split('\n'))
-						_builder.Append($"// {line}\n");
+						Append($"// {line}\n");
 					break;
 				}
 				case ScsRaw { Value: byte[] raw }: {
 					for (int i = 0; i < raw.Length; i++) {
 						if (i % 16 == 0) {
 							if (i > 0)
-								_builder.Append('\n');
-							_builder.Append("\thex ");
+								Append("\n");
+							Append("\thex ");
 						}
-						_builder.Append($" {raw[i]:X02}");
+						Append($" {raw[i]:X02}");
 					}
 					if (raw.Length > 0)
-						_builder.Append('\n');
+						Append("\n");
 					break;
 				}
 				default: {
 					throw new NotImplementedException(part.GetType().Name);
 				}
 			}
+		}
+
+		string FormatInstruction(Instruction insn) {
+			StringBuilder sb = new();
+			if (insn.Name == "Eval") {
+				ExpressionSyntax.Stringify(sb, insn.Operands[0]);
+				sb.Append(";");
+			} else {
+				sb.Append(insn.Name);
+				for (int i = 0; i < insn.Operands.Length; i++) {
+					if (i != 0)
+						sb.Append(",");
+					sb.Append(" ");
+					ExpressionSyntax.Stringify(sb, insn.Operands[i]);
+				}
+			}
+			return sb.ToString();
+		}
+
+		void Append(string s) {
+			foreach (char c in s) {
+				if (c == '\n')
+					_row++;
+			}
+			_builder.Append(s);
 		}
 	}
 
@@ -249,6 +266,7 @@ public abstract class ScsPart {
 
 public class ScsInstruction : ScsPart {
 	public Instruction Value;
+	public int Offset;
 
 	public ScsInstruction(Instruction value) {
 		Value = value;
