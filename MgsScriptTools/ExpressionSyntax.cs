@@ -572,14 +572,58 @@ public class ExpressionSyntax {
 
 		NumberExpression ParseNumber() {
 			Debug.Assert(DetectNumber());
-			string s = "";
-			if (_stream.Peek(0) == '-')
-				s += _stream.Next();
-			while (IsDigit(_stream.Peek(0)))
-				s += _stream.Next();
+			bool sign = ParseUtils.TrySkip(_stream, '-');
+			uint value;
+			if (ParseUtils.TrySkip(_stream, "0x") || ParseUtils.TrySkip(_stream, "0X"))
+				value = ParseHex();
+			else
+				value = ParseDecimal();
 			ParseUtils.SkipHSpaceComments(_stream);
-			int value = int.Parse(s);
-			return new(value);
+			if (sign)
+				value = unchecked(0U - value);
+			return new(unchecked((int)value));
+		}
+
+		uint ParseHex() {
+			uint result = 0;
+			bool success = false;
+			while (true) {
+				char ch = _stream.Peek(0);
+				uint digit;
+				if (ch is >= '0' and <= '9')
+					digit = 0x0 + (uint)(ch - '0');
+				else if (ch is >= 'A' and <= 'F')
+					digit = 0xA + (uint)(ch - 'A');
+				else if (ch is >= 'a' and <= 'f')
+					digit = 0xA + (uint)(ch - 'a');
+				else
+					break;
+				_stream.Next();
+				success = true;
+				result = unchecked(result*0x10 + digit);
+			}
+			if (!success)
+				throw new ParsingException("Expected a hex digit");
+			return result;
+		}
+
+		uint ParseDecimal() {
+			uint result = 0;
+			bool success = false;
+			while (true) {
+				char ch = _stream.Peek(0);
+				uint digit;
+				if (ch is >= '0' and <= '9')
+					digit = 0 + (uint)(ch - '0');
+				else
+					break;
+				_stream.Next();
+				success = true;
+				result = unchecked(result*10 + digit);
+			}
+			if (!success)
+				throw new ParsingException("Expected a decimal digit or \"0x\"");
+			return result;
 		}
 
 		bool DetectNumber() {
