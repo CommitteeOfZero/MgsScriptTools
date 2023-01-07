@@ -75,7 +75,7 @@ flags:
     movie_01_27: yes
     return_addresses: yes
 
-  chaos_head_steam:
+  chaos_head_windows:
     new_bgmplay: yes
     new_bgmstop: yes
     new_loaddata: yes
