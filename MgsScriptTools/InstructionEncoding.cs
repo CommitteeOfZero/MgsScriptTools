@@ -1,21 +1,15 @@
 ﻿namespace MgsScriptTools;
 
-public class OpcodeSpec {
-	public string Name = null!;
-	public byte[] Opcode = null!;
-	public OperandKind[] Operands = null!;
-}
-
 public class Instruction {
 	public string Name = null!;
 	public Expression[] Operands = null!;
 }
 
 public class InstructionEncoding {
-	Tree<byte, OpcodeSpec> _tree;
-	Dictionary<string, OpcodeSpec> _table;
+	Tree<byte, InstructionSpec> _tree;
+	Dictionary<string, InstructionSpec> _table;
 
-	InstructionEncoding(Tree<byte, OpcodeSpec> tree, Dictionary<string, OpcodeSpec> table) {
+	InstructionEncoding(Tree<byte, InstructionSpec> tree, Dictionary<string, InstructionSpec> table) {
 		_tree = tree;
 		_table = table;
 	}
@@ -94,16 +88,16 @@ public class InstructionEncoding {
 		stream.Write(value);
 	}
 
-	OpcodeSpec DecodeOpcode(Stream stream) {
+	InstructionSpec DecodeOpcode(Stream stream) {
 		long start = stream.Position;
-		Tree<byte, OpcodeSpec> cursor = _tree;
+		Tree<byte, InstructionSpec> cursor = _tree;
 		while (true) {
 			var b = GetByte(stream);
 			var next = cursor[b];
 			if (next is null)
 				throw new Exception($"Unrecognized instruction at {start}");
 			cursor = next;
-			if (cursor.Value is OpcodeSpec opcodeSpec)
+			if (cursor.Value is InstructionSpec opcodeSpec)
 				return opcodeSpec;
 		}
 	}
@@ -155,9 +149,9 @@ public class InstructionEncoding {
 		return value | ~(sign - 1);
 	}
 
-	public static InstructionEncoding BuildFrom(OpcodeSpec[] opcodeSpecs) {
+	public static InstructionEncoding BuildFrom(InstructionSpec[] opcodeSpecs) {
 		var tree = BuildOpcodeTree(opcodeSpecs);
-		Dictionary<string, OpcodeSpec> table = new();
+		Dictionary<string, InstructionSpec> table = new();
 		foreach (var spec in opcodeSpecs) {
 			if (table.ContainsKey(spec.Name))
 				throw new Exception($"Duplicate instruction name: {spec.Name}");
@@ -166,8 +160,8 @@ public class InstructionEncoding {
 		return new(tree, table);
 	}
 
-	static Tree<byte, OpcodeSpec> BuildOpcodeTree(OpcodeSpec[] specs) {
-		Tree<byte, OpcodeSpec> tree = new();
+	static Tree<byte, InstructionSpec> BuildOpcodeTree(InstructionSpec[] specs) {
+		Tree<byte, InstructionSpec> tree = new();
 		foreach (var spec in specs) {
 			byte[] opcode = spec.Opcode;
 			if (opcode.Length == 0)
@@ -189,7 +183,7 @@ public class InstructionEncoding {
 
 	public class InstructionOpcodeTree {
 		Dictionary<byte, InstructionOpcodeTree> _branches = new();
-		OpcodeSpec? _leaf;
+		InstructionSpec? _leaf;
 
 		InstructionOpcodeTree() { }
 
@@ -197,11 +191,11 @@ public class InstructionEncoding {
 			return _branches.GetValueOrDefault(b);
 		}
 
-		public OpcodeSpec? GetLeaf() {
+		public InstructionSpec? GetLeaf() {
 			return _leaf;
 		}
 
-		public static InstructionOpcodeTree BuildFrom(OpcodeSpec[] opcodeSpecs) {
+		public static InstructionOpcodeTree BuildFrom(InstructionSpec[] opcodeSpecs) {
 			InstructionOpcodeTree tree = new();
 			foreach (var opcodeSpec in opcodeSpecs) {
 				var node = tree;
@@ -225,4 +219,10 @@ public class InstructionEncoding {
 			return tree;
 		}
 	}
+}
+
+public class InstructionSpec {
+	public string Name = null!;
+	public byte[] Opcode = null!;
+	public OperandKind[] Operands = null!;
 }

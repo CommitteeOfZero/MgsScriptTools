@@ -17,8 +17,8 @@ class Program {
 		public string Sc3Extension = null!;
 		public string MesExtension = null!;
 		public MstSyntax MstSyntax = null!;
-		public MstStringEncoding MstStringEncoding = null!;
-		public MesStringEncoding MesStringEncoding = null!;
+		public MesBakery MesBakery = null!;
+		public MesEncoding MesEncoding = null!;
 		public InstructionEncoding InstructionEncoding = null!;
 		public bool GenerateSdb = false;
 	}
@@ -120,18 +120,18 @@ class Program {
 			var opcodeSpecs = bank.GetOpcodeSpecs(instructionSets, flags);
 			var instructionEncoding = InstructionEncoding.BuildFrom(opcodeSpecs);
 
-			MstStringSyntax mstStringSyntax = stringSyntax switch {
+			MesSyntax plainStringSyntax = stringSyntax switch {
 				StringSyntax.Sc3Tools => new Sc3ToolsSyntax(),
 				StringSyntax.ScsStrict => new ScsStrictSyntax(),
 				_ => throw new NotImplementedException(stringSyntax.ToString()),
 			};
-			MstSyntax mstSyntax = new(mstStringSyntax);
+			MstSyntax mstSyntax = new(plainStringSyntax);
 
 			var glyphSpecs = bank.GetGlyphSpecs(charsetName);
-			var mstStringEncoding = MstStringEncoding.BuildFrom(glyphSpecs);
+			var mesBakery = MesBakery.BuildFrom(glyphSpecs);
 
-			MesStringSpec mesStringSpec = new();
-			MesStringEncoding mesStringEncoding = new(mesStringSpec);
+			MesTagsSpec mesTagsSpec = new();
+			MesEncoding mesEncoding = new(mesTagsSpec);
 
 			return new CommandContext {
 				CompiledDirectory = compiledDirectory,
@@ -140,8 +140,8 @@ class Program {
 				MesExtension = $".{mesExtension}",
 				InstructionEncoding = instructionEncoding,
 				MstSyntax = mstSyntax,
-				MstStringEncoding = mstStringEncoding,
-				MesStringEncoding = mesStringEncoding,
+				MesBakery = mesBakery,
+				MesEncoding = mesEncoding,
 				GenerateSdb = generateSdb,
 			};
 		}
@@ -241,9 +241,9 @@ class Program {
 				var entry = srcStrings[i];
 				if (entry.Index != i)
 					throw new Exception($"Missing string with index {i}");
-				var tokens = context.MstStringEncoding.Encode(entry.Parts);
+				var tokens = context.MesBakery.Bake(entry.Tokens);
 				MemoryStream stream = new();
-				context.MesStringEncoding.Encode(stream, tokens);
+				context.MesEncoding.Encode(stream, tokens);
 				dstStrings[i] = stream.ToArray();
 			}
 			dstFile.Strings = dstStrings;
@@ -269,16 +269,16 @@ class Program {
 		string dstDir = Path.GetDirectoryName(dstPath)!;
 
 		try {
-			var srcStrings = await ParseMst(context, srcPath);
+			var plainEntries = await ParseMst(context, srcPath);
 
-			var dstStrings = new MesFileEntry[srcStrings.Length];
-			for (int i = 0; i < srcStrings.Length; i++) {
-				var entry = srcStrings[i];
-				var tokens = context.MstStringEncoding.Encode(entry.Parts);
+			var encodedEntries = new MsbEntry[plainEntries.Length];
+			for (int i = 0; i < plainEntries.Length; i++) {
+				var plainEntry = plainEntries[i];
+				var bakedString = context.MesBakery.Bake(plainEntry.Tokens);
 				MemoryStream stream = new();
-				context.MesStringEncoding.Encode(stream, tokens);
-				dstStrings[i] = new MesFileEntry {
-					Index = entry.Index,
+				context.MesEncoding.Encode(stream, bakedString);
+				encodedEntries[i] = new MsbEntry {
+					Index = plainEntry.Index,
 					String = stream.ToArray(),
 				};
 			}
@@ -286,8 +286,8 @@ class Program {
 			Directory.CreateDirectory(dstDir);
 
 			using var file = File.Open(dstPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-			MesFile.Encode(file, new MesFile {
-				Entries = dstStrings,
+			MsbFile.Encode(file, new MsbFile {
+				Entries = encodedEntries,
 			});
 		} catch (Exception e) {
 			Console.Error.WriteLine($"\nError while compiling {srcPath}: {e}");
@@ -315,13 +315,13 @@ class Program {
 			ScsDecompiler decompiler = new(srcFile, context.InstructionEncoding);
 			var dstParts = decompiler.Decompile();
 
-			var srcStrings = srcFile.Strings;
-			var dstStrings = new MstEntry[srcStrings.Length];
-			for (int i = 0; i < srcStrings.Length; i++) {
-				MemoryStream stream = new(srcStrings[i]);
-				var tokens = context.MesStringEncoding.Decode(stream);
-				var parts = context.MstStringEncoding.Decode(tokens);
-				dstStrings[i] = new MstEntry(i, parts);
+			var encodedStrings = srcFile.Strings;
+			var plainEntries = new MstEntry[encodedStrings.Length];
+			for (int i = 0; i < encodedStrings.Length; i++) {
+				MemoryStream stream = new(encodedStrings[i]);
+				var bakedString = context.MesEncoding.Decode(stream);
+				var plainString = context.MesBakery.Unbake(bakedString);
+				plainEntries[i] = new MstEntry(i, plainString);
 			}
 
 			Directory.CreateDirectory(dstDir);
@@ -329,7 +329,7 @@ class Program {
 			List<Exception> exceptions = new();
 			try {
 				StringBuilder builder = new();
-				context.MstSyntax.Stringify(builder, dstStrings);
+				context.MstSyntax.Stringify(builder, plainEntries);
 				await File.WriteAllTextAsync(sctPath, builder.ToString(), new UTF8Encoding(false));
 			} catch (Exception e) {
 				exceptions.Add(e);
@@ -367,20 +367,20 @@ class Program {
 		try {
 			var srcFile = await DecodeMes(context, srcPath);
 
-			var srcStrings = srcFile.Entries;
-			var dstStrings = new MstEntry[srcStrings.Length];
-			for (int i = 0; i < srcStrings.Length; i++) {
-				var entry = srcStrings[i];
-				MemoryStream stream = new(entry.String);
-				var tokens = context.MesStringEncoding.Decode(stream);
-				var parts = context.MstStringEncoding.Decode(tokens);
-				dstStrings[i] = new MstEntry(entry.Index, parts);
+			var encodedEntries = srcFile.Entries;
+			var plainEntries = new MstEntry[encodedEntries.Length];
+			for (int i = 0; i < encodedEntries.Length; i++) {
+				var encodedEntry = encodedEntries[i];
+				MemoryStream stream = new(encodedEntry.String);
+				var bakedString = context.MesEncoding.Decode(stream);
+				var plainString = context.MesBakery.Unbake(bakedString);
+				plainEntries[i] = new MstEntry(encodedEntry.Index, plainString);
 			}
 
 			Directory.CreateDirectory(dstDir);
 
 			StringBuilder builder = new();
-			context.MstSyntax.Stringify(builder, dstStrings);
+			context.MstSyntax.Stringify(builder, plainEntries);
 			await File.WriteAllTextAsync(dstPath, builder.ToString(), new UTF8Encoding(false));
 		} catch (Exception e) {
 			Console.Error.WriteLine($"\nError while decompiling {srcPath}: {e}");
@@ -405,9 +405,9 @@ class Program {
 		return Sc3File.Decode(stream);
 	}
 
-	static async Task<MesFile> DecodeMes(CommandContext context, string path) {
+	static async Task<MsbFile> DecodeMes(CommandContext context, string path) {
 		MemoryStream stream = await ReadFileBytes(path);
-		return MesFile.Decode(stream);
+		return MsbFile.Decode(stream);
 	}
 
 	static async Task<TextStream> ReadFileText(string path) {

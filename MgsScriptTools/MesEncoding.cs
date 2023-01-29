@@ -1,19 +1,19 @@
 ﻿namespace MgsScriptTools;
 
-public class MesStringEncoding {
-	MesStringSpec _spec = new();
+public class MesEncoding {
+	MesTagsSpec _spec;
 
-	public MesStringEncoding(MesStringSpec spec) {
+	public MesEncoding(MesTagsSpec spec) {
 		_spec = spec;
 	}
 
-	public byte[] EncodeBytes(MesStringToken[] tokens) {
+	public byte[] EncodeBytes(MesToken[] tokens) {
 		MemoryStream stream = new();
 		Encode(stream, tokens);
 		return stream.ToArray();
 	}
 
-	public MesStringToken[] DecodeBytes(byte[] data) {
+	public MesToken[] DecodeBytes(byte[] data) {
 		MemoryStream stream = new(data);
 		var result = Decode(stream);
 		//if (stream.Position != stream.Length)
@@ -21,36 +21,36 @@ public class MesStringEncoding {
 		return result;
 	}
 
-	public void Encode(Stream stream, MesStringToken[] tokens) {
-		new MesStringEncoder(stream, _spec).Encode(tokens);
+	public void Encode(Stream stream, MesToken[] tokens) {
+		new MesEncoder(stream, _spec).Encode(tokens);
 	}
 
-	public MesStringToken[] Decode(Stream stream) {
-		return new MesStringDecoder(stream, _spec).Decode();
+	public MesToken[] Decode(Stream stream) {
+		return new MesDecoder(stream, _spec).Decode();
 	}
 
-	class MesStringEncoder {
+	class MesEncoder {
 		Stream _stream;
-		MesStringSpec _spec;
+		MesTagsSpec _spec;
 
-		public MesStringEncoder(Stream stream, MesStringSpec spec) {
+		public MesEncoder(Stream stream, MesTagsSpec spec) {
 			_stream = stream;
 			_spec = spec;
 		}
 
-		public void Encode(MesStringToken[] tokens) {
+		public void Encode(MesToken[] tokens) {
 			foreach (var token in tokens)
 				EncodeToken(token);
 			PutByte(0xFF);
 		}
 
-		void EncodeToken(MesStringToken token) {
+		void EncodeToken(MesToken token) {
 			switch (token) {
-				case MesStringCommand command: {
-					EncodeCommand(command);
+				case MesTag tag: {
+					EncodeTag(tag);
 					break;
 				}
-				case MesStringGlyph glyph: {
+				case MesGlyph glyph: {
 					EncodeGlyph(glyph);
 					break;
 				}
@@ -60,15 +60,14 @@ public class MesStringEncoding {
 			}
 		}
 
-		void EncodeCommand(MesStringCommand command) {
-			MesCommand value = command.Value;
-			var spec = _spec.GetSpec(value.Kind);
+		void EncodeTag(MesTag tag) {
+			var spec = _spec.GetSpec(tag.Kind);
 			PutByte((byte)spec.Opcode);
 			for (int i = 0; i < spec.Operands.Length; i++)
-				EncodeOperand(spec.Operands[i], value.Operands[i]);
+				EncodeOperand(spec.Operands[i], tag.Operands[i]);
 		}
 
-		void EncodeGlyph(MesStringGlyph glyph) {
+		void EncodeGlyph(MesGlyph glyph) {
 			int value = glyph.Value;
 			PutByte((byte)((value >> 08) & 0x7F | 0x80));
 			PutByte((byte)((value >> 00) & 0xFF));
@@ -111,17 +110,17 @@ public class MesStringEncoding {
 		}
 	}
 
-	class MesStringDecoder {
+	class MesDecoder {
 		Stream _stream;
-		MesStringSpec _spec;
+		MesTagsSpec _spec;
 
-		public MesStringDecoder(Stream stream, MesStringSpec spec) {
+		public MesDecoder(Stream stream, MesTagsSpec spec) {
 			_stream = stream;
 			_spec = spec;
 		}
 
-		public MesStringToken[] Decode() {
-			List<MesStringToken> tokens = new();
+		public MesToken[] Decode() {
+			List<MesToken> tokens = new();
 			while (true) {
 				var token = DecodeToken();
 				if (token is null)
@@ -131,28 +130,27 @@ public class MesStringEncoding {
 			return tokens.ToArray();
 		}
 
-		MesStringToken? DecodeToken() {
+		MesToken? DecodeToken() {
 			byte b = GetByte();
 			if (b == 0xFF)
 				return null;
 			_stream.Position -= 1;
 			if ((b & 0x80) == 0)
-				return DecodeCommand();
+				return DecodeTag();
 			else
 				return DecodeGlyph();
 		}
 
-		MesStringCommand DecodeCommand() {
+		MesTag DecodeTag() {
 			var opcode = GetByte();
 			var spec = _spec.GetSpec(opcode);
 			var operands = new Expression[spec.Operands.Length];
 			for (int i = 0; i < operands.Length; i++)
 				operands[i] = DecodeOperand(spec.Operands[i]);
-			var value = new MesCommand(spec.Kind, operands);
-			return new(value);
+			return new(spec.Kind, operands);
 		}
 
-		MesStringGlyph DecodeGlyph() {
+		MesGlyph DecodeGlyph() {
 			int value = 0;
 			value |= (GetByte() & 0x7F) << 08;
 			value |= (GetByte() & 0xFF) << 00;
@@ -212,24 +210,5 @@ public class MesStringEncoding {
 			int sign = value & mask;
 			return value | ~(sign - 1);
 		}
-	}
-}
-
-public abstract class MesStringToken {
-}
-
-public class MesStringGlyph : MesStringToken {
-	public int Value;
-
-	public MesStringGlyph(int value) {
-		Value = value;
-	}
-}
-
-public class MesStringCommand : MesStringToken {
-	public MesCommand Value;
-
-	public MesStringCommand(MesCommand value) {
-		Value = value;
 	}
 }

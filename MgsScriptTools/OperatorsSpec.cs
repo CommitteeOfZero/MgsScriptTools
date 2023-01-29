@@ -1,11 +1,11 @@
 namespace MgsScriptTools;
 
-public class CalcExpressionSpec {
-	static Dictionary<OperatorKind, CalcExpressionOperatorSpec> _kinds = new();
-	static Dictionary<int, CalcExpressionOperatorSpec> _opcodes = new();
+public class OperatorsSpec {
+	static Dictionary<OperatorKind, OperatorSpec> _kinds = new();
+	static Dictionary<int, OperatorSpec> _opcodes = new();
 
-	static CalcExpressionSpec() {
-		CalcExpressionOperatorSpec[] specs = {
+	static OperatorsSpec() {
+		OperatorSpec[] specs = {
 			new(01, OperatorKind.Mul,        precedence: 9, left: 1, right: 1),
 			new(02, OperatorKind.Div,        precedence: 9, left: 1, right: 1),
 			new(03, OperatorKind.Add,        precedence: 7, left: 1, right: 1),
@@ -51,23 +51,23 @@ public class CalcExpressionSpec {
 		}
 	}
 
-	public static CalcExpressionOperatorSpec GetSpec(OperatorKind kind) {
+	public static OperatorSpec GetSpec(OperatorKind kind) {
 		return _kinds[kind];
 	}
 
-	public static CalcExpressionOperatorSpec GetSpec(int opcode) {
+	public static OperatorSpec GetSpec(int opcode) {
 		return _opcodes[opcode];
 	}
 }
 
-public class CalcExpressionOperatorSpec {
+public class OperatorSpec {
 	public int Opcode;
 	public OperatorKind Kind;
 	public int Precedence;
 	public int Left;
 	public int Right;
 
-	public CalcExpressionOperatorSpec(int opcode, OperatorKind kind, int precedence, int left, int right) {
+	public OperatorSpec(int opcode, OperatorKind kind, int precedence, int left, int right) {
 		Opcode = opcode;
 		Kind = kind;
 		Precedence = precedence;

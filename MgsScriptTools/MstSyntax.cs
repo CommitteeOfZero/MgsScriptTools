@@ -4,9 +4,9 @@ using System.Text;
 namespace MgsScriptTools;
 
 class MstSyntax {
-	MstStringSyntax _stringSyntax;
+	MesSyntax _stringSyntax;
 
-	public MstSyntax(MstStringSyntax stringSyntax) {
+	public MstSyntax(MesSyntax stringSyntax) {
 		_stringSyntax = stringSyntax;
 	}
 
@@ -14,7 +14,7 @@ class MstSyntax {
 		foreach (var entry in entries) {
 			builder.Append(entry.Index);
 			builder.Append(':');
-			_stringSyntax.Stringify(builder, entry.Parts);
+			_stringSyntax.Stringify(builder, entry.Tokens);
 			builder.Append('\n');
 		}
 	}
@@ -30,7 +30,7 @@ class MstSyntax {
 			var parts = _stringSyntax.Parse(reader);
 			if (reader.Has(0) && !ParseUtils.TrySkip(reader, '\n'))
 				throw new ParsingException($"Expected '\\n'");
-			entries.Add(new MstEntry(index, parts));
+			entries.Add(new(index, parts));
 		}
 		return entries.ToArray();
 	}
@@ -50,10 +50,10 @@ class MstSyntax {
 
 class MstEntry {
 	public int Index;
-	public MstStringPart[] Parts;
+	public MesToken[] Tokens;
 
-	public MstEntry(int index, MstStringPart[] parts) {
+	public MstEntry(int index, MesToken[] tokens) {
 		Index = index;
-		Parts = parts;
+		Tokens = tokens;
 	}
 }

@@ -3,77 +3,77 @@ using System.Text;
 
 namespace MgsScriptTools;
 
-class ScsStrictSyntax : MstStringSyntax {
+class ScsStrictSyntax : MesSyntax {
 	public ScsStrictSyntax() { }
 
-	public override void Stringify(StringBuilder builder, MstStringPart[] parts) {
-		new ScsStrictSyntaxStringifier(builder).Stringify(parts);
+	public override void Stringify(StringBuilder builder, MesToken[] parts) {
+		new ScsStrictStringifier(builder).Stringify(parts);
 	}
 
-	public override MstStringPart[] Parse(TextStream reader) {
-		return new ScsStrictSyntaxParser(reader).Parse();
+	public override MesToken[] Parse(TextStream reader) {
+		return new ScsStrictParser(reader).Parse();
 	}
 
-	class ScsStrictSyntaxStringifier {
+	class ScsStrictStringifier {
 		StringBuilder _builder;
 
-		public ScsStrictSyntaxStringifier(StringBuilder builder) {
+		public ScsStrictStringifier(StringBuilder builder) {
 			_builder = builder;
 		}
 
-		public void Stringify(MstStringPart[] parts) {
-			foreach (var part in parts)
-				StringifyPart(part);
+		public void Stringify(MesToken[] tokens) {
+			foreach (var token in tokens)
+				StringifyToken(token);
 		}
 
-		void StringifyPart(MstStringPart part) {
-			switch (part) {
-				case MstStringChunk { Value: string chunk, Italic: bool italic }: {
+		void StringifyToken(MesToken token) {
+			switch (token) {
+				case MesChunk { Value: string chunk, Italic: bool italic }: {
 					chunk = chunk.Replace("\\", "\\\\").Replace("〔", "\\〔").Replace("〕", "\\〕");
 					if (italic)
 						chunk = $"<i>{chunk}</i>";
 					_builder.Append(chunk);
 					break;
 				}
-				case MstStringCommand { Value: MesCommand command }: {
-					StringifyCommand(command);
+				case MesTag tag: {
+					StringifyTag(tag);
 					break;
 				}
-				case MstStringGlyph { Value: int index }: {
+				case MesGlyph { Value: int index }: {
 					// TODO: find a better solution
 					_builder.Append($"<0x{index:X04}>");
 					break;
 				}
 				default: {
-					throw new NotImplementedException(part.GetType().Name);
+					throw new NotImplementedException(token.GetType().Name);
 				}
 			}
 		}
 
-		void StringifyCommand(MesCommand command) {
-			switch (command.Kind) {
-				case MesCommandKind.NameStart: {
+		void StringifyTag(MesTag tag) {
+			switch (tag.Kind) {
+				case MesTagKind.NameStart: {
 					_builder.Append("〔");
 					break;
 				}
-				case MesCommandKind.NameEnd: {
+				case MesTagKind.NameEnd: {
 					_builder.Append("〕");
 					break;
 				}
-				case MesCommandKind.Evaluate: {
+				case MesTagKind.Evaluate: {
 					_builder.Append("\\[");
-					StringifyOperand(command.Operands[0]);
+					StringifyOperand(tag.Operands[0]);
 					_builder.Append("];");
 					break;
 				}
 				default: {
 					_builder.Append('\\');
-					_builder.Append(GetSymbol(command.Kind));
-					if (command.Operands.Length > 1)
-						throw new Exception("Cannot stringify a command with more than one operand");
-					if (command.Operands.Length == 1) {
+					_builder.Append(GetSymbol(tag.Kind));
+					if (tag.Operands.Length > 1)
+						throw new Exception("Cannot stringify a tag with more than one operand");
+					if (tag.Operands.Length == 1) {
 						_builder.Append(':');
-						StringifyOperand(command.Operands[0]);
+						StringifyOperand(tag.Operands[0]);
 					}
 					_builder.Append(';');
 					break;
@@ -85,71 +85,69 @@ class ScsStrictSyntax : MstStringSyntax {
 			ExpressionSyntax.Stringify(_builder, operand);
 		}
 
-		static string GetSymbol(MesCommandKind kind) {
+		static string GetSymbol(MesTagKind kind) {
 			return kind switch {
-				MesCommandKind.Newline => "n",
+				MesTagKind.Newline => "n",
 
-				MesCommandKind.PauseEndLine => "p",
-				MesCommandKind.Color => "c",
-				MesCommandKind.E => "e",
-				MesCommandKind.K => "k",
-				MesCommandKind.Wait => "w",
-				MesCommandKind.PauseEndPage => "pe",
-				MesCommandKind.RubyStart => "rs",
-				MesCommandKind.RubyText => "rt",
-				MesCommandKind.RubyEnd => "re",
-				MesCommandKind.Size => "s",
+				MesTagKind.PauseEndLine => "p",
+				MesTagKind.Color => "c",
+				MesTagKind.E => "e",
+				MesTagKind.K => "k",
+				MesTagKind.Wait => "w",
+				MesTagKind.PauseEndPage => "pe",
+				MesTagKind.RubyStart => "rs",
+				MesTagKind.RubyText => "rt",
+				MesTagKind.RubyEnd => "re",
+				MesTagKind.Size => "s",
 
-				MesCommandKind.LineSync => "ls",
-				MesCommandKind.LineCenter => "lc",
-				MesCommandKind.LineL => "ll",
-				MesCommandKind.LineFloat => "lf",
-				MesCommandKind.Space => "sp",
-				MesCommandKind.PrintHankaku => "ph",
-				MesCommandKind.PrintZenkaku => "pz",
+				MesTagKind.LineSync => "ls",
+				MesTagKind.LineCenter => "lc",
+				MesTagKind.LineL => "ll",
+				MesTagKind.LineFloat => "lf",
+				MesTagKind.Space => "sp",
+				MesTagKind.PrintHankaku => "ph",
+				MesTagKind.PrintZenkaku => "pz",
 
-				MesCommandKind.Dictionary => "dic",
+				MesTagKind.Dictionary => "dic",
 
-				MesCommandKind.PauseClearPage => "pnc",
-				MesCommandKind.Auto => "a",
-				MesCommandKind.AutoClearPage => "anc",
-				MesCommandKind.FN => "fn",
+				MesTagKind.PauseClearPage => "pnc",
+				MesTagKind.Auto => "a",
+				MesTagKind.AutoClearPage => "anc",
+				MesTagKind.FN => "fn",
 
-				MesCommandKind.RubyCenter => "rc", // unconfirmed, possibly also "rm" - mono-ruby, or "rn" - nakatsuke
-				MesCommandKind.Newline_1F => "unk1F", // unknown
+				MesTagKind.RubyCenter => "rc", // unconfirmed, possibly also "rm" - mono-ruby, or "rn" - nakatsuke
+				MesTagKind.Newline_1F => "unk1F", // unknown
 
-				MesCommandKind.LineR => "lr",
+				MesTagKind.LineR => "lr",
 
 				_ => throw new NotImplementedException(kind.ToString()),
 			};
 		}
 	}
 
-	class ScsStrictSyntaxParser {
+	class ScsStrictParser {
 		TextStream _reader;
 
-		public ScsStrictSyntaxParser(TextStream reader) {
+		public ScsStrictParser(TextStream reader) {
 			_reader = reader;
 		}
 
-		public MstStringPart[] Parse() {
-			List<MstStringPart> tokens = new();
+		public MesToken[] Parse() {
+			List<MesToken> tokens = new();
 			bool italic = false;
 			while (_reader.Has(0) && _reader.Peek(0) != '\n') {
 				if (_reader.Peek(0) == '〔') {
 					_reader.Next();
-					MesCommand command = new(MesCommandKind.NameStart, new Expression[0]);
-					tokens.Add(new MstStringCommand(command));
+					tokens.Add(new MesTag(MesTagKind.NameStart, new Expression[0]));
 				} else if (_reader.Peek(0) == '〕') {
 					_reader.Next();
-					MesCommand command = new(MesCommandKind.NameEnd, new Expression[0]);
-					tokens.Add(new MstStringCommand(command));
+					tokens.Add(new MesTag(MesTagKind.NameEnd, new Expression[0]));
 				} else if (_reader.Peek(0) == '\\') {
 					if (_reader.Has(1) && _reader.Peek(1) is '\\' or '〔' or '〕') {
 						_reader.Skip(1);
-						tokens.Add(new MstStringChunk(_reader.Next().ToString(), italic));
+						tokens.Add(new MesChunk(_reader.Next().ToString(), italic));
 					} else {
-						tokens.Add(ParseCommand());
+						tokens.Add(ParseTag());
 					}
 				} else if (ParseUtils.TrySkip(_reader, "<i>")) {
 					italic = true;
@@ -157,13 +155,13 @@ class ScsStrictSyntax : MstStringSyntax {
 					italic = false;
 				} else {
 					char ch = _reader.Next();
-					tokens.Add(new MstStringChunk(ch.ToString(), italic));
+					tokens.Add(new MesChunk(ch.ToString(), italic));
 				}
 			}
 			return tokens.ToArray();
 		}
 
-		MstStringCommand ParseCommand() {
+		MesTag ParseTag() {
 			Debug.Assert(_reader.Peek(0) == '\\');
 			var startPos = _reader.Tell();
 			_reader.Skip(1);
@@ -185,39 +183,39 @@ class ScsStrictSyntax : MstStringSyntax {
 				throw new ParsingException($"Expected ':' or ';'");
 			}
 
-			MesCommandKind? kind = name.ToString() switch {
-				"n" => MesCommandKind.Newline,
+			MesTagKind? kind = name.ToString() switch {
+				"n" => MesTagKind.Newline,
 
-				"p" => MesCommandKind.PauseEndLine,
-				"c" => MesCommandKind.Color,
-				"e" => MesCommandKind.E,
-				"unk06" => MesCommandKind.K,
-				"w" => MesCommandKind.Wait,
-				"pe" => MesCommandKind.PauseEndPage,
-				"rs" => MesCommandKind.RubyStart,
-				"rt" => MesCommandKind.RubyText,
-				"re" => MesCommandKind.RubyEnd,
-				"s" => MesCommandKind.Size,
+				"p" => MesTagKind.PauseEndLine,
+				"c" => MesTagKind.Color,
+				"e" => MesTagKind.E,
+				"unk06" => MesTagKind.K,
+				"w" => MesTagKind.Wait,
+				"pe" => MesTagKind.PauseEndPage,
+				"rs" => MesTagKind.RubyStart,
+				"rt" => MesTagKind.RubyText,
+				"re" => MesTagKind.RubyEnd,
+				"s" => MesTagKind.Size,
 
-				"ls" => MesCommandKind.LineSync,
-				"lc" => MesCommandKind.LineCenter,
-				"ll" => MesCommandKind.LineL,
-				"lf" => MesCommandKind.LineFloat,
-				"sp" => MesCommandKind.Space,
-				"ph" => MesCommandKind.PrintHankaku,
-				"pz" => MesCommandKind.PrintZenkaku,
+				"ls" => MesTagKind.LineSync,
+				"lc" => MesTagKind.LineCenter,
+				"ll" => MesTagKind.LineL,
+				"lf" => MesTagKind.LineFloat,
+				"sp" => MesTagKind.Space,
+				"ph" => MesTagKind.PrintHankaku,
+				"pz" => MesTagKind.PrintZenkaku,
 
-				"dic" => MesCommandKind.Dictionary,
+				"dic" => MesTagKind.Dictionary,
 
-				"pnc" => MesCommandKind.PauseClearPage,
-				"a" => MesCommandKind.Auto,
-				"anc" => MesCommandKind.AutoClearPage,
-				"fn" => MesCommandKind.FN,
+				"pnc" => MesTagKind.PauseClearPage,
+				"a" => MesTagKind.Auto,
+				"anc" => MesTagKind.AutoClearPage,
+				"fn" => MesTagKind.FN,
 
-				"rc" => MesCommandKind.RubyCenter,
-				"unk1F" => MesCommandKind.Newline_1F,
+				"rc" => MesTagKind.RubyCenter,
+				"unk1F" => MesTagKind.Newline_1F,
 
-				"lr" => MesCommandKind.LineR,
+				"lr" => MesTagKind.LineR,
 
 				_ => null,
 			};
@@ -225,8 +223,7 @@ class ScsStrictSyntax : MstStringSyntax {
 				_reader.Seek(startPos);
 				throw new ParsingException($"Unrecognized command: {name}");
 			}
-			MesCommand command = new(kind.Value, operands);
-			return new MstStringCommand(command);
+			return new(kind.Value, operands);
 		}
 	}
 }

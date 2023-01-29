@@ -13,15 +13,15 @@ class SpecBank {
 		_index = index;
 	}
 
-	public OpcodeSpec[] GetOpcodeSpecs(string[] keys, Dictionary<string, bool> flags) {
-		List<OpcodeSpec> result = new();
+	public InstructionSpec[] GetOpcodeSpecs(string[] keys, Dictionary<string, bool> flags) {
+		List<InstructionSpec> result = new();
 		foreach (var key in keys) {
 			foreach (var path in _index.Instructions[key]) {
 				var specs = SerializedInstructionSpec.LoadList(Path.Join(_path, path));
 				foreach (var spec in specs) {
 					if (!spec.CheckFlags(flags))
 						continue;
-					result.Add(new OpcodeSpec {
+					result.Add(new InstructionSpec {
 						Name = spec.Name,
 						Opcode = spec.ParsePattern(),
 						Operands = spec.ParseOperands(),

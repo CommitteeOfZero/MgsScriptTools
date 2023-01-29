@@ -1,51 +1,51 @@
 ﻿namespace MgsScriptTools;
 
-class MstStringEncoding {
+class MesBakery {
 	Tree<char, GlyphSpec> _regularTree = new();
 	Tree<char, GlyphSpec> _italicTree = new();
 	Dictionary<int, GlyphSpec> _table = new();
 
-	public MstStringEncoding(Tree<char, GlyphSpec> regularTree, Tree<char, GlyphSpec> italicTree, Dictionary<int, GlyphSpec> table) {
+	public MesBakery(Tree<char, GlyphSpec> regularTree, Tree<char, GlyphSpec> italicTree, Dictionary<int, GlyphSpec> table) {
 		_regularTree = regularTree;
 		_italicTree = italicTree;
 		_table = table;
 	}
 
-	public MesStringToken[] Encode(MstStringPart[] parts) {
-		List<MesStringToken> tokens = new();
-		foreach (var part in parts)
-			EncodePart(tokens, part);
-		return tokens.ToArray();
+	public MesToken[] Bake(MesToken[] plain) {
+		List<MesToken> baked = new();
+		foreach (var token in plain)
+			BakeToken(baked, token);
+		return baked.ToArray();
 	}
 
-	public MstStringPart[] Decode(MesStringToken[] tokens) {
-		List<MstStringPart> parts = new();
+	public MesToken[] Unbake(MesToken[] tokens) {
+		List<MesToken> parts = new();
 		foreach (var token in tokens)
-			parts.Add(DecodePart(token));
+			parts.Add(UnbakeToken(token));
 		return parts.ToArray();
 	}
 
-	void EncodePart(List<MesStringToken> tokens, MstStringPart part) {
-		switch (part) {
-			case MstStringGlyph { Value: int index }: {
-				tokens.Add(new MesStringGlyph(index));
+	void BakeToken(List<MesToken> tokens, MesToken token) {
+		switch (token) {
+			case MesChunk { Value: string chunk, Italic: bool italic }: {
+				BakeChunk(tokens, chunk, italic);
 				break;
 			}
-			case MstStringChunk { Value: string chunk, Italic: bool italic }: {
-				EncodeChunk(tokens, chunk, italic);
+			case MesGlyph glyph: {
+				tokens.Add(glyph);
 				break;
 			}
-			case MstStringCommand { Value: MesCommand command }: {
-				tokens.Add(new MesStringCommand(command));
+			case MesTag tag: {
+				tokens.Add(tag);
 				break;
 			}
 			default: {
-				throw new NotImplementedException(part.GetType().Name);
+				throw new NotImplementedException(token.GetType().Name);
 			}
 		}
 	}
 
-	void EncodeChunk(List<MesStringToken> tokens, string chunk, bool italic) {
+	void BakeChunk(List<MesToken> tokens, string chunk, bool italic) {
 		while (chunk.Length > 0) {
 			GlyphSpec? longestMatch = null;
 			int maxLength = 0;
@@ -70,22 +70,22 @@ class MstStringEncoding {
 				char ch = chunk[0];
 				throw new Exception($"No {style} glyph available for {ch} (U+{(int)ch:X04})");
 			}
-			tokens.Add(new MesStringGlyph(longestMatch.Index));
+			tokens.Add(new MesGlyph(longestMatch.Index));
 			chunk = chunk[maxLength..];
 		}
 	}
 
-	MstStringPart DecodePart(MesStringToken token) {
+	MesToken UnbakeToken(MesToken token) {
 		switch (token) {
-			case MesStringGlyph { Value: int index }: {
-				var spec = _table.GetValueOrDefault(index);
+			case MesGlyph glyph: {
+				var spec = _table.GetValueOrDefault(glyph.Value);
 				if (spec is null)
-					return new MstStringGlyph(index);
+					return glyph;
 				// TODO: combine multiple glyphs into one chunk
-				return new MstStringChunk(spec.Text, !spec.Regular && spec.Italic);
+				return new MesChunk(spec.Text, !spec.Regular && spec.Italic);
 			}
-			case MesStringCommand { Value: MesCommand command }: {
-				return new MstStringCommand(command);
+			case MesTag tag: {
+				return tag;
 			}
 			default: {
 				throw new NotImplementedException(token.GetType().Name);
@@ -93,7 +93,7 @@ class MstStringEncoding {
 		}
 	}
 
-	public static MstStringEncoding BuildFrom(GlyphSpec[] glyphSpecs) {
+	public static MesBakery BuildFrom(GlyphSpec[] glyphSpecs) {
 		Tree<char, GlyphSpec> regularTree = BuildGlyphTree(glyphSpecs, italic: false);
 		Tree<char, GlyphSpec> italicTree = BuildGlyphTree(glyphSpecs, italic: true);
 		Dictionary<int, GlyphSpec> table = new();

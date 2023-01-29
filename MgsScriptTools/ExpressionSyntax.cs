@@ -36,7 +36,7 @@ public class ExpressionSyntax {
 		}
 
 		void Operand(Expression expression, int externalPrecedence) {
-			if (expression is OperationExpression { Kind: var kind } && CalcExpressionSpec.GetSpec(kind).Precedence < externalPrecedence) {
+			if (expression is OperationExpression { Kind: var kind } && OperatorsSpec.GetSpec(kind).Precedence < externalPrecedence) {
 				Parentheses(expression);
 			} else {
 				Inner(expression);
@@ -67,7 +67,7 @@ public class ExpressionSyntax {
 		}
 
 		void Operation(OperationExpression operation) {
-			var precedence = CalcExpressionSpec.GetSpec(operation.Kind).Precedence;
+			var precedence = OperatorsSpec.GetSpec(operation.Kind).Precedence;
 			foreach (var subExpression in operation.Left) {
 				Operand(subExpression, precedence);
 				if (subExpression is not BlankExpression)

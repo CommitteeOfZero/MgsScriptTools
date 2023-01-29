@@ -2,27 +2,27 @@
 
 namespace MgsScriptTools;
 
-public struct MesFile {
+public struct MsbFile {
 	static readonly byte[] Magic = Encoding.ASCII.GetBytes("MES\0");
 
-	public MesFileEntry[] Entries;
+	public MsbEntry[] Entries;
 
-	public static void Encode(Stream stream, MesFile file) {
-		new MesFileEncoder(stream).Encode(file);
+	public static void Encode(Stream stream, MsbFile file) {
+		new MsbEncoder(stream).Encode(file);
 	}
 
-	public static MesFile Decode(Stream stream) {
-		return new MesFileDecoder(stream).Decode();
+	public static MsbFile Decode(Stream stream) {
+		return new MsbDecoder(stream).Decode();
 	}
 
-	class MesFileEncoder {
+	class MsbEncoder {
 		Stream _stream;
 
-		public MesFileEncoder(Stream stream) {
+		public MsbEncoder(Stream stream) {
 			_stream = stream;
 		}
 
-		public void Encode(MesFile file) {
+		public void Encode(MsbFile file) {
 			Write(Magic);
 			WriteInt(1); // languages
 			WriteInt(file.Entries.Length);
@@ -51,14 +51,14 @@ public struct MesFile {
 		}
 	}
 
-	class MesFileDecoder {
+	class MsbDecoder {
 		Stream _stream;
 
-		public MesFileDecoder(Stream stream) {
+		public MsbDecoder(Stream stream) {
 			_stream = stream;
 		}
 
-		public MesFile Decode() {
+		public MsbFile Decode() {
 			Span<byte> magic = stackalloc byte[4];
 			ReadExact(magic);
 			if (!magic.SequenceEqual(Magic))
@@ -71,39 +71,39 @@ public struct MesFile {
 			int entryCount = ReadInt();
 			int stringsStart = ReadInt();
 
-			var table = new MesTableEntry[entryCount];
+			var table = new MsbTableEntry[entryCount];
 			for (int i = 0; i < entryCount; i++) {
 				int id = ReadInt();
 				int offset = ReadInt();
 				for (int j = 1; j < languages; j++)
 					ReadInt();
 				// TODO: handle languages other than 0
-				table[i] = new MesTableEntry {
+				table[i] = new MsbTableEntry {
 					Id = id,
 					Offset = stringsStart + offset,
 				};
 			}
 			var lengthTable = ConstructLengthTable(table);
 
-			var entries = new MesFileEntry[entryCount];
+			var entries = new MsbEntry[entryCount];
 			for (int i = 0; i < table.Length; i++) {
 				int offset = table[i].Offset;
 				int end = lengthTable[offset];
 				Seek(offset);
 				var buffer = new byte[end - offset];
 				ReadExact(buffer);
-				entries[i] = new MesFileEntry {
+				entries[i] = new MsbEntry {
 					Index = table[i].Id,
 					String = buffer,
 				};
 			}
 
-			return new MesFile {
+			return new MsbFile {
 				Entries = entries,
 			};
 		}
 
-		Dictionary<int, int> ConstructLengthTable(MesTableEntry[] entries) {
+		Dictionary<int, int> ConstructLengthTable(MsbTableEntry[] entries) {
 			SortedSet<int> offsets = new();
 			foreach (var entry in entries)
 				offsets.Add(entry.Offset);
@@ -146,14 +146,14 @@ public struct MesFile {
 			return (int)_stream.Position;
 		}
 
-		struct MesTableEntry {
+		struct MsbTableEntry {
 			public int Id;
 			public int Offset;
 		}
 	}
 }
 
-public struct MesFileEntry {
+public struct MsbEntry {
 	public int Index;
 	public byte[] String;
 }

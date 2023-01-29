@@ -50,7 +50,7 @@ public class CalcExpressionEncoding {
 		}
 
 		void EncodeOperation(OperationExpression operation, int precedence) {
-			var spec = CalcExpressionSpec.GetSpec(operation.Kind);
+			var spec = OperatorsSpec.GetSpec(operation.Kind);
 			Debug.Assert(operation.Left.Length == spec.Left);
 			Debug.Assert(operation.Right.Length == spec.Right);
 			foreach (Expression subexpression in operation.Left)
@@ -86,7 +86,7 @@ public class CalcExpressionEncoding {
 				_offset++;
 				switch (token) {
 					case CalcOperator { Opcode: var opcode, Priority: var priority }: {
-						var spec = CalcExpressionSpec.GetSpec(opcode);
+						var spec = OperatorsSpec.GetSpec(opcode);
 						var left = new Expression[spec.Left];
 						for (int i = 0; i < left.Length; i++) {
 							if (stack.Count > 0) {
