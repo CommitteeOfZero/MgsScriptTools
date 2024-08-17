@@ -1,11 +1,11 @@
 - pattern: 10 31 00
   name: HanabiInit
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 10 31 01
   name: HanabiSet
-  operands: [calc, calc, calc, calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 37 00

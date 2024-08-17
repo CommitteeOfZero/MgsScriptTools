@@ -1,16 +1,16 @@
 - pattern: 10 37 01
   name: Noah_01
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 10 37 0A
   name: Noah_0A
-  operands: [calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 37 0B
   name: Noah_0B
-  operands: [calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 37 0C
@@ -20,22 +20,22 @@
 
 - pattern: 10 37 0D
   name: Noah_0D
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 10 37 10
   name: Noah_10
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 10 37 12
   name: Noah_12
-  operands: [calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 37 13
   name: Noah_13
-  operands: [calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 37 14
@@ -135,27 +135,27 @@
 
 - pattern: 10 37 37
   name: Noah_37
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 10 37 50
   name: Noah_50
-  operands: [calc, calc, calc, calc, calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 37 52
   name: Noah_52
-  operands: [calc, calc, calc, calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 37 53
   name: Noah_53
-  operands: [calc, calc, calc, calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 37 64
   name: Noah_64
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 10 37 6E

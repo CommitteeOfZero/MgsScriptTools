@@ -1,6 +1,6 @@
 - pattern: 10 31 00
   name: FirePowderStart
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 10 31 01

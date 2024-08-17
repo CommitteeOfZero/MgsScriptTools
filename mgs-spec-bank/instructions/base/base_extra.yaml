@@ -1,4 +1,4 @@
 - pattern: FE
   name: Eval
-  operands: [calc]
+  operands: [expr]
   flags: []

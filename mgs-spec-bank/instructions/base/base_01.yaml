@@ -1,46 +1,46 @@
 - pattern: 01 00
   name: CreateSurface
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_createsurface]
 
 - pattern: 01 00 00
   name: CreateAlphaSurface
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: [new_createsurface]
 
 - pattern: 01 00 01
   name: CreateSurface
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: [new_createsurface]
 
 - pattern: 01 01
   name: ReleaseSurface
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 02
   name: LoadPic
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 01 05 03
   name: CalcSinL
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: [mescls]
 
 - pattern: 01 05 04
   name: CalcCosL
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: [mescls]
 
 - pattern: 01 05 05
   name: CalcMove
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: [mescls]
 
 - pattern: 01 05 06
   name: CalcAccel
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: [mescls]
 
 - pattern: 01 08 00
@@ -69,43 +69,43 @@
   flags: []
 
 - pattern: 01 09 00
-  name: MesSetSavePointRA
+  name: MesSetSavePointRL
   operands: [int16]
-  flags: [return_addresses]
+  flags: [return_labels]
 
 - pattern: 01 09 01
-  name: MesSSetSavePointRA
-  operands: [int16, calc]
-  flags: [return_addresses]
+  name: MesSSetSavePointRL
+  operands: [int16, expr]
+  flags: [return_labels]
 
 - pattern: 01 09 02
   name: MesSSetSavePoint
-  operands: [calc]
-  flags: [return_addresses]
+  operands: [expr]
+  flags: [return_labels]
 
 - pattern: 01 0A 03
   name: CalcSinL
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: [~mescls]
 
 - pattern: 01 0A 04
   name: CalcCosL
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: [~mescls]
 
 - pattern: 01 0A 05
   name: CalcMove
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: [~mescls]
 
 - pattern: 01 0A 06
   name: CalcAccel
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: [~mescls]
 
 - pattern: 01 0A 00
   name: MesCls
-  operands: [calc]
+  operands: [expr]
   flags: [mescls]
 
 - pattern: 01 0A 01
@@ -130,7 +130,7 @@
 
 - pattern: 01 0A 08
   name: MesCls_08
-  operands: [calc]
+  operands: [expr]
   flags: [mescls]
 
 - pattern: 01 0B
@@ -140,42 +140,42 @@
 
 - pattern: 01 0C 00
   name: MesSetMesScx
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 01 0C 03
   name: Mes2VSetMesScx
-  operands: [calc, calc, calc, int16]
+  operands: [expr, expr, expr, int16]
   flags: []
 
 - pattern: 01 0C 08
   name: MesSSetMesScx
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 01 0C 0B
   name: MesS2VSetMesScx
-  operands: [calc, calc, calc, int16]
+  operands: [expr, expr, expr, int16]
   flags: []
 
 - pattern: 01 0C 80
   name: MesSetMesMsb
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 01 0C 83
   name: Mes2VSetMesMsb
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: []
 
 - pattern: 01 0C 88
   name: MesSSetMesMsb
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 01 0C 8B
   name: MesS2VSetMesMsb
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: []
 
 - pattern: 01 0D 00
@@ -185,7 +185,7 @@
 
 - pattern: 01 0E
   name: SetMesModeFormat
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 01 0F
@@ -245,33 +245,33 @@
 
 #- pattern: 01 11 04
 #  name: MessWindow_04
-#  operands: [calc]
+#  operands: [expr]
 #  flags: []
 
 - pattern: 01 11 05
   name: MessWindowCloseEx
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 11 06
   name: MessWindowOpenEx
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 11 07
   name: MessWindowFastClose
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 12 00
   name: SelInit
-  operands: [calc]
-  flags: [~return_addresses]
+  operands: [expr]
+  flags: [~return_labels]
 
 - pattern: 01 12 00
-  name: SelInitRA
-  operands: [int16, calc]
-  flags: [return_addresses]
+  name: SelInitRL
+  operands: [int16, expr]
+  flags: [return_labels]
 
 - pattern: 01 12 01
   name: SelScx
@@ -280,17 +280,17 @@
 
 - pattern: 01 12 02
   name: SelFlScx
-  operands: [int16, calc]
+  operands: [int16, expr]
   flags: []
 
 - pattern: 01 12 81
   name: SelMsb
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 12 82
   name: SelFlMsb
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 01 13 00
@@ -305,7 +305,7 @@
 
 - pattern: 01 13 02
   name: Select_02
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 14 00
@@ -325,87 +325,87 @@
 
 - pattern: 01 20
   name: SCcapture
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 21
   name: SetTextTable
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 #- pattern: 01 22 00
 #  name: PlayMovieNoBGM
-#  operands: [calc, calc]
+#  operands: [expr, expr]
 #  flags: [~new_playmovie]
 
 - pattern: 01 22 01
   name: PlayMovie
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_playmovie]
 
 - pattern: 01 22 03
   name: PlayMovieLoop
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_playmovie]
 
 - pattern: 01 22 05
   name: PlayMovieLoopNoAudio
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_playmovie]
 
 - pattern: 01 22 09
   name: PlayMovieMask
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_playmovie]
 
 - pattern: 01 22 0B
   name: PlayMovieMaskLoop
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_playmovie]
 
 - pattern: 01 22 0D
   name: PlayAlphaMovieLoopNoAudio
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_playmovie]
 
 #- pattern: 01 22 00 00
 #  name: PlayMovieNoBGM
-#  operands: [calc, calc]
+#  operands: [expr, expr]
 #  flags: [new_playmovie]
 
 - pattern: 01 22 01 00
   name: PlayMovie
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_playmovie]
 
 - pattern: 01 22 03 00
   name: PlayMovieLoop
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_playmovie]
 
 - pattern: 01 22 05 00
   name: PlayMovieLoopNoAudio
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_playmovie]
 
 - pattern: 01 22 09 00
   name: PlayMovieMask
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_playmovie]
 
 - pattern: 01 22 0B 00
   name: PlayMovieMaskLoop
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_playmovie]
 
 - pattern: 01 22 0D 00
   name: PlayAlphaMovieLoopNoAudio
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_playmovie]
 
 - pattern: 01 22 63
   name: PlayMovieRecover
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: []
 
 - pattern: 01 23 00
@@ -425,7 +425,7 @@
 
 - pattern: 01 24
   name: LoadMovie
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 25 00
@@ -435,27 +435,27 @@
 
 - pattern: 01 25 03
   name: SetRevSysMesScx
-  operands: [int16, calc, calc, calc]
+  operands: [int16, expr, expr, expr]
   flags: []
 
 - pattern: 01 25 80
   name: SetRevMesMsb
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 25 81
   name: SetRevMesVMsb
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 01 26 05 00
   name: PlayMovieMemoryLoopNoAudio
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 26 63
   name: PlayMovieMemoryRecover
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 01 27

@@ -1,66 +1,66 @@
 - pattern: 10 00
   name: MSinit
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 10 01
   name: BGload
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 10 02
   name: BGswap
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 10 04 00
   name: BGsetLink
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 10 04 01
   name: BGsetLink2
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 10 04 04
   name: BGsetLinkEx
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 04 05
   name: BGsetLinkEx2
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 05
   name: BGrelease
-  operands: [calc]
+  operands: [expr]
   flags: [~chaload, bgrelease]
 
 - pattern: 10 05 00
   name: CHAloadAtlas  # placeholder name
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [chaload]
 
 - pattern: 10 05 01
   name: CHAloadTexture
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [chaload]
 
 - pattern: 10 06
   name: CHAswap
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 10 07
   name: BGcopy
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 10 08
   name: CHAcopy
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 10 0B
@@ -75,12 +75,12 @@
 
 - pattern: 10 0D 01
   name: CHAmoveSetSeq
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 10 0D 02
   name: CHAmoveWait
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 10 0D 03
@@ -90,22 +90,22 @@
 
 - pattern: 10 0D 04
   name: CHAmoveChkEnd
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 10 0D 05
   name: CHAmoveSetDirect
-  operands: [calc, calc, calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 0E
   name: SkebLoad
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 10 0F
   name: EVload
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: [~bgrelease]
 
 - pattern: 10 0F
@@ -115,27 +115,27 @@
 
 - pattern: 10 10
   name: EVinit
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~bgrelease]
 
 - pattern: 10 10
   name: BGrelease
-  operands: [calc]
+  operands: [expr]
   flags: [chaload, bgrelease]
 
 - pattern: 10 11 00
   name: EVset
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: [~bgrelease]
 
 - pattern: 10 11 01
   name: EVsetEx
-  operands: [calc, calc, calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr, expr, expr]
   flags: [~bgrelease]
 
 - pattern: 10 11
   name: CHArelease
-  operands: [calc]
+  operands: [expr]
   flags: [bgrelease]
 
 - pattern: 10 12
@@ -250,7 +250,7 @@
 
 - pattern: 10 21 14
   name: SetSceneTitleViewFlag
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 10 22 00
@@ -281,12 +281,12 @@
 - pattern: 10 22 0A
   name: AutoSaveSetSavePoint  # placeholder name
   operands: []
-  flags: [~return_addresses]
+  flags: [~return_labels]
 
 - pattern: 10 22 0A
-  name: AutoSaveSetSavePointRA  # placeholder name
+  name: AutoSaveSetSavePointRL  # placeholder name
   operands: [int16]
-  flags: [return_addresses]
+  flags: [return_labels]
 
 - pattern: 10 22 FF
   name: AutoSave_FF
@@ -325,12 +325,12 @@
 
 - pattern: 10 24
   name: LoadData
-  operands: [calc]
+  operands: [expr]
   flags: [~new_loaddata]
 
 - pattern: 10 24 00
   name: LoadData
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_loaddata]
 
 - pattern: 10 24 01
@@ -350,47 +350,47 @@
 
 - pattern: 10 27
   name: SetDic
-  operands: [calc]
+  operands: [expr]
   flags: [~new_setdic]
 
 - pattern: 10 27 00
   name: SetDic
-  operands: [calc]
+  operands: [expr]
   flags: [new_setdic]
 
 - pattern: 10 27 01
   name: SetDic2
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_setdic]
 
 - pattern: 10 27 02
   name: SetDic_02
-  operands: [calc]
+  operands: [expr]
   flags: [new_setdic]
 
 - pattern: 10 28
   name: SetPlayMode
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 10 29
   name: SetEVflag
-  operands: [calc]
+  operands: [expr]
   flags: [~new_setevflag]
 
 - pattern: 10 29 00
   name: SetEVflag
-  operands: [calc]
+  operands: [expr]
   flags: [new_setevflag]
 
 - pattern: 10 2A 00
   name: SetBgCutin
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 10 2A 01
   name: SetBgCutin2
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 10 2D
@@ -405,7 +405,7 @@
 
 - pattern: 10 30 01
   name: EffCapSet
-  operands: [calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 30 0A
@@ -415,7 +415,7 @@
 
 - pattern: 10 30 0B
   name: EffectWaveSet
-  operands: [calc, calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr, expr]
   flags: []
 
 - pattern: 10 32 00
@@ -475,12 +475,12 @@
 
 - pattern: 10 36 00
   name: BGeffectSikaden
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 10 38
   name: EFFyuge
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 10 3B 00
@@ -490,12 +490,12 @@
 
 - pattern: 10 3C 00
   name: FACEload
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 10 3D
   name: FACErelease
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 10 3F 00

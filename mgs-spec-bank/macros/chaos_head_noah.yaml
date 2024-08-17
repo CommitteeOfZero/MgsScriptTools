@@ -10,10 +10,10 @@
   - name: CharaLayerLoad
     operands: []
 
-- name: MesMsbRA
+- name: MesMsbRL
   operands: [expression, expression, expression]
   body:
-  - name: MesSetSavePointRA
+  - name: MesSetSavePointRL
     operands:
     - kind: value
       index: 2
@@ -32,10 +32,10 @@
   - name: MesMain
     operands: []
 
-- name: Mes2VMsbRA
+- name: Mes2VMsbRL
   operands: [expression, expression, expression, expression, expression]
   body:
-  - name: MesSetRA
+  - name: MesSetRL
     operands:
     - kind: value
       index: 4
@@ -58,12 +58,12 @@
   - name: MesMain
     operands: []
 
-- name: AutoSaveRA
+- name: AutoSaveRL
   operands: [expression]
   body:
   - name: AutoSave_FF
     operands: []
-  - name: AutoSaveSetSavePointRA
+  - name: AutoSaveSetSavePointRL
     operands:
     - kind: value
       index: 0
@@ -78,12 +78,12 @@
   - name: Save_29
     operands: []
 
-- name: SetSavePointRA
+- name: SetSavePointRL
   operands: [expression]
   body:
   - name: AutoSave_FF
     operands: []
-  - name: AutoSaveSetSavePointRA
+  - name: AutoSaveSetSavePointRL
     operands:
     - kind: value
       index: 0

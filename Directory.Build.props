@@ -1,0 +1,19 @@
+<Project>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<NoWarn>CA1822,CA1834,CA1859,CS0162,CS1998,IDE1006,IDE0063,IDE0290</NoWarn>
+
+		<DebugType>embedded</DebugType>
+		<SatelliteResourceLanguages>none</SatelliteResourceLanguages>
+
+		<BaseOutputPath>$(MSBuildThisFileDirectory)/bin/$(MSBuildProjectName)</BaseOutputPath>
+		<BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)/obj/$(MSBuildProjectName)</BaseIntermediateOutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' != 'Debug'">
+		<PathMap>$(MSBuildThisFileDirectory)=.</PathMap>
+	</PropertyGroup>
+</Project>

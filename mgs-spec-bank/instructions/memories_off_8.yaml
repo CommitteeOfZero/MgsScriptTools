@@ -1,16 +1,16 @@
 - pattern: 01 2C 00
-  name: RINNSInitRA
-  operands: [int16, int8, calc]
+  name: RINNSInitRL
+  operands: [int16, int8, expr]
   flags: []
 
 - pattern: 01 2C 81
   name: RINNSAddMsb
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 01 2C 91
   name: RINNSTimeupLogMsb
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 2D 00
@@ -25,7 +25,7 @@
 
 - pattern: 01 2D 02
   name: RINNS_02
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 01 2F 00
@@ -35,7 +35,7 @@
 
 - pattern: 01 2F 01
   name: ChatAdd_01
-  operands: [calc, calc, calc, calc, int8]
+  operands: [expr, expr, expr, expr, int8]
   flags: []
 
 - pattern: 01 2F 02

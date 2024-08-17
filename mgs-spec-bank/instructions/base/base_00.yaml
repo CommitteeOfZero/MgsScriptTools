@@ -5,27 +5,27 @@
 
 - pattern: 00 01
   name: CreateThread
-  operands: [calc, calc, int16]
+  operands: [expr, expr, int16]
   flags: []
 
 - pattern: 00 04
   name: ScriptLoad
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_scriptload]
 
 - pattern: 00 04 00
   name: ScriptLoad
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_scriptload]
 
 - pattern: 00 04 01
   name: ScriptLoad_01
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_scriptload]
 
 - pattern: 00 05
   name: Wait
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 06
@@ -40,43 +40,43 @@
 
 - pattern: 00 08
   name: JumpTable
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 00 0A 00
   name: IfInv
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 00 0A 01
   name: If
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 00 0B
   name: Call
   operands: [int16]
-  flags: [~return_addresses]
+  flags: [~return_labels]
 
 - pattern: 00 0B
-  name: CallRA
+  name: CallRL
   operands: [int16, int16]
-  flags: [return_addresses]
+  flags: [return_labels]
 
 - pattern: 00 0C
   name: JumpFar
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 00 0D
   name: CallFar
-  operands: [calc, int16]
-  flags: [~return_addresses]
+  operands: [expr, int16]
+  flags: [~return_labels]
 
 - pattern: 00 0D
-  name: CallFarRA
-  operands: [calc, int16, int16]
-  flags: [return_addresses]
+  name: CallFarRL
+  operands: [expr, int16, int16]
+  flags: [return_labels]
 
 - pattern: 00 0E
   name: Return
@@ -85,52 +85,52 @@
 
 - pattern: 00 0F
   name: Loop
-  operands: [int16, calc]
+  operands: [int16, expr]
   flags: []
 
 - pattern: 00 10 00
   name: FlagOffJump
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 00 10 01
   name: FlagOnJump
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 00 11 00
   name: FlagOffWait
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 11 01
   name: FlagOnWait
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 12
   name: SetFlag
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 13
   name: ResetFlag
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 14
   name: CopyFlag
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 00 15 01
   name: KeyOnJump
-  operands: [calc, calc, int16]
+  operands: [expr, expr, int16]
   flags: []
 
 - pattern: 00 15 03
   name: KeyOnJump2
-  operands: [calc, calc, int16]
+  operands: [expr, expr, int16]
   flags: []
 
 - pattern: 80 18
@@ -140,12 +140,12 @@
 
 - pattern: 00 18
   name: _MemberWrite
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_memberwrite]
 
 - pattern: 00 19
   name: ThreadControl
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 00 1A
@@ -155,42 +155,42 @@
 
 - pattern: 00 1B
   name: LoadJump
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 00 1F
   name: Switch
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 20
   name: Case
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 00 21
   name: BGMplay
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_bgmplay]
 
 - pattern: 00 21 00
   name: BGMplayNL
-  operands: [calc]
+  operands: [expr]
   flags: [new_bgmplay]
 
 - pattern: 00 21 01
   name: BGMplay
-  operands: [calc]
+  operands: [expr]
   flags: [new_bgmplay]
 
 - pattern: 00 21 02
   name: BGMplayFL
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_bgmplay]
 
 - pattern: 00 21 0A
   name: BGMplayNF
-  operands: [calc]
+  operands: [expr]
   flags: [new_bgmplay]
 
 - pattern: 00 22
@@ -205,32 +205,32 @@
 
 - pattern: 00 23 00
   name: SEplay
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_seplay]
 
 - pattern: 00 23 01
   name: SEplay2
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_seplay]
 
 - pattern: 00 23 02
   name: SEplay3
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [~new_seplay]
 
 - pattern: 00 23 00 00
   name: SEplay
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_seplay]
 
 - pattern: 00 23 01 00
   name: SEplay2
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_seplay]
 
 - pattern: 00 23 02 00
   name: SEplay3
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_seplay]
 
 - pattern: 00 24 00
@@ -250,22 +250,22 @@
 
 - pattern: 00 25
   name: PadAct
-  operands: [calc, calc, calc]
+  operands: [expr, expr, expr]
   flags: []
 
 - pattern: 00 26
   name: SSEplay
-  operands: [calc]
+  operands: [expr]
   flags: [~new_sseplay]
 
 - pattern: 00 26 01
   name: SSEplay
-  operands: [calc]
+  operands: [expr]
   flags: [new_sseplay]
 
 - pattern: 00 28
   name: CopyThreadWork
-  operands: [calc, calc, calc, calc]
+  operands: [expr, expr, expr, expr]
   flags: []
 
 - pattern: 00 29 00
@@ -481,32 +481,32 @@
 
 - pattern: 00 2B
   name: SaveIconLoad
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 2C
   name: BGMflag
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 2E
   name: Presence
-  operands: [calc]
+  operands: [expr]
   flags: [~new_presence]
 
 - pattern: 00 2E 00
   name: Presence
-  operands: [calc]
+  operands: [expr]
   flags: [new_presence]
 
 - pattern: 00 2E 01
   name: PresenceEx
-  operands: [calc]
+  operands: [expr]
   flags: [new_presence]
 
 - pattern: 00 2F 01
   name: SetAchievement
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 30 00
@@ -521,7 +521,7 @@
 
 - pattern: 00 31
   name: VoiceTableLoad
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 32
@@ -531,7 +531,7 @@
 
 - pattern: 00 33
   name: Mwait
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 00 34
@@ -546,22 +546,22 @@
 
 - pattern: 00 37 00
   name: VoicePlay
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 00 37 01
   name: VoicePlay2
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 00 37 02
   name: VoicePlay3
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 00 37 03
   name: VoicePlay4
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 00 38 00
@@ -571,22 +571,22 @@
 
 - pattern: 00 38 00
   name: VoiceStop
-  operands: [calc]
+  operands: [expr]
   flags: [new_voicestop]
 
 - pattern: 00 38 01
   name: VoiceStop2
-  operands: [calc]
+  operands: [expr]
   flags: [new_voicestop]
 
 - pattern: 00 38 02
   name: VoiceStop3
-  operands: [calc]
+  operands: [expr]
   flags: [new_voicestop]
 
 - pattern: 00 38 03
   name: VoiceStop4
-  operands: [calc]
+  operands: [expr]
   flags: [new_voicestop]
 
 - pattern: 00 39 00
@@ -596,7 +596,7 @@
 
 - pattern: 00 3A 00
   name: BGMduelPlay
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 00 3A 01
@@ -631,7 +631,7 @@
 
 - pattern: 00 3D
   name: DebugPrint
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: []
 
 - pattern: 00 3E
@@ -646,7 +646,7 @@
 
 - pattern: 00 42
   name: SetX360SysMesPos
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 43 00
@@ -661,7 +661,7 @@
 
 - pattern: 00 43 02
   name: SystemMesInit2
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 43 03
@@ -691,7 +691,7 @@
 
 - pattern: 00 43 09
   name: SystemMes_09
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 43 0B
@@ -701,7 +701,7 @@
 
 - pattern: 00 43 0C
   name: SystemMes_0C
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 43 0D
@@ -731,22 +731,22 @@
 
 - pattern: 00 43 83
   name: SystemMesSetMesMsb
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 43 84
   name: SystemMesSetSelMsb
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 43 8D
   name: SystemMesSetMesExMsb
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 43 8E
   name: SystemMesSetSelExMsb
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 44 00
@@ -766,7 +766,7 @@
 
 - pattern: 00 46
   name: GetSystemStatus
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 4A 00
@@ -786,7 +786,7 @@
 
 - pattern: 00 4C 00
   name: ScriptKeyWait_00
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 4C 01
@@ -811,12 +811,12 @@
 
 - pattern: 00 50 00
   name: PressStart
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_pressstart]
 
 - pattern: 00 50 05
   name: PressStart_05
-  operands: [calc, calc]
+  operands: [expr, expr]
   flags: [new_pressstart]
 
 - pattern: 00 50 07
@@ -826,7 +826,7 @@
 
 - pattern: 00 51 00
   name: GlobalSystemMessage_00
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 51 01
@@ -846,22 +846,22 @@
 
 - pattern: 00 52 01
   name: Unk_00_52_01
-  operands: [calc, int16, int16]
+  operands: [expr, int16, int16]
   flags: []
 
 - pattern: 00 53 01
   name: ControlOnJump
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 00 55 00
   name: Unk_00_55_00
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 56 01
   name: GetControl
-  operands: [calc, int16]
+  operands: [expr, int16]
   flags: []
 
 - pattern: 00 5A
@@ -871,7 +871,7 @@
 
 - pattern: 00 5E
   name: Unk_00_5E
-  operands: [calc]
+  operands: [expr]
   flags: []
 
 - pattern: 00 5F 03
