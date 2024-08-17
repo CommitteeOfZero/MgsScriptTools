@@ -45,8 +45,7 @@ sealed class PlainStringSyntax {
 					break;
 				}
 				case StringTokenGlyph { Value: int index }: {
-					// TODO: find a better solution
-					_builder.Append($"<0x{index:X04}>");
+					_builder.Append($"\\glyph:0x{index:X04};");
 					break;
 				}
 				default: {
@@ -56,24 +55,18 @@ sealed class PlainStringSyntax {
 		}
 
 		void FormatTag(StringTokenTag tag) {
-			switch (tag.Kind) {
-				case StringTagKind.NameStart: {
+			switch (tag.Name) {
+				case "nameStart": {
 					_builder.Append("〔");
 					break;
 				}
-				case StringTagKind.NameEnd: {
+				case "nameEnd": {
 					_builder.Append("〕");
-					break;
-				}
-				case StringTagKind.Evaluate: {
-					_builder.Append("\\[");
-					FormatOperand(tag.Operands[0]);
-					_builder.Append("];");
 					break;
 				}
 				default: {
 					_builder.Append('\\');
-					_builder.Append(GetSymbol(tag.Kind));
+					_builder.Append(tag.Name);
 					if (tag.Operands.Length > 1) {
 						throw new Exception("Cannot stringify a tag with more than one operand.");
 					}
@@ -90,45 +83,6 @@ sealed class PlainStringSyntax {
 		void FormatOperand(ExpressionNode operand) {
 			ExpressionSyntax.Format(_builder, operand);
 		}
-
-		static string GetSymbol(StringTagKind kind) {
-			return kind switch {
-				StringTagKind.Newline => "n",
-
-				StringTagKind.PauseEndLine => "p",
-				StringTagKind.Color => "c",
-				StringTagKind.E => "e",
-				StringTagKind.K => "k",
-				StringTagKind.Wait => "w",
-				StringTagKind.PauseEndPage => "pe",
-				StringTagKind.RubyStart => "rs",
-				StringTagKind.RubyText => "rt",
-				StringTagKind.RubyEnd => "re",
-				StringTagKind.Size => "s",
-
-				StringTagKind.LineSync => "ls",
-				StringTagKind.LineCenter => "lc",
-				StringTagKind.LineL => "ll",
-				StringTagKind.LineFloat => "lf",
-				StringTagKind.Space => "sp",
-				StringTagKind.PrintHankaku => "ph",
-				StringTagKind.PrintZenkaku => "pz",
-
-				StringTagKind.Dictionary => "dic",
-
-				StringTagKind.PauseClearPage => "pnc",
-				StringTagKind.Auto => "a",
-				StringTagKind.AutoClearPage => "anc",
-				StringTagKind.FN => "fn",
-
-				StringTagKind.RubyCenter => "rc", // unconfirmed, possibly also "rm" - mono-ruby, or "rn" - nakatsuke
-				StringTagKind.Newline_1F => "unk1F", // unknown
-
-				StringTagKind.LineR => "lr",
-
-				_ => throw new NotImplementedException(kind.ToString()),
-			};
-		}
 	}
 
 	sealed class PlainStringParser {
@@ -144,10 +98,10 @@ sealed class PlainStringSyntax {
 			while (_reader.Has(0) && _reader.Peek(0) != '\n') {
 				if (_reader.Peek(0) == '〔') {
 					_reader.Next();
-					tokens.Add(new StringTokenTag(StringTagKind.NameStart, []));
+					tokens.Add(new StringTokenTag("nameStart", []));
 				} else if (_reader.Peek(0) == '〕') {
 					_reader.Next();
-					tokens.Add(new StringTokenTag(StringTagKind.NameEnd, []));
+					tokens.Add(new StringTokenTag("nameEnd", []));
 				} else if (_reader.Peek(0) == '\\') {
 					if (_reader.Has(1) && _reader.Peek(1) is '\\' or '〔' or '〕') {
 						_reader.Skip(1);
@@ -167,7 +121,7 @@ sealed class PlainStringSyntax {
 			return [..tokens];
 		}
 
-		StringTokenTag ParseTag() {
+		StringToken ParseTag() {
 			Debug.Assert(_reader.Peek(0) == '\\');
 			TextStream.Position startPos = _reader.Tell();
 			_reader.Skip(1);
@@ -189,47 +143,14 @@ sealed class PlainStringSyntax {
 				throw new ParsingException("Expected ':' or ';'.");
 			}
 
-			StringTagKind? kind = name.ToString() switch {
-				"n" => StringTagKind.Newline,
-
-				"p" => StringTagKind.PauseEndLine,
-				"c" => StringTagKind.Color,
-				"e" => StringTagKind.E,
-				"k" => StringTagKind.K,
-				"w" => StringTagKind.Wait,
-				"pe" => StringTagKind.PauseEndPage,
-				"rs" => StringTagKind.RubyStart,
-				"rt" => StringTagKind.RubyText,
-				"re" => StringTagKind.RubyEnd,
-				"s" => StringTagKind.Size,
-
-				"ls" => StringTagKind.LineSync,
-				"lc" => StringTagKind.LineCenter,
-				"ll" => StringTagKind.LineL,
-				"lf" => StringTagKind.LineFloat,
-				"sp" => StringTagKind.Space,
-				"ph" => StringTagKind.PrintHankaku,
-				"pz" => StringTagKind.PrintZenkaku,
-
-				"dic" => StringTagKind.Dictionary,
-
-				"pnc" => StringTagKind.PauseClearPage,
-				"a" => StringTagKind.Auto,
-				"anc" => StringTagKind.AutoClearPage,
-				"fn" => StringTagKind.FN,
-
-				"rc" => StringTagKind.RubyCenter,
-				"unk1F" => StringTagKind.Newline_1F,
-
-				"lr" => StringTagKind.LineR,
-
-				_ => null,
-			};
-			if (kind is null) {
-				_reader.Seek(startPos);
-				throw new ParsingException($"Unrecognized command: {name}.");
+			if (name == "glyph") {
+				if (operands.Length != 1) {
+					throw new ParsingException("Expected a single operand.");
+				}
+				return new StringTokenGlyph(operands[0].GetInt());
 			}
-			return new(kind.Value, operands);
+
+			return new StringTokenTag(name, operands);
 		}
 	}
 }

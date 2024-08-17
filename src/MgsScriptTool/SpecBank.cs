@@ -15,17 +15,29 @@ class SpecBank {
 		_index = index;
 	}
 
-	public ImmutableArray<InstructionSpec> GetInstructionSpecs(ImmutableArray<string> keys, ImmutableDictionary<string, bool> flags) {
+	public ImmutableArray<InstructionSpec> GetInstructionSpecs(ImmutableDictionary<string, bool> flags) {
 		List<InstructionSpec> result = [];
-		foreach (string key in keys) {
-			foreach (string path in _index.Instructions[key]) {
-				var specs = SerializedInstructionSpec.LoadList(Path.Join(_path, path));
-				foreach (SerializedInstructionSpec spec in specs) {
-					if (!spec.CheckFlags(flags)) {
-						continue;
-					}
-					result.Add(new(spec.Name, spec.ParsePattern(), spec.ParseOperands()));
+		foreach (string path in _index.Instructions) {
+			SerializedInstructionSpec[] specs = SerializedInstructionSpec.LoadList(Path.Join(_path, path));
+			foreach (SerializedInstructionSpec spec in specs) {
+				if (!spec.CheckFlags(flags)) {
+					continue;
 				}
+				result.Add(new(spec.Name, spec.ParsePattern(), spec.ParseOperands()));
+			}
+		}
+		return [..result];
+	}
+
+	public ImmutableArray<StringTagSpec> GetStringTagSpecs(ImmutableDictionary<string, bool> flags) {
+		List<StringTagSpec> result = [];
+		foreach (string path in _index.StringTags) {
+			SerializedStringTagSpec[] specs = SerializedStringTagSpec.LoadList(Path.Join(_path, path));
+			foreach (SerializedStringTagSpec spec in specs) {
+				if (!spec.CheckFlags(flags)) {
+					continue;
+				}
+				result.Add(new(spec.Name, spec.Opcode, spec.ParseOperands()));
 			}
 		}
 		return [..result];
@@ -69,10 +81,13 @@ class SpecBank {
 
 	sealed class SpecBankIndex {
 		[YamlMember(Alias = "instructions", ApplyNamingConventions = false)]
-		public Dictionary<string, string[]> Instructions { get; set; } = null!;
+		public string[] Instructions { get; set; } = default!;
+
+		[YamlMember(Alias = "stringtags", ApplyNamingConventions = false)]
+		public string[] StringTags { get; set; } = default!;
 
 		[YamlMember(Alias = "macros", ApplyNamingConventions = false)]
-		public Dictionary<string, string> Macros { get; set; } = null!;
+		public string[] Macros { get; set; } = default!;
 
 		[YamlMember(Alias = "charset", ApplyNamingConventions = false)]
 		public Dictionary<string, string> Charset { get; set; } = default!;
@@ -144,6 +159,57 @@ class SpecBank {
 			string text = File.ReadAllText(path, new UTF8Encoding(false, true));
 			IDeserializer deserializer = new DeserializerBuilder().Build();
 			return deserializer.Deserialize<SerializedInstructionSpec[]>(text);
+		}
+	}
+
+	sealed class SerializedStringTagSpec {
+		[YamlMember(Alias = "opcode", ApplyNamingConventions = false)]
+		public int Opcode { get; set; } = default;
+
+		[YamlMember(Alias = "name", ApplyNamingConventions = false)]
+		public string Name { get; set; } = default!;
+
+		[YamlMember(Alias = "operands", ApplyNamingConventions = false)]
+		public string[] Operands { get; set; } = default!;
+
+		[YamlMember(Alias = "flags", ApplyNamingConventions = false)]
+		public string[] Flags { get; set; } = default!;
+
+		public ImmutableArray<OperandKind> ParseOperands() {
+			List<OperandKind> operands = [];
+			for (int i = 0; i < Operands.Length; i++) {
+				operands.Add(Operands[i] switch {
+					"expr" => OperandKind.Expr,
+					"uint8" => OperandKind.UInt8,
+					"int8" => OperandKind.Int8,
+					"int16" => OperandKind.Int16,
+					"int32" => OperandKind.Int32,
+					_ => throw new Exception($"Unrecognized operand kind name: {Operands[i]}."),
+				});
+			}
+			return [..operands];
+		}
+
+		public bool CheckFlags(ImmutableDictionary<string, bool> flags) {
+			foreach (string flag in Flags) {
+				string name;
+				bool value;
+				if (flag.StartsWith('~')) {
+					(name, value) = (flag[1..], false);
+				} else {
+					(name, value) = (flag, true);
+				}
+				if (!flags.ContainsKey(name) || flags[name] != value) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		public static SerializedStringTagSpec[] LoadList(string path) {
+			string text = File.ReadAllText(path, new UTF8Encoding(false, true));
+			IDeserializer deserializer = new DeserializerBuilder().Build();
+			return deserializer.Deserialize<SerializedStringTagSpec[]>(text);
 		}
 	}
 }

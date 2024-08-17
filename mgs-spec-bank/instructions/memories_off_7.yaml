@@ -1,34 +1,34 @@
 - pattern: 10 31 00
   name: HanabiInit
   operands: [expr]
-  flags: []
+  flags: [game_mo7]
 
 - pattern: 10 31 01
   name: HanabiSet
   operands: [expr, expr, expr, expr, expr, expr, expr, expr]
-  flags: []
+  flags: [game_mo7]
 
 - pattern: 10 37 00
   name: YubikiriStart_00
   operands: []
-  flags: []
+  flags: [game_mo7]
 
 - pattern: 10 37 01
   name: YubikiriStart_01
   operands: []
-  flags: []
+  flags: [game_mo7]
 
 - pattern: 10 37 02
   name: YubikiriMain
   operands: []
-  flags: []
+  flags: [game_mo7]
 
 - pattern: 10 37 03
   name: YubikiriEnd_03
   operands: []
-  flags: []
+  flags: [game_mo7]
 
 - pattern: 10 37 04
   name: YubikiriEnd_04
   operands: []
-  flags: []
+  flags: [game_mo7]

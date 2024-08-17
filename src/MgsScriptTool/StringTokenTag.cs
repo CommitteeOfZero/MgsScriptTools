@@ -3,11 +3,11 @@ using System.Collections.Immutable;
 namespace MgsScriptTool;
 
 sealed class StringTokenTag : StringToken {
-	public readonly StringTagKind Kind;
+	public readonly string Name;
 	public readonly ImmutableArray<ExpressionNode> Operands;
 
-	public StringTokenTag(StringTagKind kind, ImmutableArray<ExpressionNode> operands) {
-		Kind = kind;
+	public StringTokenTag(string name, ImmutableArray<ExpressionNode> operands) {
+		Name = name;
 		Operands = operands;
 	}
 }

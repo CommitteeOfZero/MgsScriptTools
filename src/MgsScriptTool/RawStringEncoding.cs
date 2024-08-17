@@ -52,7 +52,7 @@ sealed class RawStringEncoding {
 		}
 
 		void EncodeTag(StringTokenTag tag) {
-			StringTagSpec spec = _spec.GetSpec(tag.Kind);
+			StringTagSpec spec = _spec.GetSpec(tag.Name);
 			PutByte((byte)spec.Opcode);
 			for (int i = 0; i < spec.Operands.Length; i++) {
 				EncodeOperand(spec.Operands[i], tag.Operands[i]);
@@ -143,7 +143,7 @@ sealed class RawStringEncoding {
 			for (int i = 0; i < spec.Operands.Length; i++) {
 				operands.Add(DecodeOperand(spec.Operands[i]));
 			}
-			return new(spec.Kind, [..operands]);
+			return new(spec.Name, [..operands]);
 		}
 
 		StringTokenGlyph DecodeGlyph() {

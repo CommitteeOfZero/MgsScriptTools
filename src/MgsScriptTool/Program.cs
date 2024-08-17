@@ -52,13 +52,6 @@ static class Program {
 		IsRequired = true,
 	};
 
-	static readonly Option<string> InstructionSetsOption = new(
-		name: "--instruction-sets",
-		description: "The instruction sets (comma-delimited) to be loaded from the specifications bank."
-	) {
-		IsRequired = true,
-	};
-
 	static readonly Option<string> CharsetOption = new(
 		name: "--charset",
 		description: "The charset to be loaded from the specifications bank."
@@ -100,13 +93,12 @@ static class Program {
 
 			string bankDirectory = result.GetValueForOption(BankDirectoryOption)!;
 			string flagSet = result.GetValueForOption(FlagSetOption)!;
-			ImmutableArray<string> instructionSets = [..result.GetValueForOption(InstructionSetsOption)!.Split(",")];
 			string charsetName = result.GetValueForOption(CharsetOption)!;
 
 			SpecBank bank = SpecBank.Load(bankDirectory);
 			ImmutableDictionary<string, bool> flags = bank.GetFlags(flagSet);
 
-			ImmutableArray<InstructionSpec> instructionSpecs = bank.GetInstructionSpecs(instructionSets, flags);
+			ImmutableArray<InstructionSpec> instructionSpecs = bank.GetInstructionSpecs(flags);
 			InstructionEncoding = InstructionEncoding.BuildFrom(instructionSpecs);
 
             PlainStringSyntax plainStringSyntax = new();
@@ -115,7 +107,8 @@ static class Program {
 			ImmutableArray<GlyphSpec> glyphSpecs = bank.GetGlyphSpecs(charsetName);
 			StringGlyphSyntax = StringGlyphSyntax.BuildFrom(glyphSpecs);
 
-			StringTagsSpec stringTagsSpec = new();
+			ImmutableArray<StringTagSpec> stringTagSpecs = bank.GetStringTagSpecs(flags);
+			StringTagsSpec stringTagsSpec = new(stringTagSpecs);
 			RawStringEncoding rawStringEncoding = new(stringTagsSpec);
 			RawScriptPackageEncoding = new(rawStringEncoding);
 			RawStringTableEncoding = new(rawStringEncoding);
@@ -148,7 +141,6 @@ static class Program {
 		rootCommand.AddGlobalOption(GenerateSdbOption);
 		rootCommand.AddGlobalOption(BankDirectoryOption);
 		rootCommand.AddGlobalOption(FlagSetOption);
-		rootCommand.AddGlobalOption(InstructionSetsOption);
 		rootCommand.AddGlobalOption(CharsetOption);
 
 		rootCommand.SetHandler(async context => {

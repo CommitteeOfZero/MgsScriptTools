@@ -9,6 +9,7 @@
       index: 1
   - name: CharaLayerLoad
     operands: []
+  flags: [game_chn]
 
 - name: MesMsbRL
   operands: [expression, expression, expression]
@@ -31,6 +32,7 @@
       index: 1
   - name: MesMain
     operands: []
+  flags: [game_chn]
 
 - name: Mes2VMsbRL
   operands: [expression, expression, expression, expression, expression]
@@ -57,6 +59,7 @@
       index: 3
   - name: MesMain
     operands: []
+  flags: [game_chn]
 
 - name: AutoSaveRL
   operands: [expression]
@@ -77,6 +80,7 @@
     operands: []
   - name: Save_29
     operands: []
+  flags: [game_chn]
 
 - name: SetSavePointRL
   operands: [expression]
@@ -89,6 +93,7 @@
       index: 0
   - name: SetSavePointMain
     operands: []
+  flags: [game_chn]
 
 - name: Select
   operands: [expression]
@@ -109,3 +114,4 @@
     operands:
     - kind: value
       index: 0
+  flags: [game_chn]

@@ -1,49 +1,49 @@
 - pattern: 01 2C 00
   name: RINNSInitRL
   operands: [int16, int8, expr]
-  flags: []
+  flags: [game_mo8]
 
 - pattern: 01 2C 81
   name: RINNSAddMsb
   operands: [expr, expr]
-  flags: []
+  flags: [game_mo8]
 
 - pattern: 01 2C 91
   name: RINNSTimeupLogMsb
   operands: [expr]
-  flags: []
+  flags: [game_mo8]
 
 - pattern: 01 2D 00
   name: RINNS_00
   operands: []
-  flags: []
+  flags: [game_mo8]
 
 - pattern: 01 2D 01
   name: RINNS_01
   operands: []
-  flags: []
+  flags: [game_mo8]
 
 - pattern: 01 2D 02
   name: RINNS_02
   operands: [expr]
-  flags: []
+  flags: [game_mo8]
 
 - pattern: 01 2F 00
   name: ChatInit
   operands: []
-  flags: []
+  flags: [game_mo8]
 
 - pattern: 01 2F 01
   name: ChatAdd_01
   operands: [expr, expr, expr, expr, int8]
-  flags: []
+  flags: [game_mo8]
 
 - pattern: 01 2F 02
   name: ChatAdd_02
   operands: []
-  flags: []
+  flags: [game_mo8]
 
 - pattern: 10 37 05
   name: PhoneInit
   operands: []
-  flags: []
+  flags: [game_mo8]

@@ -1,0 +1,144 @@
+- opcode: 0x00
+  name: "n"
+  operands: []
+  flags: []
+
+- opcode: 0x01
+  name: "nameStart"
+  operands: []
+  flags: []
+
+- opcode: 0x02
+  name: "nameEnd"
+  operands: []
+  flags: []
+
+- opcode: 0x03
+  name: "p"
+  operands: []
+  flags: []
+
+- opcode: 0x04
+  name: "c"
+  operands: [expr]
+  flags: []
+
+- opcode: 0x05
+  name: "e"
+  operands: []
+  flags: []
+
+- opcode: 0x06
+  name: "k"
+  operands: []
+  flags: []
+
+- opcode: 0x07
+  name: "w"
+  operands: [uint8]
+  flags: []
+
+- opcode: 0x08
+  name: "pe"
+  operands: []
+  flags: []
+
+- opcode: 0x09
+  name: "rs"
+  operands: []
+  flags: []
+
+- opcode: 0x0A
+  name: "rt"
+  operands: []
+  flags: []
+
+- opcode: 0x0B
+  name: "re"
+  operands: []
+  flags: []
+
+- opcode: 0x0C
+  name: "s"
+  operands: [int16]
+  flags: []
+
+- opcode: 0x0E
+  name: "ls"
+  operands: []
+  flags: []
+
+- opcode: 0x0F
+  name: "lc"
+  operands: []
+  flags: []
+
+- opcode: 0x10
+  name: "ll"
+  operands: []
+  flags: []
+
+- opcode: 0x11
+  name: "lf"
+  operands: [int16]
+  flags: []
+
+- opcode: 0x12
+  name: "sp"
+  operands: [int16]
+  flags: []
+
+- opcode: 0x13
+  name: "ph"
+  operands: [int16]
+  flags: []
+
+- opcode: 0x14
+  name: "pz"
+  operands: [int16]
+  flags: []
+
+- opcode: 0x15
+  name: "eval"
+  operands: [expr]
+  flags: []
+
+- opcode: 0x16
+  name: "dic"
+  operands: [int16]
+  flags: []
+
+- opcode: 0x18
+  name: "pnc"
+  operands: []
+  flags: []
+
+- opcode: 0x19
+  name: "a"
+  operands: [int16]
+  flags: []
+
+- opcode: 0x1A
+  name: "anc"
+  operands: [int16]
+  flags: []
+
+- opcode: 0x1B
+  name: "fn"
+  operands: [uint8]
+  flags: []
+
+- opcode: 0x1E
+  name: "rc"
+  operands: []
+  flags: []
+
+- opcode: 0x1F
+  name: "n_1F"
+  operands: []
+  flags: []
+
+- opcode: 0x31
+  name: "lr"
+  operands: []
+  flags: []

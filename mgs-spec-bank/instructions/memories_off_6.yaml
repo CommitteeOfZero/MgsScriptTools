@@ -1,9 +1,9 @@
 - pattern: 10 31 00
   name: FirePowderStart
   operands: [expr, expr, expr]
-  flags: []
+  flags: [game_mo6]
 
 - pattern: 10 31 01
   name: FirePowderStop
   operands: []
-  flags: []
+  flags: [game_mo6]
