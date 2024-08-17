@@ -1,3 +1,3 @@
 namespace MgsScriptTool;
 
-public abstract class StringToken {}
+abstract class StringToken {}

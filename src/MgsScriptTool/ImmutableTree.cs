@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 
 namespace MgsScriptTool;
 
-internal class ImmutableTree<K, V> where K : notnull {
+sealed class ImmutableTree<K, V> where K : notnull {
 	readonly ImmutableDictionary<K, ImmutableTree<K, V>> _branches;
 	readonly V? _value;
 

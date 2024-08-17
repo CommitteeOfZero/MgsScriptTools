@@ -72,13 +72,13 @@ sealed class ScriptCompiler {
 	void ProcessInstruction(Instruction instruction) {
 		switch (instruction.Name.ToLowerInvariant()) {
 			case "dw" or "adr": {
-				foreach (var operand in instruction.Operands) {
+				foreach (ExpressionNode operand in instruction.Operands) {
 					EncodeInt16(operand);
 				}
 				break;
 			}
 			case "dd" or "stringid": {
-				foreach (var operand in instruction.Operands) {
+				foreach (ExpressionNode operand in instruction.Operands) {
 					EncodeInt32(operand);
 				}
 				break;

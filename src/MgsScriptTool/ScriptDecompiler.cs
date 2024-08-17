@@ -24,13 +24,13 @@ sealed class ScriptDecompiler {
 
 	public (ImmutableArray<PlainScriptElement>, ImmutableDictionary<PlainScriptElementInstruction, int>) Decompile() {
 		InitializeChunks();
-		foreach (var chunk in _chunks.Values) {
+		foreach (Chunk chunk in _chunks.Values) {
 			chunk.Preprocess();
 		}
-		foreach (var chunk in _chunks.Values) {
+		foreach (Chunk chunk in _chunks.Values) {
 			AnalyzeChunk(chunk);
 		}
-		foreach (var chunk in _chunks.Values) {
+		foreach (Chunk chunk in _chunks.Values) {
 			chunk.Postprocess();
 		}
 
@@ -109,7 +109,7 @@ sealed class ScriptDecompiler {
 			}
 		}
 
-		foreach (var operand in instruction.Operands) {
+		foreach (ExpressionNode operand in instruction.Operands) {
 			AnalyzeExpression(operand);
 		}
 	}
@@ -123,10 +123,10 @@ sealed class ScriptDecompiler {
 				SetLabelKind(index, ChunkKind.Int32Table);
 			}
 		}
-		foreach (var operand in operation.Left) {
+		foreach (ExpressionNode operand in operation.Left) {
 			AnalyzeExpression(operand);
 		}
-		foreach (var operand in operation.Right) {
+		foreach (ExpressionNode operand in operation.Right) {
 			AnalyzeExpression(operand);
 		}
 	}
@@ -210,7 +210,7 @@ sealed class ScriptDecompiler {
 
 		void Disassemble() {
 			while (Position < Length) {
-				var instruction = _instructionEncoding.Decode(this);
+				Instruction instruction = _instructionEncoding.Decode(this);
 				AddInstruction(instruction);
 			}
 		}
@@ -282,7 +282,7 @@ sealed class ScriptDecompiler {
 		void DecodeNameIdTable() {
 			SetIncomplete();
 			while (true) {
-				var id = DecodeInt16();
+				ExpressionNode id = DecodeInt16();
 				AddInstruction(new("dw", [id]));
 				if (id.GetInt() == 0xFFFF) {
 					break;
@@ -298,7 +298,7 @@ sealed class ScriptDecompiler {
 			SetIncomplete();
 			int index = 0;
 			while (true) {
-				var value0 = DecodeInt16();
+				ExpressionNode value0 = DecodeInt16();
 				AddInstruction(new("dw", [value0]));
 				if (value0.GetInt() == 0xFF) {
 					break;
@@ -332,7 +332,7 @@ sealed class ScriptDecompiler {
 			AddInstruction(new("StringID", [DecodeInt32()]));
 
 			while (true) {
-				var value0 = DecodeInt16();
+				ExpressionNode value0 = DecodeInt16();
 				AddInstruction(new("dw", [value0]));
 				if (value0.GetInt() == 0xFFFF) {
 					break;
@@ -340,7 +340,7 @@ sealed class ScriptDecompiler {
 			}
 
 			while (true) {
-				var value0 = DecodeInt16();
+				ExpressionNode value0 = DecodeInt16();
 				AddInstruction(new("dw", [value0]));
 				if (value0.GetInt() == 0xFFFF) {
 					break;
@@ -353,7 +353,7 @@ sealed class ScriptDecompiler {
 		void DecodeMesModeFormatTable() {
 			int index = 0;
 			while (Position < Length) {
-				var value0 = DecodeInt16();
+				ExpressionNode value0 = DecodeInt16();
 				string? comment = index switch {
 					 0 => "display mode",
 					 1 => "message window ID",
@@ -402,7 +402,7 @@ sealed class ScriptDecompiler {
 		}
 
 		byte GetByte() {
-			var value = ReadByte();
+			int value = ReadByte();
 			if (value < 0) {
 				throw new EndOfStreamException();
 			}

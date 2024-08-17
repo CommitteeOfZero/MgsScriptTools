@@ -1,15 +1,15 @@
 namespace MgsScriptTool;
 
 sealed class OperatorSpec {
-	public readonly int Opcode;
 	public readonly OperatorKind Kind;
+	public readonly int Opcode;
 	public readonly int Precedence;
 	public readonly int Left;
 	public readonly int Right;
 
-	public OperatorSpec(int opcode, OperatorKind kind, int precedence, int left, int right) {
-		Opcode = opcode;
+	public OperatorSpec(OperatorKind kind, int opcode, int precedence, int left, int right) {
 		Kind = kind;
+		Opcode = opcode;
 		Precedence = precedence;
 		Left = left;
 		Right = right;

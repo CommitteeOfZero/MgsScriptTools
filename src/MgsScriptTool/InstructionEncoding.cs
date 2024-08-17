@@ -3,10 +3,10 @@ using System.Collections.Immutable;
 namespace MgsScriptTool;
 
 sealed class InstructionEncoding {
-	readonly Tree<byte, InstructionSpec> _tree;
+	readonly ImmutableTree<byte, InstructionSpec> _tree;
 	readonly ImmutableDictionary<string, InstructionSpec> _table;
 
-	InstructionEncoding(Tree<byte, InstructionSpec> tree, ImmutableDictionary<string, InstructionSpec> table) {
+	InstructionEncoding(ImmutableTree<byte, InstructionSpec> tree, ImmutableDictionary<string, InstructionSpec> table) {
 		_tree = tree;
 		_table = table;
 	}
@@ -87,10 +87,10 @@ sealed class InstructionEncoding {
 
 	InstructionSpec DecodeOpcode(Stream stream) {
 		long start = stream.Position;
-		Tree<byte, InstructionSpec> cursor = _tree;
+		ImmutableTree<byte, InstructionSpec> cursor = _tree;
 		while (true) {
 			byte b = GetByte(stream);
-			Tree<byte, InstructionSpec>? next = cursor[b];
+			ImmutableTree<byte, InstructionSpec>? next = cursor[b];
 			if (next is null) {
 				throw new Exception($"Unrecognized instruction at {start}.");
 			}
@@ -150,7 +150,7 @@ sealed class InstructionEncoding {
 	}
 
 	public static InstructionEncoding BuildFrom(ImmutableArray<InstructionSpec> opcodeSpecs) {
-		Tree<byte, InstructionSpec> tree = BuildOpcodeTree(opcodeSpecs);
+		ImmutableTree<byte, InstructionSpec> tree = BuildOpcodeTree(opcodeSpecs);
 		Dictionary<string, InstructionSpec> table = [];
 		foreach (InstructionSpec spec in opcodeSpecs) {
 			if (table.ContainsKey(spec.Name)) {
@@ -161,7 +161,7 @@ sealed class InstructionEncoding {
 		return new(tree, table.ToImmutableDictionary());
 	}
 
-	static Tree<byte, InstructionSpec> BuildOpcodeTree(ImmutableArray<InstructionSpec> specs) {
+	static ImmutableTree<byte, InstructionSpec> BuildOpcodeTree(ImmutableArray<InstructionSpec> specs) {
 		Tree<byte, InstructionSpec> tree = new();
 		foreach (InstructionSpec spec in specs) {
 			ImmutableArray<byte> opcode = spec.Opcode;
@@ -183,6 +183,6 @@ sealed class InstructionEncoding {
 			}
 			cursor.Value = spec;
 		}
-		return tree;
+		return tree.ToImmutableTree();
 	}
 }

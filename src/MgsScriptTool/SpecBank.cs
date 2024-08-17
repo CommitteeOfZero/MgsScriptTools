@@ -38,7 +38,7 @@ class SpecBank {
 		List<GlyphSpec> glyphs = [];
 		foreach (JsonProperty prop in document.RootElement.EnumerateObject()) {
 			int index = int.Parse(prop.Name, NumberStyles.HexNumber);
-			var glyph = ToGlyphSpec(prop.Value, index);
+			GlyphSpec glyph = ToGlyphSpec(prop.Value, index);
 			glyphs.Add(glyph);
 		}
 		return [..glyphs];
@@ -75,33 +75,33 @@ class SpecBank {
 		public Dictionary<string, string> Macros { get; set; } = null!;
 
 		[YamlMember(Alias = "charset", ApplyNamingConventions = false)]
-		public Dictionary<string, string> Charset { get; set; } = null!;
+		public Dictionary<string, string> Charset { get; set; } = default!;
 
 		[YamlMember(Alias = "flags", ApplyNamingConventions = false)]
-		public Dictionary<string, Dictionary<string, bool>> Flags { get; set; } = null!;
+		public Dictionary<string, Dictionary<string, bool>> Flags { get; set; } = default!;
 
 		public static SpecBankIndex Load(string path) {
-			var text = File.ReadAllText(path, new UTF8Encoding(false, true));
-			var deserializer = new DeserializerBuilder().Build();
+			string text = File.ReadAllText(path, new UTF8Encoding(false, true));
+			IDeserializer deserializer = new DeserializerBuilder().Build();
 			return deserializer.Deserialize<SpecBankIndex>(text);
 		}
 	}
 
 	sealed class SerializedInstructionSpec {
 		[YamlMember(Alias = "pattern", ApplyNamingConventions = false)]
-		public string Pattern { get; set; } = null!;
+		public string Pattern { get; set; } = default!;
 
 		[YamlMember(Alias = "name", ApplyNamingConventions = false)]
-		public string Name { get; set; } = null!;
+		public string Name { get; set; } = default!;
 
 		[YamlMember(Alias = "operands", ApplyNamingConventions = false)]
-		public string[] Operands { get; set; } = null!;
+		public string[] Operands { get; set; } = default!;
 
 		[YamlMember(Alias = "flags", ApplyNamingConventions = false)]
-		public string[] Flags { get; set; } = null!;
+		public string[] Flags { get; set; } = default!;
 
 		public ImmutableArray<byte> ParsePattern() {
-			var values = Pattern.Split(' ');
+			string[] values = Pattern.Split(' ');
 			List<byte> pattern = [];
 			for (int i = 0; i < values.Length; i++) {
 				pattern.Add(byte.Parse(values[i], NumberStyles.HexNumber));
@@ -113,10 +113,11 @@ class SpecBank {
 			List<OperandKind> operands = [];
 			for (int i = 0; i < Operands.Length; i++) {
 				operands.Add(Operands[i] switch {
+					"expr" => OperandKind.Expr,
+					"uint8" => OperandKind.UInt8,
 					"int8" => OperandKind.Int8,
 					"int16" => OperandKind.Int16,
 					"int32" => OperandKind.Int32,
-					"expr" => OperandKind.Expr,
 					_ => throw new Exception($"Unrecognized operand kind name: {Operands[i]}."),
 				});
 			}
@@ -124,7 +125,7 @@ class SpecBank {
 		}
 
 		public bool CheckFlags(ImmutableDictionary<string, bool> flags) {
-			foreach (var flag in Flags) {
+			foreach (string flag in Flags) {
 				string name;
 				bool value;
 				if (flag.StartsWith('~')) {
@@ -140,23 +141,9 @@ class SpecBank {
 		}
 
 		public static SerializedInstructionSpec[] LoadList(string path) {
-			var text = File.ReadAllText(path, new UTF8Encoding(false, true));
-			var deserializer = new DeserializerBuilder().Build();
+			string text = File.ReadAllText(path, new UTF8Encoding(false, true));
+			IDeserializer deserializer = new DeserializerBuilder().Build();
 			return deserializer.Deserialize<SerializedInstructionSpec[]>(text);
 		}
-	}
-}
-
-class GlyphSpec {
-	public readonly int Index;
-	public readonly string Text;
-	public readonly bool Regular;
-	public readonly bool Italic;
-
-	public GlyphSpec(int index, string text, bool regular, bool italic) {
-		Index = index;
-		Text = text;
-		Regular = regular;
-		Italic = italic;
 	}
 }

@@ -3,11 +3,11 @@ using System.Collections.Immutable;
 namespace MgsScriptTool;
 
 sealed class StringGlyphSyntax {
-	readonly Tree<char, GlyphSpec> _regularTree;
-	readonly Tree<char, GlyphSpec> _italicTree;
+	readonly ImmutableTree<char, GlyphSpec> _regularTree;
+	readonly ImmutableTree<char, GlyphSpec> _italicTree;
 	readonly Dictionary<int, GlyphSpec> _table;
 
-	public StringGlyphSyntax(Tree<char, GlyphSpec> regularTree, Tree<char, GlyphSpec> italicTree, Dictionary<int, GlyphSpec> table) {
+	public StringGlyphSyntax(ImmutableTree<char, GlyphSpec> regularTree, ImmutableTree<char, GlyphSpec> italicTree, Dictionary<int, GlyphSpec> table) {
 		_regularTree = regularTree;
 		_italicTree = italicTree;
 		_table = table;
@@ -55,9 +55,9 @@ sealed class StringGlyphSyntax {
 			int maxLength = 0;
 
 			int index = 0;
-			Tree<char, GlyphSpec> cursor = italic ? _italicTree : _regularTree;
+			ImmutableTree<char, GlyphSpec> cursor = italic ? _italicTree : _regularTree;
 			while (index < chunk.Length && cursor.HasBranches) {
-				var next = cursor[chunk[index++]];
+				ImmutableTree<char, GlyphSpec>? next = cursor[chunk[index++]];
 				if (next is null) {
 					break;
 				}
@@ -83,7 +83,7 @@ sealed class StringGlyphSyntax {
 	StringToken FormatToken(StringToken token) {
 		switch (token) {
 			case StringTokenGlyph glyph: {
-				var spec = _table.GetValueOrDefault(glyph.Value);
+				GlyphSpec? spec = _table.GetValueOrDefault(glyph.Value);
 				if (spec is null) {
 					return glyph;
 				}
@@ -100,8 +100,8 @@ sealed class StringGlyphSyntax {
 	}
 
 	public static StringGlyphSyntax BuildFrom(ImmutableArray<GlyphSpec> glyphSpecs) {
-		Tree<char, GlyphSpec> regularTree = BuildGlyphTree(glyphSpecs, italic: false);
-		Tree<char, GlyphSpec> italicTree = BuildGlyphTree(glyphSpecs, italic: true);
+		ImmutableTree<char, GlyphSpec> regularTree = BuildGlyphTree(glyphSpecs, italic: false);
+		ImmutableTree<char, GlyphSpec> italicTree = BuildGlyphTree(glyphSpecs, italic: true);
 		Dictionary<int, GlyphSpec> table = [];
 		foreach (GlyphSpec spec in glyphSpecs) {
 			if (table.ContainsKey(spec.Index)) {
@@ -112,7 +112,7 @@ sealed class StringGlyphSyntax {
 		return new(regularTree, italicTree, table);
 	}
 
-	static Tree<char, GlyphSpec> BuildGlyphTree(ImmutableArray<GlyphSpec> specs, bool italic) {
+	static ImmutableTree<char, GlyphSpec> BuildGlyphTree(ImmutableArray<GlyphSpec> specs, bool italic) {
 		Tree<char, GlyphSpec> tree = new();
 		foreach (GlyphSpec spec in specs) {
 			if ((!italic && !spec.Regular) || (italic && !spec.Italic)) {
@@ -122,7 +122,7 @@ sealed class StringGlyphSyntax {
 			if (text.Length == 0) {
 				throw new Exception($"Empty glyph text for index {spec.Index:X04}.");
 			}
-			var cursor = tree;
+			Tree<char, GlyphSpec> cursor = tree;
 			for (int i = 0; i < text.Length; i++) {
 				cursor = cursor.EnsureBranch(text[i]);
 			}
@@ -132,6 +132,6 @@ sealed class StringGlyphSyntax {
 			}
 			cursor.Value = spec;
 		}
-		return tree;
+		return tree.ToImmutableTree();
 	}
 }
