@@ -1,0 +1,14 @@
+- opcode: 0x20
+  name: "mcLastName"
+  operands: []
+  flags: [game_ftc]
+
+- opcode: 0x21
+  name: "mcFirstName"
+  operands: []
+  flags: [game_ftc]
+
+- opcode: 0x30
+  name: "unk_30"
+  operands: []
+  flags: [game_ftc]

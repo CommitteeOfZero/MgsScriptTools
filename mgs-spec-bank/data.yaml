@@ -14,10 +14,12 @@ macros:
 
 stringtags:
 - stringtags/base.yaml
+- stringtags/famicom_tantei_club.yaml
 
 charset:
   chaos_head_noah: charset/chaos_head_noah.json
   chaos_head_noah-extended: charset/chaos_head_noah-extended.json
+  famicom_tantei_club: charset/famicom_tantei_club.json
 
 flags:
   memories_off_historia:
@@ -93,3 +95,6 @@ flags:
     mescls: yes
     movie_01_27: yes
     return_labels: yes
+
+  famicom_tantei_club:
+    game_ftc: yes
