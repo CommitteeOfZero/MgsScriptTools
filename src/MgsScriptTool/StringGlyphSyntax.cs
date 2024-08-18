@@ -13,26 +13,26 @@ sealed class StringGlyphSyntax {
 		_table = table;
 	}
 
-	public ImmutableArray<StringToken> Parse(ImmutableArray<StringToken> plain) {
-		List<StringToken> raw = [];
-		foreach (StringToken token in plain) {
-			ParseToken(raw, token);
+	public ImmutableArray<StringToken> Compile(ImmutableArray<StringToken> uncompiled) {
+		List<StringToken> compiled = [];
+		foreach (StringToken token in uncompiled) {
+			CompileToken(compiled, token);
 		}
-		return [..raw];
+		return [..compiled];
 	}
 
-	public ImmutableArray<StringToken> Format(ImmutableArray<StringToken> raw) {
-		List<StringToken> plain = [];
-		foreach (StringToken token in raw) {
-			plain.Add(FormatToken(token));
+	public ImmutableArray<StringToken> Decompile(ImmutableArray<StringToken> compiled) {
+		List<StringToken> uncompiled = [];
+		foreach (StringToken token in compiled) {
+			uncompiled.Add(DecompileToken(token));
 		}
-		return [..plain];
+		return [..uncompiled];
 	}
 
-	void ParseToken(List<StringToken> result, StringToken token) {
+	void CompileToken(List<StringToken> result, StringToken token) {
 		switch (token) {
 			case StringTokenChunk { Value: string chunk, Italic: bool italic }: {
-				ParseChunk(result, chunk, italic);
+				CompileChunk(result, chunk, italic);
 				break;
 			}
 			case StringTokenGlyph glyph: {
@@ -49,7 +49,7 @@ sealed class StringGlyphSyntax {
 		}
 	}
 
-	void ParseChunk(List<StringToken> tokens, string chunk, bool italic) {
+	void CompileChunk(List<StringToken> tokens, string chunk, bool italic) {
 		while (chunk.Length > 0) {
 			GlyphSpec? longestMatch = null;
 			int maxLength = 0;
@@ -80,7 +80,7 @@ sealed class StringGlyphSyntax {
 		}
 	}
 
-	StringToken FormatToken(StringToken token) {
+	StringToken DecompileToken(StringToken token) {
 		switch (token) {
 			case StringTokenGlyph glyph: {
 				GlyphSpec? spec = _table.GetValueOrDefault(glyph.Value);

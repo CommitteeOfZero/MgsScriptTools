@@ -4,22 +4,22 @@ using System.Text;
 
 namespace MgsScriptTool;
 
-sealed class PlainStringSyntax {
-	public PlainStringSyntax() { }
+sealed class UncompiledStringSyntax {
+	public UncompiledStringSyntax() { }
 
 	public void Format(StringBuilder builder, ImmutableArray<StringToken> tokens) {
-		new PlainStringFormatter(builder, tokens).Format();
+		new UncompiledStringFormatter(builder, tokens).Format();
 	}
 
 	public ImmutableArray<StringToken> Parse(TextStream reader) {
-		return new PlainStringParser(reader).Parse();
+		return new UncompiledStringParser(reader).Parse();
 	}
 
-	sealed class PlainStringFormatter {
+	sealed class UncompiledStringFormatter {
 		readonly StringBuilder _builder;
 		readonly ImmutableArray<StringToken> _tokens;
 
-		public PlainStringFormatter(StringBuilder builder, ImmutableArray<StringToken> tokens) {
+		public UncompiledStringFormatter(StringBuilder builder, ImmutableArray<StringToken> tokens) {
 			_builder = builder;
 			_tokens = tokens;
 		}
@@ -85,10 +85,10 @@ sealed class PlainStringSyntax {
 		}
 	}
 
-	sealed class PlainStringParser {
+	sealed class UncompiledStringParser {
 		readonly TextStream _reader;
 
-		public PlainStringParser(TextStream reader) {
+		public UncompiledStringParser(TextStream reader) {
 			_reader = reader;
 		}
 

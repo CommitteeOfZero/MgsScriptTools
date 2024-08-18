@@ -2,27 +2,27 @@ using System.Collections.Immutable;
 
 namespace MgsScriptTool;
 
-sealed class RawStringEncoding {
+sealed class CompiledStringEncoding {
 	readonly StringTagsSpec _spec;
 
-	public RawStringEncoding(StringTagsSpec spec) {
+	public CompiledStringEncoding(StringTagsSpec spec) {
 		_spec = spec;
 	}
 
 	public void Encode(Stream stream, ImmutableArray<StringToken> tokens) {
-		new RawStringEncoder(stream, _spec, tokens).Encode();
+		new CompiledStringEncoder(stream, _spec, tokens).Encode();
 	}
 
 	public ImmutableArray<StringToken> Decode(Stream stream) {
-		return new RawStringDecoder(stream, _spec).Decode();
+		return new CompiledStringDecoder(stream, _spec).Decode();
 	}
 
-	sealed class RawStringEncoder {
+	sealed class CompiledStringEncoder {
 		readonly Stream _stream;
 		readonly StringTagsSpec _spec;
 		readonly ImmutableArray<StringToken> _tokens;
 
-		public RawStringEncoder(Stream stream, StringTagsSpec spec, ImmutableArray<StringToken> tokens) {
+		public CompiledStringEncoder(Stream stream, StringTagsSpec spec, ImmutableArray<StringToken> tokens) {
 			_stream = stream;
 			_spec = spec;
 			_tokens = tokens;
@@ -102,11 +102,11 @@ sealed class RawStringEncoding {
 		}
 	}
 
-	sealed class RawStringDecoder {
+	sealed class CompiledStringDecoder {
 		readonly Stream _stream;
 		readonly StringTagsSpec _spec;
 
-		public RawStringDecoder(Stream stream, StringTagsSpec spec) {
+		public CompiledStringDecoder(Stream stream, StringTagsSpec spec) {
 			_stream = stream;
 			_spec = spec;
 		}

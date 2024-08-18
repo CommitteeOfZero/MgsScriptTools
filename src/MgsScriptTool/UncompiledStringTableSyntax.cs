@@ -4,10 +4,10 @@ using System.Text;
 
 namespace MgsScriptTool;
 
-sealed class PlainStringTableSyntax {
-	readonly PlainStringSyntax _stringSyntax;
+sealed class UncompiledStringTableSyntax {
+	readonly UncompiledStringSyntax _stringSyntax;
 
-	public PlainStringTableSyntax(PlainStringSyntax stringSyntax) {
+	public UncompiledStringTableSyntax(UncompiledStringSyntax stringSyntax) {
 		_stringSyntax = stringSyntax;
 	}
 

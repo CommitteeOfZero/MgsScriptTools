@@ -12,17 +12,17 @@ sealed class ScriptDecompiler {
 	readonly SortedDictionary<int, Chunk> _chunks = [];
 	readonly Dictionary<int, Chunk> _chunkMap = [];
 
-	readonly Dictionary<PlainScriptElementInstruction, int> _instructionPositions = [];
+	readonly Dictionary<UncompiledScriptElementInstruction, int> _instructionPositions = [];
 
-	public ScriptDecompiler(InstructionEncoding instructionEncoding, RawScript rawScript) {
+	public ScriptDecompiler(InstructionEncoding instructionEncoding, CompiledScript compiledScript) {
 		_instructionEncoding = instructionEncoding;
 
-		_code = rawScript.Code;
-		_labels = rawScript.Labels;
-		_returnLabels = rawScript.ReturnLabels;
+		_code = compiledScript.Code;
+		_labels = compiledScript.Labels;
+		_returnLabels = compiledScript.ReturnLabels;
 	}
 
-	public (ImmutableArray<PlainScriptElement>, ImmutableDictionary<PlainScriptElementInstruction, int>) Decompile() {
+	public (ImmutableArray<UncompiledScriptElement>, ImmutableDictionary<UncompiledScriptElementInstruction, int>) Decompile() {
 		InitializeChunks();
 		foreach (Chunk chunk in _chunks.Values) {
 			chunk.Preprocess();
@@ -34,20 +34,20 @@ sealed class ScriptDecompiler {
 			chunk.Postprocess();
 		}
 
-		List<PlainScriptElement> elements = [];
+		List<UncompiledScriptElement> elements = [];
 		foreach (Chunk chunk in _chunks.Values) {
 			foreach (int index in chunk.Labels) {
-				elements.Add(new PlainScriptElementLabel(index));
+				elements.Add(new UncompiledScriptElementLabel(index));
 			}
 			foreach (int index in chunk.ReturnLabels) {
-				elements.Add(new PlainScriptElementReturnLabel(index));
+				elements.Add(new UncompiledScriptElementReturnLabel(index));
 			}
 			elements.AddRange(chunk.Body);
 			if (chunk.Error is not null) {
-				elements.Add(new PlainScriptElementError(chunk.LastPosition, chunk.Error));
+				elements.Add(new UncompiledScriptElementError(chunk.LastPosition, chunk.Error));
 			}
 			if (chunk.LastPosition != chunk._end) {
-				elements.Add(new PlainScriptElementRaw(_code[chunk.LastPosition..chunk._end]));
+				elements.Add(new UncompiledScriptElementRaw(_code[chunk.LastPosition..chunk._end]));
 			}
 		}
 		return ([..elements], _instructionPositions.ToImmutableDictionary());
@@ -77,8 +77,8 @@ sealed class ScriptDecompiler {
 	}
 
 	void AnalyzeChunk(Chunk chunk) {
-		foreach (PlainScriptElement element in chunk.Body) {
-			if (element is PlainScriptElementInstruction { Value: Instruction instruction }) {
+		foreach (UncompiledScriptElement element in chunk.Body) {
+			if (element is UncompiledScriptElementInstruction { Value: Instruction instruction }) {
 				AnalyzeInstruction(instruction);
 			}
 		}
@@ -154,7 +154,7 @@ sealed class ScriptDecompiler {
 		public List<int> Labels = [];
 		public List<int> ReturnLabels = [];
 		public ChunkKind Kind = ChunkKind.None;
-		public List<PlainScriptElement> Body = [];
+		public List<UncompiledScriptElement> Body = [];
 		public Exception? Error;
 		public int LastPosition;
 
@@ -419,11 +419,11 @@ sealed class ScriptDecompiler {
 		}
 
 		public void AddComment(string text) {
-			Body.Add(new PlainScriptElementComment(text));
+			Body.Add(new UncompiledScriptElementComment(text));
 		}
 
 		public void AddInstruction(Instruction instruction) {
-			PlainScriptElementInstruction element = new(instruction);
+			UncompiledScriptElementInstruction element = new(instruction);
 			_parent._instructionPositions[element] = LastPosition;
 			Body.Add(element);
 			UpdateLastPosition();

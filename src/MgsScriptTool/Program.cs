@@ -12,16 +12,16 @@ static class Program {
 		description: "The tool operation mode."
 	);
 
-	static readonly Option<string> PlainDirectoryOption = new(
-		name: "--plain-directory",
-		description: "The path to the directory for the files in plain form."
+	static readonly Option<string> UncompiledDirectoryOption = new(
+		name: "--uncompiled-directory",
+		description: "The path to the directory for the uncompiled files."
 	) {
 		IsRequired = true,
 	};
 
-	static readonly Option<string> RawDirectoryOption = new(
-		name: "--raw-directory",
-		description: "The path to the directory for the files in raw form."
+	static readonly Option<string> CompiledDirectoryOption = new(
+		name: "--compiled-directory",
+		description: "The path to the directory for the compiled files."
 	) {
 		IsRequired = true,
 	};
@@ -29,13 +29,13 @@ static class Program {
 	static readonly Option<string> ScriptPackageExtensionOption = new(
 		name: "--script-package-extension",
 		getDefaultValue: () => "scx",
-		description: "The file extension to be used for raw script package files."
+		description: "The file extension to be used for compiled script package files."
 	);
 
 	static readonly Option<string> StringTableExtensionOption = new(
 		name: "--string-table-extension",
 		getDefaultValue: () => "msb",
-		description: "The file extension to be used for raw string table files."
+		description: "The file extension to be used for compiled string table files."
 	);
 
 	static readonly Option<string> BankDirectoryOption = new(
@@ -71,24 +71,24 @@ static class Program {
 
 	sealed class Tool {
 		public readonly ToolMode Mode;
-		public readonly string RawDirectory;
-		public readonly string PlainDirectory;
-		public readonly string RawScriptPackageExtension;
-		public readonly string RawStringTableExtension;
+		public readonly string CompiledDirectory;
+		public readonly string UncompiledDirectory;
+		public readonly string CompiledScriptPackageExtension;
+		public readonly string CompiledStringTableExtension;
 		public readonly bool GenerateSdb;
 
 		public readonly InstructionEncoding InstructionEncoding;
-		public readonly PlainStringTableSyntax PlainStringTableSyntax;
+		public readonly UncompiledStringTableSyntax UncompiledStringTableSyntax;
 		public readonly StringGlyphSyntax StringGlyphSyntax;
-		public readonly RawScriptPackageEncoding RawScriptPackageEncoding;
-		public readonly RawStringTableEncoding RawStringTableEncoding;
+		public readonly CompiledScriptPackageEncoding CompiledScriptPackageEncoding;
+		public readonly CompiledStringTableEncoding CompiledStringTableEncoding;
 
 		public Tool(ParseResult result) {
 			Mode = result.GetValueForOption(ModeOption);
-			RawDirectory = result.GetValueForOption(RawDirectoryOption)!;
-			PlainDirectory = result.GetValueForOption(PlainDirectoryOption)!;
-			RawScriptPackageExtension = $".{result.GetValueForOption(ScriptPackageExtensionOption)!}";
-			RawStringTableExtension = $".{result.GetValueForOption(StringTableExtensionOption)!}";
+			CompiledDirectory = result.GetValueForOption(CompiledDirectoryOption)!;
+			UncompiledDirectory = result.GetValueForOption(UncompiledDirectoryOption)!;
+			CompiledScriptPackageExtension = $".{result.GetValueForOption(ScriptPackageExtensionOption)!}";
+			CompiledStringTableExtension = $".{result.GetValueForOption(StringTableExtensionOption)!}";
 			GenerateSdb = result.GetValueForOption(GenerateSdbOption);
 
 			string bankDirectory = result.GetValueForOption(BankDirectoryOption)!;
@@ -101,17 +101,17 @@ static class Program {
 			ImmutableArray<InstructionSpec> instructionSpecs = bank.GetInstructionSpecs(flags);
 			InstructionEncoding = InstructionEncoding.BuildFrom(instructionSpecs);
 
-            PlainStringSyntax plainStringSyntax = new();
-			PlainStringTableSyntax = new(plainStringSyntax);
+            UncompiledStringSyntax uncompiledStringSyntax = new();
+			UncompiledStringTableSyntax = new(uncompiledStringSyntax);
 
 			ImmutableArray<GlyphSpec> glyphSpecs = bank.GetGlyphSpecs(charsetName);
 			StringGlyphSyntax = StringGlyphSyntax.BuildFrom(glyphSpecs);
 
 			ImmutableArray<StringTagSpec> stringTagSpecs = bank.GetStringTagSpecs(flags);
 			StringTagsSpec stringTagsSpec = new(stringTagSpecs);
-			RawStringEncoding rawStringEncoding = new(stringTagsSpec);
-			RawScriptPackageEncoding = new(rawStringEncoding);
-			RawStringTableEncoding = new(rawStringEncoding);
+			CompiledStringEncoding compiledStringEncoding = new(stringTagsSpec);
+			CompiledScriptPackageEncoding = new(compiledStringEncoding);
+			CompiledStringTableEncoding = new(compiledStringEncoding);
 		}
 
 		public async Task Run() {
@@ -134,8 +134,8 @@ static class Program {
 	static async Task<int> Main(string[] args) {
 		RootCommand rootCommand = new("A tool for working with MAGES. engine script packages and string tables.");
 		rootCommand.AddGlobalOption(ModeOption);
-		rootCommand.AddGlobalOption(PlainDirectoryOption);
-		rootCommand.AddGlobalOption(RawDirectoryOption);
+		rootCommand.AddGlobalOption(UncompiledDirectoryOption);
+		rootCommand.AddGlobalOption(CompiledDirectoryOption);
 		rootCommand.AddGlobalOption(ScriptPackageExtensionOption);
 		rootCommand.AddGlobalOption(StringTableExtensionOption);
 		rootCommand.AddGlobalOption(GenerateSdbOption);
@@ -158,26 +158,26 @@ static class Program {
 	}
 
 	static async Task<int> DoCompile(Tool tool) {
-		string plainDir = tool.PlainDirectory;
-		IEnumerable<string> plainPaths;
+		string uncompiledDir = tool.UncompiledDirectory;
+		IEnumerable<string> uncompiledPaths;
 		try {
-			plainPaths = Directory.EnumerateFiles(plainDir, "*", SearchOption.AllDirectories);
+			uncompiledPaths = Directory.EnumerateFiles(uncompiledDir, "*", SearchOption.AllDirectories);
 		} catch (Exception e) {
 			Console.Error.WriteLine($"Error: {e}");
 			return 1;
 		}
 		bool errorOccurred = false;
-		foreach (string plainPath in plainPaths) {
-			string plainName = Path.GetRelativePath(plainDir, plainPath);
-			if (Path.IsPathRooted(plainName)) {
+		foreach (string uncompiledPath in uncompiledPaths) {
+			string uncompiledName = Path.GetRelativePath(uncompiledDir, uncompiledPath);
+			if (Path.IsPathRooted(uncompiledName)) {
 				continue;
 			}
-			string extension = Path.GetExtension(plainPath);
+			string extension = Path.GetExtension(uncompiledPath);
 			if (extension == ".scs") {
-				errorOccurred |= !await CompileScriptPackage(tool, plainName);
+				errorOccurred |= !await CompileScriptPackage(tool, uncompiledName);
 			}
 			if (extension == ".mst") {
-				errorOccurred |= !await CompileStringTable(tool, plainName);
+				errorOccurred |= !await CompileStringTable(tool, uncompiledName);
 			}
 		}
 		if (errorOccurred) {
@@ -187,26 +187,26 @@ static class Program {
 	}
 
 	static async Task<int> DoDecompile(Tool tool) {
-		string rawDir = tool.RawDirectory;
-		IEnumerable<string> rawPaths;
+		string compiledDir = tool.CompiledDirectory;
+		IEnumerable<string> compiledPaths;
 		try {
-			rawPaths = Directory.EnumerateFiles(rawDir, "*", SearchOption.AllDirectories);
+			compiledPaths = Directory.EnumerateFiles(compiledDir, "*", SearchOption.AllDirectories);
 		} catch (Exception e) {
 			Console.Error.WriteLine($"Error: {e}");
 			return 1;
 		}
 		bool errorOccurred = false;
-		foreach (string rawPath in rawPaths) {
-			string rawName = Path.GetRelativePath(rawDir, rawPath);
-			if (Path.IsPathRooted(rawName)) {
+		foreach (string compiledPath in compiledPaths) {
+			string compiledName = Path.GetRelativePath(compiledDir, compiledPath);
+			if (Path.IsPathRooted(compiledName)) {
 				continue;
 			}
-			string extension = Path.GetExtension(rawPath);
-			if (extension == tool.RawScriptPackageExtension) {
-				errorOccurred |= !await DecompileScriptPackage(tool, rawName);
+			string extension = Path.GetExtension(compiledPath);
+			if (extension == tool.CompiledScriptPackageExtension) {
+				errorOccurred |= !await DecompileScriptPackage(tool, compiledName);
 			}
-			if (extension == tool.RawStringTableExtension) {
-				errorOccurred |= !await DecompileStringTable(tool, rawName);
+			if (extension == tool.CompiledStringTableExtension) {
+				errorOccurred |= !await DecompileStringTable(tool, compiledName);
 			}
 		}
 		if (errorOccurred) {
@@ -215,99 +215,99 @@ static class Program {
 		return 0;
 	}
 
-	static async Task<bool> CompileScriptPackage(Tool tool, string plainScriptName) {
-		string plainStringTableName = Path.ChangeExtension(plainScriptName, ".sct");
-		string rawScriptPackageName = Path.ChangeExtension(plainScriptName, tool.RawScriptPackageExtension);
+	static async Task<bool> CompileScriptPackage(Tool tool, string uncompiledScriptName) {
+		string uncompiledStringTableName = Path.ChangeExtension(uncompiledScriptName, ".sct");
+		string compiledScriptPackageName = Path.ChangeExtension(uncompiledScriptName, tool.CompiledScriptPackageExtension);
 
-		string plainScriptPath = Path.Join(tool.PlainDirectory, plainScriptName);
-		string plainStringTablePath = Path.Join(tool.PlainDirectory, plainStringTableName);
-		string rawScriptPackagePath = Path.Join(tool.RawDirectory, rawScriptPackageName);
+		string uncompiledScriptPath = Path.Join(tool.UncompiledDirectory, uncompiledScriptName);
+		string uncompiledStringTablePath = Path.Join(tool.UncompiledDirectory, uncompiledStringTableName);
+		string compiledScriptPackagePath = Path.Join(tool.CompiledDirectory, compiledScriptPackageName);
 
 		try {
-			ImmutableArray<PlainScriptElement> plainScriptElements = await ParsePlainScript(tool, plainScriptPath);
-			ImmutableArray<StringTableEntry> plainStringTableEntries = await ParsePlainStringTable(tool, plainStringTablePath);
+			ImmutableArray<UncompiledScriptElement> uncompiledScriptElements = await ParseUncompiledScript(tool, uncompiledScriptPath);
+			ImmutableArray<StringTableEntry> uncompiledStringTableEntries = await ParseUncompiledStringTable(tool, uncompiledStringTablePath);
 
 			ScriptCompiler compiler = new(tool.InstructionEncoding);
-			RawScript rawScript = compiler.Compile(plainScriptElements);
+			CompiledScript compiledScript = compiler.Compile(uncompiledScriptElements);
 
-			List<ImmutableArray<StringToken>> rawStrings = [];
-			for (int i = 0; i < plainStringTableEntries.Length; i++) {
-				StringTableEntry plainEntry = plainStringTableEntries[i];
-				if (plainEntry.Index != i) {
+			List<ImmutableArray<StringToken>> compiledStrings = [];
+			for (int i = 0; i < uncompiledStringTableEntries.Length; i++) {
+				StringTableEntry uncompiledEntry = uncompiledStringTableEntries[i];
+				if (uncompiledEntry.Index != i) {
 					throw new Exception($"Missing string with index {i}.");
 				}
-				rawStrings.Add(tool.StringGlyphSyntax.Parse(plainEntry.Tokens));
+				compiledStrings.Add(tool.StringGlyphSyntax.Compile(uncompiledEntry.Tokens));
 			}
-			RawScriptPackage rawScriptPackage = new(rawScript, [..rawStrings]);
+			CompiledScriptPackage compiledScriptPackage = new(compiledScript, [..compiledStrings]);
 
-			Directory.CreateDirectory(Path.GetDirectoryName(rawScriptPackagePath)!);
+			Directory.CreateDirectory(Path.GetDirectoryName(compiledScriptPackagePath)!);
 
-			using FileStream file = File.Open(rawScriptPackagePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-			tool.RawScriptPackageEncoding.Encode(file, rawScriptPackage);
+			using FileStream file = File.Open(compiledScriptPackagePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+			tool.CompiledScriptPackageEncoding.Encode(file, compiledScriptPackage);
 		} catch (Exception e) {
-			Console.Error.WriteLine($"\nError while compiling {plainScriptPath}: {e}");
+			Console.Error.WriteLine($"\nError while compiling {uncompiledScriptPath}: {e}");
 			return false;
 		}
 		return true;
 	}
 
-	static async Task<bool> CompileStringTable(Tool tool, string plainName) {
-		string rawName = Path.ChangeExtension(plainName, tool.RawStringTableExtension);
+	static async Task<bool> CompileStringTable(Tool tool, string uncompiledName) {
+		string compiledName = Path.ChangeExtension(uncompiledName, tool.CompiledStringTableExtension);
 
-		string plainPath = Path.Join(tool.PlainDirectory, plainName);
-		string rawPath = Path.Join(tool.RawDirectory, rawName);
+		string uncompiledPath = Path.Join(tool.UncompiledDirectory, uncompiledName);
+		string compiledPath = Path.Join(tool.CompiledDirectory, compiledName);
 
 		try {
-			ImmutableArray<StringTableEntry> plainEntries = await ParsePlainStringTable(tool, plainPath);
+			ImmutableArray<StringTableEntry> uncompiledEntries = await ParseUncompiledStringTable(tool, uncompiledPath);
 
-			List<StringTableEntry> rawEntries = [];
-			for (int i = 0; i < plainEntries.Length; i++) {
-				StringTableEntry plainEntry = plainEntries[i];
-				ImmutableArray<StringToken> rawTokens = tool.StringGlyphSyntax.Parse(plainEntry.Tokens);
-				rawEntries.Add(new(plainEntry.Index, rawTokens));
+			List<StringTableEntry> compiledEntries = [];
+			for (int i = 0; i < uncompiledEntries.Length; i++) {
+				StringTableEntry uncompiledEntry = uncompiledEntries[i];
+				ImmutableArray<StringToken> compiledTokens = tool.StringGlyphSyntax.Compile(uncompiledEntry.Tokens);
+				compiledEntries.Add(new(uncompiledEntry.Index, compiledTokens));
 			}
 
-			Directory.CreateDirectory(Path.GetDirectoryName(rawPath)!);
+			Directory.CreateDirectory(Path.GetDirectoryName(compiledPath)!);
 
-			using FileStream file = File.Open(rawPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-			tool.RawStringTableEncoding.Encode(file, [..rawEntries]);
+			using FileStream file = File.Open(compiledPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+			tool.CompiledStringTableEncoding.Encode(file, [..compiledEntries]);
 		} catch (Exception e) {
-			Console.Error.WriteLine($"\nError while compiling {plainPath}: {e}");
+			Console.Error.WriteLine($"\nError while compiling {uncompiledPath}: {e}");
 			return false;
 		}
 		return true;
 	}
 
-	static async Task<bool> DecompileScriptPackage(Tool tool, string rawScriptPackageName) {
-		string plainScriptName = Path.ChangeExtension(rawScriptPackageName, ".scs");
-		string plainStringTableName = Path.ChangeExtension(rawScriptPackageName, ".sct");
-		string sdbName = Path.ChangeExtension(rawScriptPackageName, ".sdb");
+	static async Task<bool> DecompileScriptPackage(Tool tool, string compiledScriptPackageName) {
+		string uncompiledScriptName = Path.ChangeExtension(compiledScriptPackageName, ".scs");
+		string uncompiledStringTableName = Path.ChangeExtension(compiledScriptPackageName, ".sct");
+		string sdbName = Path.ChangeExtension(compiledScriptPackageName, ".sdb");
 
-		string rawScriptPackagePath = Path.Join(tool.RawDirectory, rawScriptPackageName);
-		string plainScriptPath = Path.Join(tool.PlainDirectory, plainScriptName);
-		string plainStringTablePath = Path.Join(tool.PlainDirectory, plainStringTableName);
-		string sdbPath = Path.Join(tool.PlainDirectory, sdbName);
+		string compiledScriptPackagePath = Path.Join(tool.CompiledDirectory, compiledScriptPackageName);
+		string uncompiledScriptPath = Path.Join(tool.UncompiledDirectory, uncompiledScriptName);
+		string uncompiledStringTablePath = Path.Join(tool.UncompiledDirectory, uncompiledStringTableName);
+		string sdbPath = Path.Join(tool.UncompiledDirectory, sdbName);
 
 		try {
-			RawScriptPackage rawScriptPackage = await DecodeRawScriptPackage(tool, rawScriptPackagePath);
+			CompiledScriptPackage compiledScriptPackage = await DecodeCompiledScriptPackage(tool, compiledScriptPackagePath);
 
-			ScriptDecompiler decompiler = new(tool.InstructionEncoding, rawScriptPackage.Script);
-			(ImmutableArray<PlainScriptElement> plainScriptElements, ImmutableDictionary<PlainScriptElementInstruction, int> instructionPositions) = decompiler.Decompile();
+			ScriptDecompiler decompiler = new(tool.InstructionEncoding, compiledScriptPackage.Script);
+			(ImmutableArray<UncompiledScriptElement> uncompiledScriptElements, ImmutableDictionary<UncompiledScriptElementInstruction, int> instructionPositions) = decompiler.Decompile();
 
-			ImmutableArray<ImmutableArray<StringToken>> rawStrings = rawScriptPackage.Strings;
-			List<StringTableEntry> plainStringEntries = [];
-			for (int i = 0; i < rawStrings.Length; i++) {
-				ImmutableArray<StringToken> plainTokens = tool.StringGlyphSyntax.Format(rawStrings[i]);
-				plainStringEntries.Add(new(i, plainTokens));
+			ImmutableArray<ImmutableArray<StringToken>> compiledStrings = compiledScriptPackage.Strings;
+			List<StringTableEntry> uncompiledStringEntries = [];
+			for (int i = 0; i < compiledStrings.Length; i++) {
+				ImmutableArray<StringToken> uncompiledTokens = tool.StringGlyphSyntax.Decompile(compiledStrings[i]);
+				uncompiledStringEntries.Add(new(i, uncompiledTokens));
 			}
 
-			Directory.CreateDirectory(Path.GetDirectoryName(plainScriptPath)!);
+			Directory.CreateDirectory(Path.GetDirectoryName(uncompiledScriptPath)!);
 
 			List<Exception> exceptions = [];
 			try {
 				StringBuilder builder = new();
-				tool.PlainStringTableSyntax.Format(builder, [..plainStringEntries]);
-				await File.WriteAllTextAsync(plainStringTablePath, builder.ToString(), new UTF8Encoding(false, true));
+				tool.UncompiledStringTableSyntax.Format(builder, [..uncompiledStringEntries]);
+				await File.WriteAllTextAsync(uncompiledStringTablePath, builder.ToString(), new UTF8Encoding(false, true));
 			} catch (Exception e) {
 				exceptions.Add(e);
 			}
@@ -317,8 +317,8 @@ static class Program {
 				if (tool.GenerateSdb) {
 					sdbBuilder = new();
 				}
-				PlainScriptSyntax.Format(builder, sdbBuilder, instructionPositions, plainScriptElements);
-				await File.WriteAllTextAsync(plainScriptPath, builder.ToString(), new UTF8Encoding(false, true));
+				UncompiledScriptSyntax.Format(builder, sdbBuilder, instructionPositions, uncompiledScriptElements);
+				await File.WriteAllTextAsync(uncompiledScriptPath, builder.ToString(), new UTF8Encoding(false, true));
 				if (tool.GenerateSdb) {
 					await File.WriteAllTextAsync(sdbPath, sdbBuilder!.ToString(), new UTF8Encoding(false, true));
 				}
@@ -329,58 +329,58 @@ static class Program {
 				throw new AggregateException(exceptions);
 			}
 		} catch (Exception e) {
-			Console.Error.WriteLine($"\nError while decompiling {rawScriptPackagePath}: {e}");
+			Console.Error.WriteLine($"\nError while decompiling {compiledScriptPackagePath}: {e}");
 			return false;
 		}
 		return true;
 	}
 
-	static async Task<bool> DecompileStringTable(Tool tool, string plainName) {
-		string rawName = Path.ChangeExtension(plainName, ".mst");
+	static async Task<bool> DecompileStringTable(Tool tool, string uncompiledName) {
+		string compiledName = Path.ChangeExtension(uncompiledName, ".mst");
 
-		string plainPath = Path.Join(tool.RawDirectory, plainName);
-		string rawPath = Path.Join(tool.PlainDirectory, rawName);
+		string uncompiledPath = Path.Join(tool.CompiledDirectory, uncompiledName);
+		string compiledPath = Path.Join(tool.UncompiledDirectory, compiledName);
 
 		try {
-			ImmutableArray<StringTableEntry> rawEntries = await DecodeRawStringTable(tool, plainPath);
+			ImmutableArray<StringTableEntry> compiledEntries = await DecodeCompiledStringTable(tool, uncompiledPath);
 
-			List<StringTableEntry> plainEntries = [];
-			for (int i = 0; i < rawEntries.Length; i++) {
-				StringTableEntry rawEntry = rawEntries[i];
-				ImmutableArray<StringToken> plainTokens = tool.StringGlyphSyntax.Format(rawEntry.Tokens);
-				plainEntries.Add(new(rawEntry.Index, plainTokens));
+			List<StringTableEntry> uncompiledEntries = [];
+			for (int i = 0; i < compiledEntries.Length; i++) {
+				StringTableEntry compiledEntry = compiledEntries[i];
+				ImmutableArray<StringToken> uncompiledTokens = tool.StringGlyphSyntax.Decompile(compiledEntry.Tokens);
+				uncompiledEntries.Add(new(compiledEntry.Index, uncompiledTokens));
 			}
 
-			Directory.CreateDirectory(Path.GetDirectoryName(rawPath)!);
+			Directory.CreateDirectory(Path.GetDirectoryName(compiledPath)!);
 
 			StringBuilder builder = new();
-			tool.PlainStringTableSyntax.Format(builder, [..plainEntries]);
-			await File.WriteAllTextAsync(rawPath, builder.ToString(), new UTF8Encoding(false, true));
+			tool.UncompiledStringTableSyntax.Format(builder, [..uncompiledEntries]);
+			await File.WriteAllTextAsync(compiledPath, builder.ToString(), new UTF8Encoding(false, true));
 		} catch (Exception e) {
-			Console.Error.WriteLine($"\nError while decompiling {plainPath}: {e}");
+			Console.Error.WriteLine($"\nError while decompiling {uncompiledPath}: {e}");
 			return false;
 		}
 		return true;
 	}
 
-	static async Task<ImmutableArray<PlainScriptElement>> ParsePlainScript(Tool tool, string path) {
+	static async Task<ImmutableArray<UncompiledScriptElement>> ParseUncompiledScript(Tool tool, string path) {
 		TextStream stream = await ReadFileText(path);
-		return PlainScriptSyntax.Parse(stream);
+		return UncompiledScriptSyntax.Parse(stream);
 	}
 
-	static async Task<ImmutableArray<StringTableEntry>> ParsePlainStringTable(Tool tool, string path) {
+	static async Task<ImmutableArray<StringTableEntry>> ParseUncompiledStringTable(Tool tool, string path) {
 		TextStream stream = await ReadFileText(path);
-		return tool.PlainStringTableSyntax.Parse(stream);
+		return tool.UncompiledStringTableSyntax.Parse(stream);
 	}
 
-	static async Task<RawScriptPackage> DecodeRawScriptPackage(Tool tool, string path) {
+	static async Task<CompiledScriptPackage> DecodeCompiledScriptPackage(Tool tool, string path) {
 		MemoryStream stream = await ReadFileBytes(path);
-		return tool.RawScriptPackageEncoding.Decode(stream);
+		return tool.CompiledScriptPackageEncoding.Decode(stream);
 	}
 
-	static async Task<ImmutableArray<StringTableEntry>> DecodeRawStringTable(Tool tool, string path) {
+	static async Task<ImmutableArray<StringTableEntry>> DecodeCompiledStringTable(Tool tool, string path) {
 		MemoryStream stream = await ReadFileBytes(path);
-		return tool.RawStringTableEncoding.Decode(stream);
+		return tool.CompiledStringTableEncoding.Decode(stream);
 	}
 
 	static async Task<TextStream> ReadFileText(string path) {

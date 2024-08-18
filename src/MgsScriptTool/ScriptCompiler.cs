@@ -13,8 +13,8 @@ sealed class ScriptCompiler {
 		_instructionEncoding = instructionEncoding;
 	}
 
-	public RawScript Compile(ImmutableArray<PlainScriptElement> elements) {
-		foreach (PlainScriptElement element in elements) {
+	public CompiledScript Compile(ImmutableArray<UncompiledScriptElement> elements) {
+		foreach (UncompiledScriptElement element in elements) {
 			ProcessElement(element);
 		}
 
@@ -37,13 +37,13 @@ sealed class ScriptCompiler {
 		return new([.._stream.ToArray()], [..labels], [..returnLabels]);
 	}
 
-	void ProcessElement(PlainScriptElement part) {
-		switch (part) {
-			case PlainScriptElementInstruction { Value: Instruction instruction }: {
+	void ProcessElement(UncompiledScriptElement element) {
+		switch (element) {
+			case UncompiledScriptElementInstruction { Value: Instruction instruction }: {
 				ProcessInstruction(instruction);
 				break;
 			}
-			case PlainScriptElementLabel { Index: int index }: {
+			case UncompiledScriptElementLabel { Index: int index }: {
 				int offset = (int)_stream.Position;
 				if (_labelTable.ContainsKey(index)) {
 					throw new Exception($"Conflicting label: {index}.");
@@ -51,7 +51,7 @@ sealed class ScriptCompiler {
 				_labelTable[index] = offset;
 				break;
 			}
-			case PlainScriptElementReturnLabel { Index: int index }: {
+			case UncompiledScriptElementReturnLabel { Index: int index }: {
 				int offset = (int)_stream.Position;
 				if (_returnLabelTable.ContainsKey(index)) {
 					throw new Exception($"Conflicting return label: {index}.");
@@ -59,12 +59,12 @@ sealed class ScriptCompiler {
 				_returnLabelTable[index] = offset;
 				break;
 			}
-			case PlainScriptElementRaw { Data: ImmutableArray<byte> raw }: {
-				_stream.Write(raw.AsSpan());
+			case UncompiledScriptElementRaw { Data: ImmutableArray<byte> data }: {
+				_stream.Write(data.AsSpan());
 				break;
 			}
 			default: {
-				throw new NotImplementedException(part.GetType().Name);
+				throw new NotImplementedException(element.GetType().Name);
 			}
 		}
 	}

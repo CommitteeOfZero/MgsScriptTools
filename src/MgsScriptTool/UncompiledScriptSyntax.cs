@@ -4,24 +4,24 @@ using System.Text;
 
 namespace MgsScriptTool;
 
-static class PlainScriptSyntax {
-	public static void Format(StringBuilder builder, StringBuilder? sdbBuilder, ImmutableDictionary<PlainScriptElementInstruction, int> instructionPositions, ImmutableArray<PlainScriptElement> elements) {
-		new PlainScriptFormatter(builder, sdbBuilder, instructionPositions, elements).Format();
+static class UncompiledScriptSyntax {
+	public static void Format(StringBuilder builder, StringBuilder? sdbBuilder, ImmutableDictionary<UncompiledScriptElementInstruction, int> instructionPositions, ImmutableArray<UncompiledScriptElement> elements) {
+		new UncompiledScriptFormatter(builder, sdbBuilder, instructionPositions, elements).Format();
 	}
 
-	public static ImmutableArray<PlainScriptElement> Parse(TextStream reader) {
-		return new PlainScriptParser(reader).Parse();
+	public static ImmutableArray<UncompiledScriptElement> Parse(TextStream reader) {
+		return new UncompiledScriptParser(reader).Parse();
 	}
 
-	sealed class PlainScriptFormatter {
+	sealed class UncompiledScriptFormatter {
 		readonly StringBuilder _builder;
 		readonly StringBuilder? _sdbBuilder;
-		readonly ImmutableDictionary<PlainScriptElementInstruction, int> _instructionPositions;
-		readonly ImmutableArray<PlainScriptElement> _elements;
+		readonly ImmutableDictionary<UncompiledScriptElementInstruction, int> _instructionPositions;
+		readonly ImmutableArray<UncompiledScriptElement> _elements;
 
 		int _row = 1;
 
-		public PlainScriptFormatter(StringBuilder builder, StringBuilder? sdbBuilder, ImmutableDictionary<PlainScriptElementInstruction, int> instructionPositions, ImmutableArray<PlainScriptElement> elements) {
+		public UncompiledScriptFormatter(StringBuilder builder, StringBuilder? sdbBuilder, ImmutableDictionary<UncompiledScriptElementInstruction, int> instructionPositions, ImmutableArray<UncompiledScriptElement> elements) {
 			_builder = builder;
 			_sdbBuilder = sdbBuilder;
 			_instructionPositions = instructionPositions;
@@ -29,14 +29,14 @@ static class PlainScriptSyntax {
 		}
 
 		public void Format() {
-			foreach (PlainScriptElement element in _elements) {
+			foreach (UncompiledScriptElement element in _elements) {
 				FormatElement(element);
 			}
 		}
 
-		void FormatElement(PlainScriptElement genericElement) {
+		void FormatElement(UncompiledScriptElement genericElement) {
 			switch (genericElement) {
-				case PlainScriptElementInstruction { Value: Instruction instruction } element: {
+				case UncompiledScriptElementInstruction { Value: Instruction instruction } element: {
 					string s = FormatInstruction(instruction);
 					if (_sdbBuilder is not null) {
 						int position = _instructionPositions[element];
@@ -45,20 +45,20 @@ static class PlainScriptSyntax {
 					Append($"\t{s}\n");
 					break;
 				}
-				case PlainScriptElementLabel { Index: int index }: {
+				case UncompiledScriptElementLabel { Index: int index }: {
 					Append($"{index}");
 					Append(":");
 					Append("\n");
 					break;
 				}
-				case PlainScriptElementReturnLabel { Index: int index }: {
+				case UncompiledScriptElementReturnLabel { Index: int index }: {
 					Append("*");
 					Append($"{index}");
 					Append(":");
 					Append("\n");
 					break;
 				}
-				case PlainScriptElementError { Position: int position, Error: Exception error }: {
+				case UncompiledScriptElementError { Position: int position, Error: Exception error }: {
 					string message = error.ToString().ReplaceLineEndings("\n");
 					message = $"An error has occurred at 0x{position:X}: {message}";
 					foreach (string line in message.Split('\n')) {
@@ -66,23 +66,23 @@ static class PlainScriptSyntax {
 					}
 					break;
 				}
-				case PlainScriptElementComment { Text: string text }: {
+				case UncompiledScriptElementComment { Text: string text }: {
 					foreach (string line in text.ReplaceLineEndings("\n").Split('\n')) {
 						Append($"// {line}\n");
 					}
 					break;
 				}
-				case PlainScriptElementRaw { Data: ImmutableArray<byte> raw }: {
-					for (int i = 0; i < raw.Length; i++) {
+				case UncompiledScriptElementRaw { Data: ImmutableArray<byte> data }: {
+					for (int i = 0; i < data.Length; i++) {
 						if (i % 16 == 0) {
 							if (i > 0) {
 								Append("\n");
 							}
 							Append("\thex ");
 						}
-						Append($" {raw[i]:X02}");
+						Append($" {data[i]:X02}");
 					}
-					if (raw.Length > 0) {
+					if (data.Length > 0) {
 						Append("\n");
 					}
 					break;
@@ -121,35 +121,35 @@ static class PlainScriptSyntax {
 		}
 	}
 
-	sealed class PlainScriptParser {
+	sealed class UncompiledScriptParser {
 		readonly TextStream _reader;
 
-		public PlainScriptParser(TextStream stream) {
+		public UncompiledScriptParser(TextStream stream) {
 			_reader = stream;
 		}
 
-		public ImmutableArray<PlainScriptElement> Parse() {
-			List<PlainScriptElement> parts = [];
+		public ImmutableArray<UncompiledScriptElement> Parse() {
+			List<UncompiledScriptElement> elements = [];
 			ParseUtils.SkipSpaceComments(_reader);
 			while (_reader.Has(0)) {
-				parts.Add(ParsePart());
+				elements.Add(ParseElement());
 				ParseUtils.SkipSpaceComments(_reader);
 			}
-			return [..parts];
+			return [..elements];
 		}
 
-		PlainScriptElement ParsePart() {
+		UncompiledScriptElement ParseElement() {
 			char ch = _reader.Peek(0);
 			if (IsInstructionNameStart(ch)) {
 				string name = ParseInstructionName();
 				switch (name) {
 					case "hex": {
-						return new PlainScriptElementRaw(ParseRaw());
+						return new UncompiledScriptElementRaw(ParseRaw());
 					}
 					default: {
 						ImmutableArray<ExpressionNode> operands = ParseOperands();
 						Instruction instruction = new(name, operands);
-						return new PlainScriptElementInstruction(instruction);
+						return new UncompiledScriptElementInstruction(instruction);
 					}
 				}
 			} else if (IsDigit(ch)) {
@@ -161,7 +161,7 @@ static class PlainScriptSyntax {
 				if (_reader.Has(0) && !ParseUtils.TrySkip(_reader, '\n')) {
 					throw new ParsingException($"Unexpected character: {_reader.Peek(0)}.");
 				}
-				return new PlainScriptElementLabel(index);
+				return new UncompiledScriptElementLabel(index);
 			} else if (ParseUtils.TrySkip(_reader, '*')) {
 				if (!IsDigit(_reader.Peek(0))) {
 					throw new ParsingException("Expected a number.");
@@ -174,7 +174,7 @@ static class PlainScriptSyntax {
 				if (_reader.Has(0) && !ParseUtils.TrySkip(_reader, '\n')) {
 					throw new ParsingException("Unexpected character: {_reader.Peek(0)}.");
 				}
-				return new PlainScriptElementReturnLabel(index);
+				return new UncompiledScriptElementReturnLabel(index);
 			} else if (ch == '$') {
 				return ParseEvalInstruction();
 			} else {
@@ -216,7 +216,7 @@ static class PlainScriptSyntax {
 			return [..buffer.ToArray()];
 		}
 
-		PlainScriptElementInstruction ParseEvalInstruction() {
+		UncompiledScriptElementInstruction ParseEvalInstruction() {
 			ExpressionNode expression = ExpressionSyntax.Parse(_reader);
 			ParseUtils.SkipHSpaceComments(_reader);
 			if (!ParseUtils.TrySkip(_reader, ';')) {

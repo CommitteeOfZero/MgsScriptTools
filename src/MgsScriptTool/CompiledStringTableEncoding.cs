@@ -3,28 +3,28 @@ using System.Text;
 
 namespace MgsScriptTool;
 
-sealed class RawStringTableEncoding {
+sealed class CompiledStringTableEncoding {
 	static readonly ImmutableArray<byte> Magic = [..Encoding.Latin1.GetBytes("MES\0")];
 
-	readonly RawStringEncoding _stringEncoding;
+	readonly CompiledStringEncoding _stringEncoding;
 
-	public RawStringTableEncoding(RawStringEncoding stringEncoding) {
+	public CompiledStringTableEncoding(CompiledStringEncoding stringEncoding) {
 		_stringEncoding = stringEncoding;
 	}
 
 	public void Encode(Stream stream, ImmutableArray<StringTableEntry> entries) {
-		new RawStringTableEncoder(_stringEncoding, stream).Encode(entries);
+		new CompiledStringTableEncoder(_stringEncoding, stream).Encode(entries);
 	}
 
 	public ImmutableArray<StringTableEntry> Decode(Stream stream) {
-		return new RawStringTableDecoder(_stringEncoding, stream).Decode();
+		return new CompiledStringTableDecoder(_stringEncoding, stream).Decode();
 	}
 
-	sealed class RawStringTableEncoder {
-		readonly RawStringEncoding _stringEncoding;
+	sealed class CompiledStringTableEncoder {
+		readonly CompiledStringEncoding _stringEncoding;
 		readonly Stream _stream;
 
-		public RawStringTableEncoder(RawStringEncoding stringEncoding, Stream stream) {
+		public CompiledStringTableEncoder(CompiledStringEncoding stringEncoding, Stream stream) {
 			_stringEncoding = stringEncoding;
 			_stream = stream;
 		}
@@ -67,11 +67,11 @@ sealed class RawStringTableEncoding {
 		}
 	}
 
-	sealed class RawStringTableDecoder {
-		readonly RawStringEncoding _stringEncoding;
+	sealed class CompiledStringTableDecoder {
+		readonly CompiledStringEncoding _stringEncoding;
 		readonly Stream _stream;
 
-		public RawStringTableDecoder(RawStringEncoding stringEncoding, Stream stream) {
+		public CompiledStringTableDecoder(CompiledStringEncoding stringEncoding, Stream stream) {
 			_stringEncoding = stringEncoding;
 			_stream = stream;
 		}
@@ -91,7 +91,7 @@ sealed class RawStringTableEncoding {
 			int entryCount = ReadInt();
 			int stringsStart = ReadInt();
 
-			List<RawStringTableEntryHeader> headers = [];
+			List<CompiledStringTableEntryHeader> headers = [];
 			for (int i = 0; i < entryCount; i++) {
 				int index = ReadInt();
 				int offset = ReadInt();
@@ -142,11 +142,11 @@ sealed class RawStringTableEncoding {
 			return (int)_stream.Position;
 		}
 
-		sealed class RawStringTableEntryHeader {
+		sealed class CompiledStringTableEntryHeader {
 			public readonly int Index;
 			public readonly int Offset;
 
-			public RawStringTableEntryHeader(int id, int offset) {
+			public CompiledStringTableEntryHeader(int id, int offset) {
 				Index = id;
 				Offset = offset;
 			}

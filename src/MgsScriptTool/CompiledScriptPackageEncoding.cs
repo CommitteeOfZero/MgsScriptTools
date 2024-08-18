@@ -3,33 +3,33 @@ using System.Text;
 
 namespace MgsScriptTool;
 
-sealed class RawScriptPackageEncoding {
+sealed class CompiledScriptPackageEncoding {
 	static readonly ImmutableArray<byte> Magic = [..Encoding.ASCII.GetBytes("SC3\0")];
 
-	readonly RawStringEncoding _stringEncoding;
+	readonly CompiledStringEncoding _stringEncoding;
 
-	public RawScriptPackageEncoding(RawStringEncoding stringEncoding) {
+	public CompiledScriptPackageEncoding(CompiledStringEncoding stringEncoding) {
 		_stringEncoding = stringEncoding;
 	}
 
-	public void Encode(Stream stream, RawScriptPackage package) {
-		new RawScriptPackageEncoder(_stringEncoding, stream).Encode(package);
+	public void Encode(Stream stream, CompiledScriptPackage package) {
+		new CompiledScriptPackageEncoder(_stringEncoding, stream).Encode(package);
 	}
 
-	public RawScriptPackage Decode(Stream stream) {
-		return new RawScriptPackageDecoder(_stringEncoding, stream).Decode();
+	public CompiledScriptPackage Decode(Stream stream) {
+		return new CompiledScriptPackageDecoder(_stringEncoding, stream).Decode();
 	}
 
-	sealed class RawScriptPackageEncoder {
-		readonly RawStringEncoding _stringEncoding;
+	sealed class CompiledScriptPackageEncoder {
+		readonly CompiledStringEncoding _stringEncoding;
 		readonly Stream _stream;
 
-		public RawScriptPackageEncoder(RawStringEncoding stringEncoding, Stream stream) {
+		public CompiledScriptPackageEncoder(CompiledStringEncoding stringEncoding, Stream stream) {
 			_stringEncoding = stringEncoding;
 			_stream = stream;
 		}
 
-		public void Encode(RawScriptPackage package) {
+		public void Encode(CompiledScriptPackage package) {
 			int codeOffset = 12 + package.Script.Labels.Length * 4;
 			int padding = (4 - package.Script.Code.Length % 4) % 4;
 			int stringAddressesStart = codeOffset + package.Script.Code.Length + padding;
@@ -91,16 +91,16 @@ sealed class RawScriptPackageEncoding {
 		}
 	}
 
-	sealed class RawScriptPackageDecoder {
-		readonly RawStringEncoding _stringEncoding;
+	sealed class CompiledScriptPackageDecoder {
+		readonly CompiledStringEncoding _stringEncoding;
 		readonly Stream _stream;
 
-		public RawScriptPackageDecoder(RawStringEncoding stringEncoding, Stream stream) {
+		public CompiledScriptPackageDecoder(CompiledStringEncoding stringEncoding, Stream stream) {
 			_stringEncoding = stringEncoding;
 			_stream = stream;
 		}
 
-		public RawScriptPackage Decode() {
+		public CompiledScriptPackage Decode() {
 			Span<byte> magic = stackalloc byte[Magic.Length];
 			Read(magic);
 			if (!magic.SequenceEqual(Magic.AsSpan())) {
@@ -153,7 +153,7 @@ sealed class RawScriptPackageEncoding {
 				strings.Add(_stringEncoding.Decode(_stream));
 			}
 
-			RawScript script = new([..code], [..labels], [..returnLabels]);
+			CompiledScript script = new([..code], [..labels], [..returnLabels]);
 			return new(script, [..strings]);
 		}
 
