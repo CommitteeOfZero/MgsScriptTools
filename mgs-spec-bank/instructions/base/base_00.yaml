@@ -123,6 +123,11 @@
   operands: [expr, expr]
   flags: []
 
+- pattern: 00 15 00
+  name: KeyOffJump
+  operands: [expr, expr, int16]
+  flags: []
+
 - pattern: 00 15 01
   name: KeyOnJump
   operands: [expr, expr, int16]
@@ -133,15 +138,20 @@
   operands: [expr, expr, int16]
   flags: []
 
-- pattern: 80 18
-  name: _MemberWrite
-  operands: [int8, int32]
-  flags: [~new_memberwrite]
+- pattern: 00 16 02
+  name: Unk_00_16_02
+  operands: [expr, expr]
+  flags: []
+
+- pattern: 00 17 02
+  name: Unk_00_17_02
+  operands: [expr, expr, expr]
+  flags: []
 
 - pattern: 00 18
   name: _MemberWrite
   operands: [expr, expr]
-  flags: [new_memberwrite]
+  flags: []
 
 - pattern: 00 19
   name: ThreadControl

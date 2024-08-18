@@ -1,0 +1,4 @@
+- pattern: 80 18
+  name: _MemberWriteFast
+  operands: [int8, int32]
+  flags: []

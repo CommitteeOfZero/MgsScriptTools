@@ -68,6 +68,46 @@
   operands: []
   flags: []
 
+- pattern: 01 08 0A
+  name: MesSync_0A
+  operands: [expr]
+  flags: []
+
+- pattern: 01 08 0B
+  name: MesSync_0B
+  operands: []
+  flags: []
+
+- pattern: 01 08 0C
+  name: MesSync_0C
+  operands: []
+  flags: []
+
+- pattern: 01 08 0D
+  name: MesSync_0D
+  operands: []
+  flags: []
+
+- pattern: 01 08 0E
+  name: MesSync_0E
+  operands: []
+  flags: []
+
+- pattern: 01 08 14
+  name: MesSync_14
+  operands: []
+  flags: []
+
+- pattern: 01 09 00
+  name: MesSetSavePoint
+  operands: []
+  flags: [~return_labels]
+
+- pattern: 01 09 01
+  name: MesSSetSavePoint
+  operands: [expr]
+  flags: [~return_labels]
+
 - pattern: 01 09 00
   name: MesSetSavePointRL
   operands: [int16]
@@ -471,9 +511,24 @@
 - pattern: 01 27 01
   name: MoviePause
   operands: []
-  flags: [movie_01_27]
+  flags: [movie_01_27, ~game_chlcc]
+
+- pattern: 01 27 01 00
+  name: Unk_01_27_01_00
+  operands: [expr, expr]
+  flags: [game_chlcc]
+
+- pattern: 01 27 05 00
+  name: Unk_01_27_05_00
+  operands: [expr, expr]
+  flags: []
 
 - pattern: 01 28 00
   name: Unk_01_28_00
+  operands: []
+  flags: []
+
+- pattern: 01 28 02
+  name: Unk_01_28_02
   operands: []
   flags: []

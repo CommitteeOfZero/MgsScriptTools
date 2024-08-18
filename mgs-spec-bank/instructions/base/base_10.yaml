@@ -143,6 +143,26 @@
   operands: []
   flags: [~bgrelease]
 
+- pattern: 10 0F 00
+  name: EVload
+  operands: [expr, expr, expr]
+  flags: [new_ev]
+
+- pattern: 10 10 00
+  name: EVinit
+  operands: [expr, expr]
+  flags: [new_ev]
+
+- pattern: 10 11 00
+  name: EVset
+  operands: [expr, expr]
+  flags: [new_ev]
+
+- pattern: 10 12 00
+  name: EVend
+  operands: []
+  flags: [new_ev]
+
 - pattern: 10 13 00
   name: OptionInit
   operands: []
@@ -166,6 +186,11 @@
 - pattern: 10 14 01
   name: SystemDataAllReset
   operands: []
+  flags: []
+
+- pattern: 10 17
+  name: Unk_10_17
+  operands: [expr]
   flags: []
 
 - pattern: 10 1A 00
@@ -258,6 +283,11 @@
   operands: []
   flags: []
 
+- pattern: 10 22 01
+  name: AutoSave_01
+  operands: []
+  flags: []
+
 - pattern: 10 22 02
   name: AutoSave_02
   operands: []
@@ -287,6 +317,11 @@
   name: AutoSaveSetSavePointRL  # placeholder name
   operands: [int16]
   flags: [return_labels]
+
+- pattern: 10 22 14
+  name: AutoSave_14
+  operands: []
+  flags: []
 
 - pattern: 10 22 FF
   name: AutoSave_FF
@@ -396,6 +431,11 @@
 - pattern: 10 2D
   name: AchChkTitle
   operands: []
+  flags: []
+
+- pattern: 10 2E
+  name: Unk_10_2E
+  operands: [expr]
   flags: []
 
 - pattern: 10 30 00

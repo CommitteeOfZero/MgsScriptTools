@@ -2,6 +2,7 @@ instructions:
 - instructions/base/base_00.yaml
 - instructions/base/base_01.yaml
 - instructions/base/base_10.yaml
+- instructions/base/base_80.yaml
 - instructions/base/base_extra.yaml
 - instructions/11eyes.yaml
 - instructions/chaos_head_noah.yaml
@@ -17,6 +18,7 @@ stringtags:
 - stringtags/famicom_tantei_club.yaml
 
 charset:
+  chaos_head_lcc: charset/chaos_head_lcc.json
   chaos_head_noah: charset/chaos_head_noah.json
   chaos_head_noah-extended: charset/chaos_head_noah-extended.json
   famicom_tantei_club: charset/famicom_tantei_club.json
@@ -45,6 +47,30 @@ flags:
     mescls: yes
     movie_01_27: yes
     return_labels: yes
+
+  chaos_head_lcc_ps3:
+    game_chlcc: yes
+
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_createsurface: yes
+    new_ev: yes
+    new_playmovie: yes
+    new_presence: yes
+    new_save: yes
+    new_scriptload: no
+    new_seplay: yes
+    new_setdic: yes
+    new_setevflag: no
+    new_sseplay: no
+    new_titlemenu: no
+    new_voiceplay: no
+    new_voicestop: no
+
+    chaload: yes
+    mescls: yes
+    movie_01_27: yes
+    return_labels: no
 
   chaos_head_switch:
     game_chn: yes
