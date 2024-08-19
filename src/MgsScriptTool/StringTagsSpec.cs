@@ -12,18 +12,18 @@ sealed class StringTagsSpec {
 				throw new Exception($"Duplicate string tag name: {spec.Name}.");
 			}
 			if (_byOpcode.ContainsKey(spec.Opcode)) {
-				throw new Exception($"Duplicate string tag opcode: {spec.Opcode}.");
+				throw new Exception($"Duplicate string tag opcode: 0x{spec.Opcode:X02}.");
 			}
 			_byName[spec.Name] = spec;
 			_byOpcode[spec.Opcode] = spec;
 		}
 	}
 
-	public StringTagSpec GetSpec(string name) {
+	public StringTagSpec? GetSpec(string name) {
 		return _byName[name];
 	}
 
-	public StringTagSpec GetSpec(int opcode) {
+	public StringTagSpec? GetSpec(int opcode) {
 		return _byOpcode[opcode];
 	}
 }

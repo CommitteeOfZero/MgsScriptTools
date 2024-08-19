@@ -52,7 +52,10 @@ sealed class CompiledStringEncoding {
 		}
 
 		void EncodeTag(StringTokenTag tag) {
-			StringTagSpec spec = _spec.GetSpec(tag.Name);
+			StringTagSpec? spec = _spec.GetSpec(tag.Name);
+			if (spec is null) {
+				throw new Exception($"Unrecognized string tag name: {tag.Name}.");
+			}
 			PutByte((byte)spec.Opcode);
 			for (int i = 0; i < spec.Operands.Length; i++) {
 				EncodeOperand(spec.Operands[i], tag.Operands[i]);
@@ -138,7 +141,10 @@ sealed class CompiledStringEncoding {
 
 		StringTokenTag DecodeTag() {
 			byte opcode = GetByte();
-			StringTagSpec spec = _spec.GetSpec(opcode);
+			StringTagSpec? spec = _spec.GetSpec(opcode);
+			if (spec is null) {
+				throw new Exception($"Unrecognized string tag opcode: 0x{opcode:X02}.");
+			}
 			List<ExpressionNode> operands = [];
 			for (int i = 0; i < spec.Operands.Length; i++) {
 				operands.Add(DecodeOperand(spec.Operands[i]));
