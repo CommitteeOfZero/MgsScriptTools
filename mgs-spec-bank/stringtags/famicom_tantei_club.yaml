@@ -8,6 +8,16 @@
   operands: []
   flags: [game_ftc]
 
+- opcode: 0x22
+  name: "dynamicName"
+  operands: []
+  flags: [game_ftc]
+
+- opcode: 0x24
+  name: "playerAnswer"
+  operands: []
+  flags: [game_ftc]
+
 - opcode: 0x30
   name: "unk_30"
   operands: []
