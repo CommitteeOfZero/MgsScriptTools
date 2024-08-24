@@ -20,10 +20,10 @@ sealed class StringTagsSpec {
 	}
 
 	public StringTagSpec? GetSpec(string name) {
-		return _byName[name];
+		return _byName.GetValueOrDefault(name);
 	}
 
 	public StringTagSpec? GetSpec(int opcode) {
-		return _byOpcode[opcode];
+		return _byOpcode.GetValueOrDefault(opcode);
 	}
 }
