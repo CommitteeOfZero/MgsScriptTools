@@ -1,0 +1,52 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags
+    branches:
+      - '**'  # Triggers on all branches
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use a single runner
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0'
+
+    - name: Git Version
+      id: version
+      uses: codacy/git-version@2.5.4
+      with:
+          prefix: v
+
+    - name: Build
+      run: |
+        dotnet publish --configuration Release --runtime win-x64 --no-self-contained --output publish/magesscripttool-windows-amd64 src/MagesScriptTool
+        dotnet publish --configuration Release --runtime linux-x64 --no-self-contained --output publish/magesscripttool-linux-amd64 src/MagesScriptTool
+        pushd publish/magesscripttool-windows-amd64
+        zip -r -j ../magesscripttool-windows-amd64.zip *
+        popd
+        pushd publish/magesscripttool-linux-amd64
+        zip -r ../magesscripttool-linux-amd64.zip *
+        popd
+        pushd mgs-spec-bank
+        zip -r ../publish/mgs-spec-bank.zip *
+        popd
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          publish/magesscripttool-linux-amd64.zip
+          publish/magesscripttool-windows-amd64.zip
+          publish/mgs-spec-bank.zip
+        tag_name: ${{ steps.version.outputs.version }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
