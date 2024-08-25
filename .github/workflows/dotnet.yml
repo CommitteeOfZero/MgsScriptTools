@@ -23,6 +23,8 @@ jobs:
     - name: Git Version
       id: version
       uses: codacy/git-version@2.5.4
+      with:
+          prefix: v
 
     - name: Build
       run: |
