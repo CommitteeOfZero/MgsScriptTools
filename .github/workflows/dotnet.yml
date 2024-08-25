@@ -4,10 +4,12 @@ on:
   push:
     tags:
       - 'v*.*.*'  # Triggers on version tags
+    branches:
+      - '**'  # Triggers on all branches
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest  # Use a single runner
 
     steps:
     - name: Checkout code
@@ -18,21 +20,31 @@ jobs:
       with:
         dotnet-version: '8.0'
 
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Git Version
+      id: version
+      uses: codacy/git-version@2.5.4
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore
-
-    - name: Publish
-      run: dotnet publish --configuration Release --no-build --output ./output
-
-    - name: Zip Files
-      run: Compress-Archive -Path ./output/*  mgsscripttools.zip
+      run: |
+        dotnet publish --configuration Release --runtime win-x64 --no-self-contained --output publish/magesscripttool-windows-amd64 src/MagesScriptTool
+        dotnet publish --configuration Release --runtime linux-x64 --no-self-contained --output publish/magesscripttool-linux-amd64 src/MagesScriptTool
+        pushd publish/magesscripttool-windows-amd64
+        zip -r -j ../magesscripttool-windows-amd64.zip *
+        popd
+        pushd publish/magesscripttool-linux-amd64
+        zip -r ../magesscripttool-linux-amd64.zip *
+        popd
+        pushd mgs-spec-bank
+        zip -r ../publish/mgs-spec-bank.zip *
+        popd
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        files: mgsscripttools.zip
+        files: |
+          publish/magesscripttool-linux-amd64.zip
+          publish/magesscripttool-windows-amd64.zip
+          publish/mgs-spec-bank.zip
+        tag_name: ${{ steps.version.outputs.version }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
