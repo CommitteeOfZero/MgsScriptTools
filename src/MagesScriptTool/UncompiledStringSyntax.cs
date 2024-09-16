@@ -32,20 +32,27 @@ sealed class UncompiledStringSyntax {
 
 		void FormatToken(StringToken token) {
 			switch (token) {
-				case StringTokenChunk { Value: string chunk, Italic: bool italic }: {
-					chunk = chunk.Replace("\\", "\\\\").Replace("〔", "\\〔").Replace("〕", "\\〕");
-					if (italic) {
-						chunk = $"<i>{chunk}</i>";
+				case StringTokenRune rune: {
+					if (rune.Style == GlyphStyle.Italic) {
+						_builder.Append("<i>");
 					}
-					_builder.Append(chunk);
+					_builder.Append(rune.Value.Value switch {
+						'\\' => "\\\\",
+						'〔' => "\\〔",
+						'〕' => "\\〕",
+						_ => rune.Value.ToString(),
+					});
+					if (rune.Style == GlyphStyle.Italic) {
+						_builder.Append("</i>");
+					}
 					break;
 				}
 				case StringTokenTag tag: {
 					FormatTag(tag);
 					break;
 				}
-				case StringTokenGlyph { Value: int index }: {
-					_builder.Append($"\\glyph:0x{index:X04};");
+				case StringTokenUnit { Value: int unit }: {
+					_builder.Append($"\\unit:{unit};");
 					break;
 				}
 				default: {
@@ -94,7 +101,7 @@ sealed class UncompiledStringSyntax {
 
 		public ImmutableArray<StringToken> Parse() {
 			List<StringToken> tokens = [];
-			bool italic = false;
+			GlyphStyle style = GlyphStyle.Normal;
 			while (_reader.Has(0) && _reader.Peek(0) != '\n') {
 				if (_reader.Peek(0) == '〔') {
 					_reader.Next();
@@ -105,17 +112,16 @@ sealed class UncompiledStringSyntax {
 				} else if (_reader.Peek(0) == '\\') {
 					if (_reader.Has(1) && _reader.Peek(1) is '\\' or '〔' or '〕') {
 						_reader.Skip(1);
-						tokens.Add(new StringTokenChunk(_reader.Next().ToString(), italic));
+						tokens.Add(new StringTokenRune(_reader.NextRune(), style));
 					} else {
 						tokens.Add(ParseTag());
 					}
 				} else if (ParseUtils.TrySkip(_reader, "<i>")) {
-					italic = true;
+					style = GlyphStyle.Italic;
 				} else if (ParseUtils.TrySkip(_reader, "</i>")) {
-					italic = false;
+					style = GlyphStyle.Normal;
 				} else {
-					char ch = _reader.Next();
-					tokens.Add(new StringTokenChunk(ch.ToString(), italic));
+					tokens.Add(new StringTokenRune(_reader.NextRune(), style));
 				}
 			}
 			return [..tokens];
@@ -143,11 +149,11 @@ sealed class UncompiledStringSyntax {
 				throw new ParsingException("Expected ':' or ';'.");
 			}
 
-			if (name == "glyph") {
+			if (name == "unit") {
 				if (operands.Length != 1) {
 					throw new ParsingException("Expected a single operand.");
 				}
-				return new StringTokenGlyph(operands[0].GetInt());
+				return new StringTokenUnit(operands[0].GetInt());
 			}
 
 			return new StringTokenTag(name, operands);

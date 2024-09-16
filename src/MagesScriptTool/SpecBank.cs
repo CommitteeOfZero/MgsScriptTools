@@ -45,29 +45,71 @@ class SpecBank {
 
 	public ImmutableArray<GlyphSpec> GetGlyphSpecs(string key) {
 		string path = _index.Charset[key];
-		string text = File.ReadAllText(Path.Join(_path, path), new UTF8Encoding(false, true));
-		using JsonDocument document = JsonDocument.Parse(text)!;
+		using JsonDocument document = JsonDocument.Parse(
+			File.ReadAllText(Path.Join(_path, path), new UTF8Encoding(false, true))
+		);
 		List<GlyphSpec> glyphs = [];
-		foreach (JsonProperty prop in document.RootElement.EnumerateObject()) {
-			int index = int.Parse(prop.Name, NumberStyles.HexNumber);
-			GlyphSpec glyph = ToGlyphSpec(prop.Value, index);
-			glyphs.Add(glyph);
+		foreach (JsonElement groupJson in document.RootElement.EnumerateArray()) {
+			glyphs.AddRange(toGlyphSpecs(groupJson));
 		}
 		return [..glyphs];
-	}
 
-	static GlyphSpec ToGlyphSpec(JsonElement json, int index) {
-		string text = json.GetProperty("text").GetString()!;
-		bool regular = true;
-		bool italic = false;
-		if (json.TryGetProperty("italic", out JsonElement italicJson)) {
-			regular = false;
-			italic = italicJson.GetBoolean();
+		static ImmutableArray<GlyphSpec> toGlyphSpecs(JsonElement json) {
+			JsonElement parametersJson = json.GetProperty("parameters").GetProperty("encoding");
+			if (parametersJson.ValueKind == JsonValueKind.Null) {
+				return [];
+			}
+			GlyphStyle? style = toStyle(parametersJson.GetProperty("style"));
+
+			List<GlyphSpec> glyphs = [];
+			foreach (JsonElement glyphJson in json.GetProperty("glyphs").EnumerateArray()) {
+				ImmutableArray<int> units = toUnits(glyphJson.GetProperty("units"));
+				string text = toText(glyphJson.GetProperty("text"));
+				glyphs.Add(new(units, text, style));
+			}
+			return [..glyphs];
 		}
-		if (json.TryGetProperty("regular", out JsonElement regularJson)) {
-			regular = regularJson.GetBoolean();
+
+		static GlyphStyle? toStyle(JsonElement json) {
+			switch (json.ValueKind) {
+				case JsonValueKind.Null: {
+					return null;
+				}
+				case JsonValueKind.String: {
+					string value = json.GetString()!;
+					return value switch {
+						"normal" => GlyphStyle.Normal,
+						"italic" => GlyphStyle.Italic,
+						_ => throw new NotImplementedException($"'{value}' is not implemented."),
+					};
+				}
+				default: {
+					throw new NotImplementedException($"{json.ValueKind} is not implemented.");
+				}
+			}
 		}
-		return new(index, text, regular, italic);
+
+		static ImmutableArray<int> toUnits(JsonElement json) {
+			List<int> units = [];
+			foreach (JsonElement unitJson in json.EnumerateArray()) {
+				units.Add(unitJson.GetInt32());
+			}
+			return [..units];
+		}
+
+		static string toText(JsonElement json) {
+			switch (json.ValueKind) {
+				case JsonValueKind.String: {
+					return json.GetString()!;
+				}
+				case JsonValueKind.Object: {
+					return json.GetProperty("encoding").GetString()!;
+				}
+				default: {
+					throw new NotImplementedException($"{json.ValueKind} is not implemented.");
+				}
+			}
+		}
 	}
 
 	public ImmutableDictionary<string, bool> GetFlags(string key) {

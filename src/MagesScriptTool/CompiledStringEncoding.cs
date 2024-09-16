@@ -41,8 +41,8 @@ sealed class CompiledStringEncoding {
 					EncodeTag(token);
 					break;
 				}
-				case StringTokenGlyph token: {
-					EncodeGlyph(token);
+				case StringTokenUnit token: {
+					EncodeUnit(token);
 					break;
 				}
 				default: {
@@ -62,8 +62,8 @@ sealed class CompiledStringEncoding {
 			}
 		}
 
-		void EncodeGlyph(StringTokenGlyph glyph) {
-			int value = glyph.Value;
+		void EncodeUnit(StringTokenUnit unit) {
+			int value = unit.Value;
 			PutByte((byte)((value >> 8) & 0x7F | 0x80));
 			PutByte((byte)((value >> 0) & 0xFF));
 		}
@@ -135,7 +135,7 @@ sealed class CompiledStringEncoding {
 			if ((b & 0x80) == 0) {
 				return DecodeTag();
 			} else {
-				return DecodeGlyph();
+				return DecodeUnit();
 			}
 		}
 
@@ -152,7 +152,7 @@ sealed class CompiledStringEncoding {
 			return new(spec.Name, [..operands]);
 		}
 
-		StringTokenGlyph DecodeGlyph() {
+		StringTokenUnit DecodeUnit() {
 			int value = 0;
 			value |= (GetByte() & 0x7F) << 8;
 			value |= (GetByte() & 0xFF) << 0;

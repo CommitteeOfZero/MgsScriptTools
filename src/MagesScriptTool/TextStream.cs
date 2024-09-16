@@ -1,7 +1,10 @@
+using System.Collections.Immutable;
+using System.Text;
+
 namespace MagesScriptTool;
 
 sealed class TextStream {
-	readonly string _data;
+	readonly ImmutableArray<Rune> _data;
 	readonly string? _sourceName;
 
 	int _offset = 0;
@@ -9,15 +12,19 @@ sealed class TextStream {
 	int _line = 1;
 
 	public TextStream(string data, string? sourceName = null) {
-		_data = data.ReplaceLineEndings("\n");
+		_data = [..data.ReplaceLineEndings("\n").EnumerateRunes()];
 		_sourceName = sourceName;
 	}
 
-	public char Peek(int skip) {
+	public Rune PeekRune(int skip) {
 		if (!Has(skip)) {
-			return '\0';
+			return (Rune)'\0';
 		}
 		return _data[_offset + skip];
+	}
+
+	public char Peek(int skip) {
+		return checked((char)PeekRune(skip).Value);
 	}
 
 	public void Skip(int offset) {
@@ -26,18 +33,22 @@ sealed class TextStream {
 		}
 	}
 
-	public char Next() {
+	public Rune NextRune() {
 		if (!Has(0)) {
 			throw new ParsingException("Attempted to read past the end of the stream.");
 		}
-		char value = _data[_offset++];
-		if (value != '\n') {
+		Rune value = _data[_offset++];
+		if (value != (Rune)'\n') {
 			_column++;
 		} else {
 			_column = 1;
 			_line++;
 		}
 		return value;
+	}
+
+	public char Next() {
+		return checked((char)NextRune().Value);
 	}
 
 	public bool Has(int offset) {
