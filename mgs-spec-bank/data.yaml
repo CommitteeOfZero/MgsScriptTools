@@ -9,6 +9,9 @@ instructions:
 - instructions/memories_off_6.yaml
 - instructions/memories_off_7.yaml
 - instructions/memories_off_8.yaml
+- instructions/chaos_child_lcc.yaml
+- instructions/chaos_child.yaml
+- instructions/chaos_head_lcc.yaml
 
 macros:
 - macros/chaos_head_noah.yaml
@@ -43,7 +46,9 @@ flags:
     new_sseplay: no
     new_titlemenu: yes
     new_voicestop: yes
+    add_contents: yes
 
+    effyuge: yes
     bgrelease: yes
     chaload: yes
     mescls: yes
@@ -68,7 +73,9 @@ flags:
     new_titlemenu: no
     new_voiceplay: no
     new_voicestop: no
+    add_contents: no
 
+    effyuge: no
     chaload: yes
     mescls: yes
     movie_01_27: yes
@@ -92,7 +99,9 @@ flags:
     new_sseplay: yes
     new_titlemenu: yes
     new_voicestop: yes
+    add_contents: yes
 
+    effyuge: yes
     bgrelease: yes
     chaload: yes
     mescls: yes
@@ -117,7 +126,9 @@ flags:
     new_sseplay: yes
     new_titlemenu: yes
     new_voicestop: yes
+    add_contents: yes
 
+    effyuge: yes
     bgrelease: yes
     chaload: yes
     mescls: yes
@@ -125,24 +136,28 @@ flags:
     return_labels: yes
 
   chaos_child_lcc_ps4:
+    cc_common: yes
     game_cclcc: yes
 
     new_bgmplay: yes
     new_bgmstop: yes
     new_createsurface: yes
-    new_ev: yes
     new_playmovie: yes
     new_presence: yes
+    new_pressstart: yes
     new_save: yes
     new_scriptload: no
     new_seplay: yes
     new_setdic: yes
     new_setevflag: no
     new_sseplay: no
-    new_titlemenu: no
+    new_titlemenu: yes
     new_voiceplay: no
-    new_voicestop: no
+    new_voicestop: yes
+    add_contents: no
+    bgrelease: yes
 
+    effyuge: no
     chaload: yes
     mescls: yes
     movie_01_27: yes
