@@ -138,6 +138,11 @@
   operands: [expr, expr, int16]
   flags: []
 
+- pattern: 00 16 00
+  name: KeyWait_00
+  operands: [expr,expr]
+  flags: []
+
 - pattern: 00 16 02
   name: Unk_00_16_02
   operands: [expr, expr]
@@ -213,29 +218,34 @@
   operands: []
   flags: [new_bgmstop]
 
-- pattern: 00 23 00
-  name: SEplay
-  operands: [expr, expr]
-  flags: [~new_seplay]
-
-- pattern: 00 23 01
-  name: SEplay2
-  operands: [expr, expr]
-  flags: [~new_seplay]
-
-- pattern: 00 23 02
-  name: SEplay3
-  operands: [expr, expr]
-  flags: [~new_seplay]
-
 - pattern: 00 23 00 00
   name: SEplay
   operands: [expr, expr]
   flags: [new_seplay]
 
+- pattern: 00 23 00 01
+  name: SEplay_01
+  operands: [expr, expr]
+  flags: [new_seplay]
+
+- pattern: 00 23 00 02
+  name: SEplay_02
+  operands: []
+  flags: [new_seplay]
+
 - pattern: 00 23 01 00
   name: SEplay2
   operands: [expr, expr]
+  flags: [new_seplay]
+
+- pattern: 00 23 01 01
+  name: SEplay2_01
+  operands: [expr, expr]
+  flags: [new_seplay]
+
+- pattern: 00 23 01 02
+  name: SEplay2_02
+  operands: []
   flags: [new_seplay]
 
 - pattern: 00 23 02 00
@@ -820,13 +830,18 @@
   flags: [~new_pressstart]
 
 - pattern: 00 50 00
-  name: PressStart
-  operands: [expr, expr]
+  name: PressStart_00
+  operands: [int16, int16]
+  flags: [new_pressstart]
+
+- pattern: 00 50 03
+  name: PressStart_03
+  operands: [int16]
   flags: [new_pressstart]
 
 - pattern: 00 50 05
   name: PressStart_05
-  operands: [expr, expr]
+  operands: []
   flags: [new_pressstart]
 
 - pattern: 00 50 07
@@ -879,12 +894,32 @@
   operands: [int16]
   flags: []
 
+- pattern: 00 5C
+  name: FlagOffReturn
+  operands: [int8,expr]
+  flags: []
+
 - pattern: 00 5E
   name: Unk_00_5E
   operands: [expr]
   flags: []
 
+- pattern: 00 5F
+  name: PackFileAddBind
+  operands: []
+  flags: [~add_contents]
+
+- pattern: 00 5F 01
+  name: AddContentsCheckDownloadComp
+  operands: [expr]
+  flags: [add_contents]
+
+- pattern: 00 5F 02
+  name: AddContentsOpenContents
+  operands: [expr]
+  flags: [add_contents]
+
 - pattern: 00 5F 03
   name: AddContentsCloseContents
   operands: []
-  flags: []
+  flags: [add_contents]
