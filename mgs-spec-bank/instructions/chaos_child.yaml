@@ -1,0 +1,179 @@
+- pattern: 10 37 01
+  name: MapInit
+  operands: []
+  flags: [cc_common]
+
+- pattern: 10 37 02
+  name: MapSetFadein
+  operands: [expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 03
+  name: MapSetGroup
+  operands: [expr,expr,expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 04
+  name: MapSetFadeout
+  operands: [expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 05
+  name: MapSetDisp
+  operands: [expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 06
+  name: MapSetHide
+  operands: [expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 07
+  name: MapFadeEndChk_Wait
+  operands: []
+  flags: [cc_common]
+
+- pattern: 10 37 08
+  name: MapMoveAnimeInit
+  operands: [expr,expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 09
+  name: MapMoveAnimeMain
+  operands: []
+  flags: [cc_common]
+
+- pattern: 10 37 0A
+  name: MapGetPos
+  operands: [expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 0B
+  name: MapSetPool
+  operands: [expr,expr,expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 0C
+  name: MapResetPoolAll
+  operands: [expr]
+  flags: [cc_common]
+
+- pattern: 10 37 0D
+  name: MapFadeEndChk_Wait0D
+  operands: []
+  flags: [cc_common]
+
+- pattern: 10 37 0E
+  name: MapPoolShuffle
+  operands: [expr]
+  flags: [cc_common]
+
+- pattern: 10 37 0F
+  name: MapPoolSetDisp
+  operands: [expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 10
+  name: MapPoolSetHide
+  operands: [expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 11
+  name: MapPoolSetFadein
+  operands: [expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 12
+  name: MapPoolSetFadeout
+  operands: [expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 13
+  name: MapPlayerPhotoSelect
+  operands: [expr]
+  flags: [cc_common]
+
+- pattern: 10 37 14
+  name: MapResetPool
+  operands: [expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 15
+  name: MapSetGroupEx
+  operands: [expr,expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 16
+  name: MapZoomInit
+  operands: [expr,expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 17
+  name: MapZoomMain
+  operands: []
+  flags: [cc_common]
+
+- pattern: 10 37 18
+  name: MapZoomInit2
+  operands: [expr,expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 19
+  name: MapZoomMain3
+  operands: []
+  flags: [cc_common]
+
+- pattern: 10 37 1A
+  name: MapZoomInit3
+  operands: [expr,expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 1B
+  name: MapMoveAnimeInit2
+  operands: [expr,expr,expr]
+  flags: [cc_common]
+
+- pattern: 10 37 1C
+  name: MapMoveAnimeMain2
+  operands: []
+  flags: [cc_common]
+
+- pattern: 10 37 1E
+  name: MapPlayerPotalSelectInit
+  operands: []
+  flags: [cc_common]
+
+- pattern: 10 37 1F
+  name: MapPlayerPotalSelect
+  operands: []
+  flags: [cc_common]
+
+- pattern: 10 37 28
+  name: MapSystem_28
+  operands: []
+  flags: [cc_common]
+
+- pattern: 10 38 00
+  name: MtrgStart
+  operands: [expr, expr, expr]
+  flags: [cc_common]
+- pattern: 10 38 01
+  name: MtrgEnd
+  operands: []
+  flags: [cc_common]
+- pattern: 10 38 02
+  name: MtrgMain
+  operands: []
+  flags: [cc_common]
+- pattern: 10 38 03
+  name: MtrgStop_Wait
+  operands: []
+  flags: [cc_common]
+- pattern: 10 38 04
+  name: MtrgStart_Wait
+  operands: []
+  flags: [cc_common]
+- pattern: 10 38 05
+  name: MtrgSetEvent
+  operands: [expr]
+  flags: [cc_common]
