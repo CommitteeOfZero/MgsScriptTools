@@ -5,7 +5,7 @@
 				"style": null
 			},
 			"rasterization": {
-				"faux-italic": false
+				"font": "normal"
 			}
 		},
 		"glyphs": [
@@ -25,7 +25,7 @@
 				"style": "normal"
 			},
 			"rasterization": {
-				"faux-italic": false
+				"font": "normal"
 			}
 		},
 		"glyphs": [
