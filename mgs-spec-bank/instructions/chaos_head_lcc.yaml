@@ -1,0 +1,35 @@
+
+- pattern: 10 2D 01
+  name: DelusionTrigger_01
+  operands: []
+  flags: [game_chlcc]
+
+- pattern: 10 2D 02
+  name: DelusionTrigger_02
+  operands: []
+  flags: [game_chlcc]
+
+- pattern: 10 2D 03
+  name: DelusionTrigger_03
+  operands: []
+  flags: [game_chlcc]
+
+- pattern: 10 2D 04
+  name: DelusionTrigger_04
+  operands: []
+  flags: [game_chlcc]
+
+- pattern: 10 2D 05
+  name: DelusionTrigger_05
+  operands: []
+  flags: [game_chlcc]
+
+- pattern: 10 2D 06
+  name: DelusionTrigger_06
+  operands: []
+  flags: [game_chlcc]
+
+- pattern: 10 2D 07
+  name: DelusionTrigger_07
+  operands: []
+  flags: [game_chlcc]
