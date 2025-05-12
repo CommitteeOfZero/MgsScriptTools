@@ -12,6 +12,7 @@ instructions:
 - instructions/chaos_child_lcc.yaml
 - instructions/chaos_child.yaml
 - instructions/chaos_head_lcc.yaml
+- instructions/steins_gate_hd.yaml
 
 macros:
 - macros/chaos_head_noah.yaml
@@ -27,6 +28,7 @@ charset:
   chaos_child_lcc: charset/chaos_child_lcc.json
   chaos_child_lcc-extended: charset/chaos_child_lcc-extended.json
   famicom_tantei_club: charset/famicom_tantei_club.json
+  steins_gate_hd: charset/steins_gate_hd.json
 
 flags:
   memories_off_historia:
