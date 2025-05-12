@@ -1,0 +1,40 @@
+- pattern: 10 3A 00
+  name: YesNoInit
+  operands: [expr, expr, expr]
+  flags: [game_cclcc]
+- pattern: 10 3A 01
+  name: YesNoLoad
+  operands: []
+  flags: [game_cclcc]
+- pattern: 10 3A 02
+  name: YesNoStart
+  operands: []
+  flags: [game_cclcc]
+- pattern: 10 3A 03
+  name: YesNoEnd
+  operands: []
+  flags: [game_cclcc]
+- pattern: 10 3A 04
+  name: YesNo_04
+  operands: []
+  flags: [game_cclcc]
+- pattern: 10 3A 05
+  name: YesNo_05
+  operands: []
+  flags: [game_cclcc]
+- pattern: 10 3A 06
+  name: YesNo_06
+  operands: []
+  flags: [game_cclcc]
+- pattern: 10 3A 07
+  name: YesNo_07
+  operands: []
+  flags: [game_cclcc]
+- pattern: 10 3A 08
+  name: YesNo_08
+  operands: [int16]
+  flags: [game_cclcc]
+- pattern: 10 3A 0A
+  name: YesNo_0A
+  operands: []
+  flags: [game_cclcc]
