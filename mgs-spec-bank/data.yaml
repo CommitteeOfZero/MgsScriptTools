@@ -165,3 +165,31 @@ flags:
 
   famicom_tantei_club:
     game_ftc: yes
+
+  steins_gate_hd:
+    game_sghd: yes
+
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_createsurface: yes
+    new_playmovie: yes
+    new_presence: yes
+    new_pressstart: yes
+    new_save: yes
+    new_scriptload: no
+    new_seplay: yes
+    new_setdic: yes
+    new_setevflag: no
+    new_sseplay: no
+    new_titlemenu: yes
+    new_voiceplay: no
+    new_voicestop: yes
+    add_contents: no
+    bgrelease: yes
+
+
+    effyuge: no
+    chaload: yes
+    mescls: yes
+    movie_01_27: yes
+    return_labels: yes
