@@ -67,8 +67,9 @@ class SpecBank {
 				Int16	unitsOffset = glyphsJson.GetProperty("unitsOffset").GetInt16();
 				string text = toText(glyphsJson.GetProperty("text"));
 				int index = 0;
-				foreach (char character in text) {
-					glyphs.Add(new([unitsOffset + index], character.ToString(), style));
+                TextElementEnumerator charEnum = StringInfo.GetTextElementEnumerator(text);
+                while (charEnum.MoveNext()) {
+					glyphs.Add(new([unitsOffset + index], charEnum.GetTextElement(), style));
 					index++;
 				}
 			} else if (glyphsJson.ValueKind == JsonValueKind.Array) {
