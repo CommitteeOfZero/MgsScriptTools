@@ -46,6 +46,7 @@ flags:
     new_setevflag: yes
     new_scriptload: no
     new_sseplay: no
+    new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     add_contents: yes
@@ -72,6 +73,7 @@ flags:
     new_setdic: yes
     new_setevflag: no
     new_sseplay: no
+    new_sseinit: no
     new_titlemenu: no
     new_voiceplay: no
     new_voicestop: no
@@ -99,6 +101,7 @@ flags:
     new_setdic: yes
     new_setevflag: yes
     new_sseplay: yes
+    new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     add_contents: yes
@@ -126,6 +129,7 @@ flags:
     new_setdic: yes
     new_setevflag: yes
     new_sseplay: yes
+    new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     add_contents: yes
@@ -153,6 +157,7 @@ flags:
     new_setdic: yes
     new_setevflag: no
     new_sseplay: no
+    new_sseinit: no
     new_titlemenu: yes
     new_voiceplay: no
     new_voicestop: yes
@@ -183,6 +188,7 @@ flags:
     new_setdic: yes
     new_setevflag: no
     new_sseplay: no
+    new_sseinit: no
     new_titlemenu: yes
     new_voiceplay: no
     new_voicestop: yes

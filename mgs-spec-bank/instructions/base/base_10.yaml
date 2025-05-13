@@ -613,6 +613,16 @@
   operands: []
   flags: []
 
+- pattern: 10 3F 0F
+  name: MouseMode_0F
+  operands: []
+  flags: []
+
+- pattern: 10 3F 10
+  name: MouseMode_10
+  operands: []
+  flags: []
+
 - pattern: 10 3F 11
   name: MouseModeSetSysMenu
   operands: []
@@ -650,6 +660,16 @@
 
 - pattern: 10 3F 18
   name: MouseModeResetHelp
+  operands: []
+  flags: []
+
+- pattern: 10 3F 19
+  name: MouseMode_19
+  operands: []
+  flags: []
+
+- pattern: 10 3F 1A
+  name: MouseMode_1A
   operands: []
   flags: []
 

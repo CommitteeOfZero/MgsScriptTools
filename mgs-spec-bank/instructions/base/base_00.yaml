@@ -802,7 +802,12 @@
 - pattern: 00 4B 00
   name: SysSEinit
   operands: []
-  flags: []
+  flags: [new_sseinit]
+
+- pattern: 00 4B
+  name: SysSEinit
+  operands: []
+  flags: [~new_sseinit]
 
 - pattern: 00 4C 00
   name: ScriptKeyWait_00
