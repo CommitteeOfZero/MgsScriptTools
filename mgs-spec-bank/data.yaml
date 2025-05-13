@@ -132,6 +132,7 @@ flags:
     new_setevflag: no
     new_setflag: no
     new_sseplay: no
+    new_sseinit: no
     new_titlemenu: no
     new_voiceplay: no
     new_voicestop: no
@@ -447,6 +448,7 @@ flags:
     new_setdic: yes
     new_setevflag: no
     new_sseplay: no
+    new_sseinit: no
     new_titlemenu: yes
     new_voiceplay: no
     new_voicestop: yes
