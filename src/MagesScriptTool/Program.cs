@@ -202,10 +202,10 @@ static class Program {
 				continue;
 			}
 			string extension = Path.GetExtension(compiledPath);
-			if (extension == tool.CompiledScriptPackageExtension) {
+			if (extension.ToLower() == tool.CompiledScriptPackageExtension) {
 				errorOccurred |= !await DecompileScriptPackage(tool, compiledName);
 			}
-			if (extension == tool.CompiledStringTableExtension) {
+			if (extension.ToLower() == tool.CompiledStringTableExtension) {
 				errorOccurred |= !await DecompileStringTable(tool, compiledName);
 			}
 		}
