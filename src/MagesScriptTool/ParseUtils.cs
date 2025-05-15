@@ -10,17 +10,17 @@ class ParseUtils {
 	}
 
 	public static bool TrySkip(TextStream reader, string s) {
-		if (!reader.Has(s.Length - 1)) {
-			return false;
-		}
-		for (int i = 0; i < s.Length; i++) {
-			if (reader.Peek(i) != s[i]) {
-				return false;
-			}
-		}
-		reader.Skip(s.Length);
-		return true;
-	}
+    var runes = s.EnumerateRunes();
+    int i = 0;
+    foreach (var rune in runes) {
+        if (!reader.Has(i) || reader.PeekRune(i) != rune) {
+            return false;
+        }
+        i++;
+    }
+    reader.Skip(i);
+    return true;
+}
 
 	public static bool SkipSpaceComments(TextStream reader) {
 		bool consumed = false;
