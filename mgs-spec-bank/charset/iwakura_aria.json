@@ -1014,16 +1014,8 @@
 				"text": "ヶ"
 			},
 			{
-				"units": [256],
-				"text": "①"
-			},
-			{
 				"units": [257],
 				"text": "②"
-			},
-			{
-				"units": [258],
-				"text": "③"
 			},
 			{
 				"units": [259],
@@ -29176,6 +29168,20 @@
 			{
 				"units": [7361],
 				"text": "ö"
+			}
+		]
+	},
+	{
+		"parameters": {
+			"encoding": {
+				"style": "normal"
+			},
+			"rasterization": null
+		},
+		"glyphs": [
+			{
+				"units": [256, 258],
+				"text": "⸺"
 			}
 		]
 	}
