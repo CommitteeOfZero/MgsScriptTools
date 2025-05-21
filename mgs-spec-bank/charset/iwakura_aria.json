@@ -10,6 +10,26 @@
 		},
 		"glyphs": [
 			{
+				"units": [0],
+				"text": "　"
+			},
+			{
+				"units": [63],
+				"text": " "
+			}
+		]
+	},
+	{
+		"parameters": {
+			"encoding": {
+				"style": "normal"
+			},
+			"rasterization": {
+				"font": "normal"
+			}
+		},
+		"glyphs": [
+			{
 				"units": [1],
 				"text": "0"
 			},
