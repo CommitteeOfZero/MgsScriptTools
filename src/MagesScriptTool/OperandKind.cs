@@ -6,4 +6,5 @@ enum OperandKind {
 	Int8,
 	Int16,
 	Int32,
+	Str,
 }

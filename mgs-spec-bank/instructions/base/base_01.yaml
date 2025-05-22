@@ -111,17 +111,17 @@
 - pattern: 01 09 00
   name: MesSetSavePointRL
   operands: [int16]
-  flags: [return_labels]
+  flags: [return_labels, ~game_ia]
 
 - pattern: 01 09 01
   name: MesSSetSavePointRL
   operands: [int16, expr]
-  flags: [return_labels]
+  flags: [return_labels, ~game_ia]
 
 - pattern: 01 09 02
   name: MesSSetSavePoint
   operands: [expr]
-  flags: [return_labels]
+  flags: [return_labels, ~game_ia]
 
 - pattern: 01 0A 03
   name: CalcSinL

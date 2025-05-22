@@ -6,7 +6,7 @@
 - pattern: 00 01
   name: CreateThread
   operands: [expr, expr, int16]
-  flags: []
+  flags: [~game_ia]
 
 - pattern: 00 04
   name: ScriptLoad
@@ -111,12 +111,12 @@
 - pattern: 00 12
   name: SetFlag
   operands: [expr]
-  flags: []
+  flags: [~game_ia]
 
 - pattern: 00 13
   name: ResetFlag
   operands: [expr]
-  flags: []
+  flags: [~game_ia]
 
 - pattern: 00 14
   name: CopyFlag

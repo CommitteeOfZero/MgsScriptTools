@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Text;
 
 namespace MagesScriptTool;
 
@@ -52,6 +53,10 @@ sealed class InstructionEncoding {
 				EncodeOperandInt32(stream, operand);
 				break;
 			}
+			case OperandKind.Str: {
+				EncodeOperandStr(stream, operand);
+				break;
+			}
 			default: {
 				throw new NotImplementedException(kind.ToString());
 			}
@@ -75,6 +80,11 @@ sealed class InstructionEncoding {
 		PutByte(stream, (byte)(value >>  8));
 		PutByte(stream, (byte)(value >> 16));
 		PutByte(stream, (byte)(value >> 24));
+	}
+	
+	static void EncodeOperandStr(Stream stream, ExpressionNode expression) {
+		string value = expression.GetString();
+		PutBytes(stream, new UTF8Encoding(false, true).GetBytes(value + '\0').AsSpan());
 	}
 
 	static void PutByte(Stream stream, byte value) {
@@ -107,10 +117,20 @@ sealed class InstructionEncoding {
 			OperandKind.Int8 => DecodeOperandInt8(stream),
 			OperandKind.Int16 => DecodeOperandInt16(stream),
 			OperandKind.Int32 => DecodeOperandInt32(stream),
+			OperandKind.Str => DecodeOperandStr(stream),
 			_ => throw new NotImplementedException(kind.ToString()),
 		};
 	}
-
+	static ExpressionNodeString DecodeOperandStr(Stream stream) {
+		List<byte> buffer = [];
+		while (true) {
+			byte b = GetByte(stream);
+			if (b == 0) break;
+			buffer.Add(b);
+		}
+		return new(new UTF8Encoding(false, true).GetString([.. buffer]));
+	}
+	
 	static ExpressionNodeNumber DecodeOperandInt8(Stream stream) {
 		int value = 0;
 		value |= GetByte(stream);

@@ -60,6 +60,10 @@ static class ExpressionSyntax {
 					FormatOperation(operation);
 					break;
 				}
+				case ExpressionNodeString str: {
+					_builder.AppendFormat("\"{0}\"", str.Value);
+					break;
+				}
 				case ExpressionNodeBlank: {
 					break;
 				}
@@ -506,6 +510,8 @@ static class ExpressionSyntax {
 				result = ParseNumber();
 			} else if (IsIdentifierStart(_stream.Peek(0))) {
 				result = ParseIdentifier();
+			} else if (_stream.Peek(0) == '"') {
+				result = ParseString();
 			} else if (_stream.Peek(0) == '$') {
 				OperatorKind kind = ParseFuncOperator();
 				List<ExpressionNode> operands = [];
@@ -568,6 +574,19 @@ static class ExpressionSyntax {
 				name += _stream.Next();
 			}
 			return new(name);
+		}
+
+		ExpressionNodeString ParseString() {
+			Debug.Assert(_stream.Peek(0) == '"');
+			_stream.Skip(1);
+			string value = "";
+			while (IsStringPart(_stream.Peek(0))){
+				value += _stream.Next();
+			}
+			if (!ParseUtils.TrySkip(_stream, '"')) {
+				throw new ParsingException("Expected '\"'.");
+			}
+			return new(value);
 		}
 
 		ExpressionNode ParseParentheses() {
@@ -676,5 +695,10 @@ static class ExpressionSyntax {
 		static bool IsIdentifierPart(char ch) {
 			return IsIdentifierStart(ch) || IsDigit(ch);
 		}
+		
+		static bool IsStringPart(char ch) {
+			return ch is (>= 'A' and <= 'Z') or (>= 'a' and <= 'z') or '_' or (>= '0' and <= '9');
+		}	
+		
 	}
 }

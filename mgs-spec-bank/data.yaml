@@ -12,6 +12,7 @@ instructions:
 - instructions/chaos_child_lcc.yaml
 - instructions/chaos_child.yaml
 - instructions/chaos_head_lcc.yaml
+- instructions/iwakura_aria.yaml
 
 macros:
 - macros/chaos_head_noah.yaml
@@ -166,3 +167,13 @@ flags:
 
   famicom_tantei_club:
     game_ftc: yes
+
+  iwakura_aria:
+    game_ia: yes
+    new_bgmstop: yes
+    new_save: yes
+    new_seplay: yes
+    
+    chaload: yes
+    mescls: yes
+    return_labels: yes

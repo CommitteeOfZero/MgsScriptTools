@@ -5,4 +5,9 @@ abstract class ExpressionNode {
 		// TODO: refactor with visitor pattern
 		throw new NotImplementedException();
 	}
+	
+	public virtual string GetString() {
+		// TODO: refactor with visitor pattern
+		throw new NotImplementedException();
+	}
 }

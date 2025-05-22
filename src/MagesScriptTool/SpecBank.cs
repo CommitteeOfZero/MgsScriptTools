@@ -175,6 +175,7 @@ class SpecBank {
 					"int8" => OperandKind.Int8,
 					"int16" => OperandKind.Int16,
 					"int32" => OperandKind.Int32,
+					"str" => OperandKind.Str,
 					_ => throw new Exception($"Unrecognized operand kind name: {Operands[i]}."),
 				});
 			}
@@ -226,6 +227,7 @@ class SpecBank {
 					"int8" => OperandKind.Int8,
 					"int16" => OperandKind.Int16,
 					"int32" => OperandKind.Int32,
+					"str" => OperandKind.Str,
 					_ => throw new Exception($"Unrecognized operand kind name: {Operands[i]}."),
 				});
 			}
