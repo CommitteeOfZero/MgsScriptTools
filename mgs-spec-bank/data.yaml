@@ -170,10 +170,21 @@ flags:
 
   iwakura_aria:
     game_ia: yes
+    
+    new_bgmplay: yes
     new_bgmstop: yes
+    new_playmovie: yes
+    new_presence: yes
     new_save: yes
+    new_scriptload: no
     new_seplay: yes
+    new_setevflag: yes
+    new_sseplay: yes
+    new_titlemenu: yes
+    new_voicestop: yes
+    bgrelease: yes
     
     chaload: yes
     mescls: yes
+    movie_01_27: yes
     return_labels: yes
