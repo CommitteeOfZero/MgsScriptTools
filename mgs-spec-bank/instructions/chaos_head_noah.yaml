@@ -114,27 +114,27 @@
   flags: [game_chn]
 
 - pattern: 10 37 32
-  name: Noah_32
+  name: MedicalChartInit
   operands: []
   flags: [game_chn]
 
 - pattern: 10 37 33
-  name: Noah_33
+  name: MedicalChartMain
   operands: []
   flags: [game_chn]
 
 - pattern: 10 37 34
-  name: Noah_34
+  name: MedicalChartFadeIn
   operands: []
   flags: [game_chn]
 
 - pattern: 10 37 35
-  name: Noah_35
+  name: MedicalChartFadeOut
   operands: []
   flags: [game_chn]
 
 - pattern: 10 37 37
-  name: Noah_37
+  name: MedicalChartAdd
   operands: [expr]
   flags: [game_chn]
 
