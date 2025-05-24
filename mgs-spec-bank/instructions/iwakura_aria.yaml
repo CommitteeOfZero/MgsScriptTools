@@ -1,43 +1,3 @@
-- pattern: 00 01 00
-  name: CreateThread
-  operands: [expr, expr, int16]
-  flags: [game_ia]
-
-- pattern: 00 01 80
-  name: CreateNamedThread
-  operands: [expr, expr, int16, str]
-  flags: [game_ia]
-
-- pattern: 00 12 00
-  name: SetFlag
-  operands: [expr]
-  flags: [game_ia]
-
-- pattern: 00 12 01
-  name: SetNFlagsFrom
-  operands: [expr, expr]
-  flags: [game_ia]
-
-- pattern: 00 12 02
-  name: SetFlagsThru
-  operands: [expr, expr]
-  flags: [game_ia]
-
-- pattern: 00 13 00
-  name: ResetFlag
-  operands: [expr]
-  flags: [game_ia]
-
-- pattern: 00 13 01
-  name: ResetNFlagsFrom
-  operands: [expr, expr]
-  flags: [game_ia]
-
-- pattern: 00 13 02
-  name: ResetFlagsThru
-  operands: [expr, expr]
-  flags: [game_ia]
-
 - pattern: 00 26 00
   name: SSEplayEx
   operands: [expr]
@@ -77,36 +37,6 @@
   name: SystemMesSetSelMap
   operands: [expr]
   flags: [game_ia]
-
-- pattern: 01 09 80
-  name: MesSetSavePointRL
-  operands: [int16]
-  flags: [return_labels, game_ia]
-
-- pattern: 01 09 81
-  name: MesSSetSavePointRL
-  operands: [int16, expr]
-  flags: [return_labels, game_ia]
-
-- pattern: 01 09 82
-  name: MesSSetSavePoint
-  operands: [expr]
-  flags: [return_labels, game_ia]
-
-- pattern: 01 09 00
-  name: MesSetIdRL
-  operands: [int16]
-  flags: [return_labels, game_ia]
-
-- pattern: 01 09 01
-  name: MesSSetIdRL
-  operands: [expr]
-  flags: [return_labels, game_ia]
-
-- pattern: 01 09 02
-  name: MesSetId
-  operands: [expr]
-  flags: [return_labels, game_ia]
 
 - pattern: 10 22 28
   name: AutoSave_28

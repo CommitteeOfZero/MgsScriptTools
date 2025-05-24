@@ -431,7 +431,7 @@
 - pattern: 10 2D
   name: AchChkTitle
   operands: []
-  flags: [~game_chlcc]
+  flags: [achchktitle]
 
 - pattern: 10 2E
   name: Unk_10_2E

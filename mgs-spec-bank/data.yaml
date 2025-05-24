@@ -35,15 +35,19 @@ flags:
     new_bgmstop: yes
     new_bgmplay: yes
     new_createsurface: yes
+    new_createthread: no
     new_loaddata: yes
     new_memberwrite: yes
+    new_messetid: no
     new_playmovie: yes
     new_presence: yes
     new_pressstart: no
+    new_resetflag: no
     new_save: yes
     new_seplay: yes
     new_setdic: yes
     new_setevflag: yes
+    new_setflag: no
     new_scriptload: no
     new_sseplay: no
     new_titlemenu: yes
@@ -63,20 +67,25 @@ flags:
     new_bgmplay: yes
     new_bgmstop: yes
     new_createsurface: yes
+    new_createthread: no
     new_ev: yes
+    new_messetid: no
     new_playmovie: yes
     new_presence: yes
     new_save: yes
+    new_resetflag: no
     new_scriptload: no
     new_seplay: yes
     new_setdic: yes
     new_setevflag: no
+    new_setflag: no
     new_sseplay: no
     new_titlemenu: no
     new_voiceplay: no
     new_voicestop: no
     add_contents: no
 
+    achchktitle: no
     effyuge: no
     chaload: yes
     mescls: yes
@@ -88,21 +97,26 @@ flags:
 
     new_bgmplay: yes
     new_bgmstop: yes
+    new_createthread: no
     new_loaddata: yes
     new_memberwrite: yes
+    new_messetid: no
     new_playmovie: yes
     new_presence: yes
     new_pressstart: no
+    new_resetflag: no
     new_save: yes
     new_scriptload: no
     new_seplay: yes
     new_setdic: yes
     new_setevflag: yes
+    new_setflag: no
     new_sseplay: yes
     new_titlemenu: yes
     new_voicestop: yes
     add_contents: yes
 
+    achchktitle: yes
     effyuge: yes
     bgrelease: yes
     chaload: yes
@@ -115,16 +129,20 @@ flags:
 
     new_bgmplay: yes
     new_bgmstop: yes
+    new_createthread: no
     new_loaddata: yes
     new_memberwrite: yes
+    new_messetid: no
     new_playmovie: yes
     new_presence: yes
     new_pressstart: no
+    new_resetflag: no
     new_save: yes
     new_scriptload: yes
     new_seplay: yes
     new_setdic: yes
     new_setevflag: yes
+    new_setflag: no
     new_sseplay: yes
     new_titlemenu: yes
     new_voicestop: yes
@@ -144,14 +162,18 @@ flags:
     new_bgmplay: yes
     new_bgmstop: yes
     new_createsurface: yes
+    new_createthread: no
+    new_messetid: no
     new_playmovie: yes
     new_presence: yes
     new_pressstart: yes
+    new_resetflag: no
     new_save: yes
     new_scriptload: no
     new_seplay: yes
     new_setdic: yes
     new_setevflag: no
+    new_setflag: no
     new_sseplay: no
     new_titlemenu: yes
     new_voiceplay: no
@@ -173,12 +195,16 @@ flags:
     
     new_bgmplay: yes
     new_bgmstop: yes
+    new_createthread: yes
+    new_messetid: yes
     new_playmovie: yes
     new_presence: yes
+    new_resetflag: yes
     new_save: yes
     new_scriptload: no
     new_seplay: yes
     new_setevflag: yes
+    new_setflag: yes
     new_sseplay: yes
     new_titlemenu: yes
     new_voicestop: yes

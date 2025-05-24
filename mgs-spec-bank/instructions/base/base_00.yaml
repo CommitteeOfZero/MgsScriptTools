@@ -6,7 +6,17 @@
 - pattern: 00 01
   name: CreateThread
   operands: [expr, expr, int16]
-  flags: [~game_ia]
+  flags: [~new_createthread]
+
+- pattern: 00 01 00
+  name: CreateThread
+  operands: [expr, expr, int16]
+  flags: [new_createthread]
+
+- pattern: 00 01 80
+  name: CreateNamedThread
+  operands: [expr, expr, int16, str]
+  flags: [new_createthread]
 
 - pattern: 00 04
   name: ScriptLoad
@@ -111,12 +121,42 @@
 - pattern: 00 12
   name: SetFlag
   operands: [expr]
-  flags: [~game_ia]
+  flags: [~new_setflag]
 
 - pattern: 00 13
   name: ResetFlag
   operands: [expr]
-  flags: [~game_ia]
+  flags: [~new_resetflag]
+
+- pattern: 00 12 00
+  name: SetFlag
+  operands: [expr]
+  flags: [new_setflag]
+
+- pattern: 00 12 01
+  name: SetNFlagsFrom
+  operands: [expr, expr]
+  flags: [new_setflag]
+
+- pattern: 00 12 02
+  name: SetFlagsThru
+  operands: [expr, expr]
+  flags: [new_setflag]
+
+- pattern: 00 13 00
+  name: ResetFlag
+  operands: [expr]
+  flags: [new_resetflag]
+
+- pattern: 00 13 01
+  name: ResetNFlagsFrom
+  operands: [expr, expr]
+  flags: [new_resetflag]
+
+- pattern: 00 13 02
+  name: ResetFlagsThru
+  operands: [expr, expr]
+  flags: [new_resetflag]
 
 - pattern: 00 14
   name: CopyFlag
