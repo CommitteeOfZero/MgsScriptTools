@@ -196,6 +196,7 @@ flags:
     new_bgmplay: yes
     new_bgmstop: yes
     new_createthread: yes
+    new_calc: yes
     new_messetid: yes
     new_playmovie: yes
     new_presence: yes

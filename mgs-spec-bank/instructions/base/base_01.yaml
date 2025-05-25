@@ -43,6 +43,12 @@
   operands: [expr, expr, expr, expr]
   flags: [mescls]
 
+# TODO: Make sense of it
+- pattern: 01 05 0A
+  name: Calc_0A
+  operands: [expr, expr, expr, expr, expr, expr]
+  flags: [mescls, new_calc]
+
 - pattern: 01 08 00
   name: MesSync_00
   operands: []

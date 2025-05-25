@@ -78,12 +78,22 @@
   operands: []
   flags: [game_ia]
 
-# - pattern: 20 02 00
-#   name: MapFadeInChk
-#   operands: [expr]
-#   flags: [game_ia]
+- pattern: 20 02 00
+  name: SketchbookInit
+  operands: [expr]
+  flags: [game_ia]
 
-# - pattern: 20 02 30
-#   name: Map_30
-#   operands: [expr]
-#   flags: [game_ia]
+- pattern: 20 02 20
+  name: SketchbookDraw
+  operands: [expr]
+  flags: [game_ia]
+
+- pattern: 20 02 30
+  name: SketchbookFlickTo
+  operands: [expr]
+  flags: [game_ia]
+
+- pattern: 20 02 50
+  name: SketchbookSelect
+  operands: []
+  flags: [game_ia]
