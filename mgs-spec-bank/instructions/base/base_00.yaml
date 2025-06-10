@@ -914,6 +914,11 @@
   operands: [expr, int16, int16]
   flags: []
 
+- pattern: 00 53 00
+  name: ControlOffJump
+  operands: [expr, int16]
+  flags: []
+
 - pattern: 00 53 01
   name: ControlOnJump
   operands: [expr, int16]
@@ -936,8 +941,13 @@
 
 - pattern: 00 5C
   name: FlagOffReturn
-  operands: [int8,expr]
+  operands: [int8, expr]
   flags: []
+
+- pattern: 00 5D
+  name: SetLang
+  operands: [expr]
+  flags: [multilang]
 
 - pattern: 00 5E
   name: Unk_00_5E

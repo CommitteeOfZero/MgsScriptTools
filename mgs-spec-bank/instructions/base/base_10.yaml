@@ -223,6 +223,16 @@
   operands: []
   flags: []
 
+- pattern: 10 1C 00
+  name: ActorVoiceInit
+  operands: []
+  flags: []
+
+- pattern: 10 1C 01
+  name: ActorVoiceMain
+  operands: []
+  flags: []
+
 - pattern: 10 1D 00
   name: SoundMenuInit
   operands: []
@@ -510,6 +520,11 @@
 
 - pattern: 10 34 04
   name: TitleMenuChangeBG
+  operands: []
+  flags: [new_titlemenu]
+
+- pattern: 10 34 05
+  name: TitleMenuChangeBGM
   operands: []
   flags: [new_titlemenu]
 

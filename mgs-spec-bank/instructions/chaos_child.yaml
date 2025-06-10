@@ -1,3 +1,8 @@
+- pattern: 10 26 01
+  name: GetDic
+  operands: [expr, expr]
+  flags: [game_cc]
+
 - pattern: 10 37 01
   name: MapInit
   operands: []

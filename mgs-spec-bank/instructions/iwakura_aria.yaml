@@ -97,3 +97,8 @@
   name: SketchbookSelect
   operands: []
   flags: [game_ia]
+
+# - pattern: 01 1A
+#   name: Unk_01_1A
+#   operands: [expr, expr, expr]
+#   flags: [game_ia]
