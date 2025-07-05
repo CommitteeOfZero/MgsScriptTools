@@ -99,14 +99,19 @@
   flags: []
 
 - pattern: 10 0E
+  name: BGloadEx
+  operands: [expr, expr]
+  flags: [bgloadex]
+
+- pattern: 10 0E
   name: SkebLoad
   operands: [expr]
-  flags: []
+  flags: [~bgloadex]
 
 - pattern: 10 0F
   name: EVload
   operands: [expr, expr, expr]
-  flags: [~bgrelease]
+  flags: [~oldev, ~bgrelease]
 
 - pattern: 10 0F
   name: BGsetAnime
@@ -116,7 +121,7 @@
 - pattern: 10 10
   name: EVinit
   operands: [expr, expr]
-  flags: [~bgrelease]
+  flags: [~oldev, ~bgrelease]
 
 - pattern: 10 10
   name: BGrelease
@@ -126,12 +131,12 @@
 - pattern: 10 11 00
   name: EVset
   operands: [expr, expr, expr]
-  flags: [~bgrelease]
+  flags: [~oldev, ~bgrelease]
 
 - pattern: 10 11 01
   name: EVsetEx
   operands: [expr, expr, expr, expr, expr, expr, expr]
-  flags: [~bgrelease]
+  flags: [~oldev, ~bgrelease]
 
 - pattern: 10 11
   name: CHArelease
@@ -141,27 +146,47 @@
 - pattern: 10 12
   name: EVend
   operands: []
-  flags: [~bgrelease]
+  flags: [~oldev, ~bgrelease]
 
 - pattern: 10 0F 00
   name: EVload
   operands: [expr, expr, expr]
-  flags: [new_ev]
+  flags: [old_ev, ~bgrelease]
 
 - pattern: 10 10 00
-  name: EVinit
+  name: EVinit_00
   operands: [expr, expr]
-  flags: [new_ev]
+  flags: [old_ev, ~bgrelease]
 
-- pattern: 10 11 00
-  name: EVset
+- pattern: 10 10 01
+  name: EVinit_01
   operands: [expr, expr]
-  flags: [new_ev]
+  flags: [old_ev, ~bgrelease]
+
+- pattern: 10 11 00 00
+  name: EVset_00_00
+  operands: [expr, expr, expr, expr, expr, expr, expr]
+  flags: [old_ev, ~bgrelease]
+
+- pattern: 10 11 01 00
+  name: EVset_01_00
+  operands: [expr, expr, expr, expr, expr, expr, expr]
+  flags: [old_ev, ~bgrelease]
+
+- pattern: 10 11 00 01
+  name: EVset_00_01
+  operands: [expr, expr, expr, expr, expr, expr, expr]
+  flags: [old_ev, ~bgrelease]
+
+- pattern: 10 11 01 01
+  name: EVset_01_01
+  operands: [expr, expr, expr, expr, expr, expr, expr]
+  flags: [old_ev, ~bgrelease]
 
 - pattern: 10 12 00
   name: EVend
   operands: []
-  flags: [new_ev]
+  flags: [old_ev, ~bgrelease]
 
 - pattern: 10 13 00
   name: OptionInit
@@ -176,7 +201,12 @@
 - pattern: 10 13 04
   name: OptionDefault
   operands: []
-  flags: []
+  flags: [~option_default_arg]
+
+- pattern: 10 13 04
+  name: OptionDefault
+  operands: [expr]
+  flags: [option_default_arg]
 
 - pattern: 10 13 05
   name: OptionDefaultAll
@@ -240,6 +270,11 @@
 
 - pattern: 10 1D 01
   name: SoundMenuMain
+  operands: []
+  flags: []
+
+- pattern: 10 1D 0A
+  name: SoundMenu0A
   operands: []
   flags: []
 
@@ -471,7 +506,7 @@
 - pattern: 10 32 00
   name: InitNameID
   operands: [int16]
-  flags: []
+  flags: [~nonameid]
 
 - pattern: 10 33 00
   name: EncycDataInit

@@ -182,3 +182,11 @@
   name: MtrgSetEvent
   operands: [expr]
   flags: [cc_common]
+- pattern: 10 40
+  name: ScreenChange
+  operands: []
+  flags: []
+- pattern: 10 41
+  name: ExitGame
+  operands: []
+  flags: []

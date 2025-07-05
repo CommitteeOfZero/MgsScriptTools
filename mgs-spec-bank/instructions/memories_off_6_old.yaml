@@ -1,0 +1,30 @@
+
+- pattern: 10 32 00
+  name: Unk1032_00
+  operands: [expr, expr, expr]
+  flags: [nonameid]
+
+- pattern: 10 32 01
+  name: Unk1032_01
+  operands: []
+  flags: [nonameid]
+
+- pattern: 10 35 00
+  name: Unk1035_00
+  operands: []
+  flags: []
+
+- pattern: 10 35 01
+  name: Unk1035_01
+  operands: [int16]
+  flags: []
+
+- pattern: 10 37 01
+  name: Unk1037_01
+  operands: []
+  flags: [game_mo6tw]
+
+- pattern: 10 37 02
+  name: Unk1037_02
+  operands: []
+  flags: [game_mo6tw]

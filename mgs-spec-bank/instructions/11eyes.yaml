@@ -1,29 +1,29 @@
 - pattern: 10 32 00
   name: CVinit
   operands: []
-  flags: [game_11eyes]
+  flags: [nonameid, game_11eyes]
 
 - pattern: 10 32 01
   name: CVmain
   operands: []
-  flags: [game_11eyes]
+  flags: [nonameid, game_11eyes]
 
 - pattern: 10 32 02
   name: CVsaveGame
   operands: []
-  flags: [game_11eyes]
+  flags: [nonameid, game_11eyes]
 
 - pattern: 10 32 03
   name: CVloadGame
   operands: []
-  flags: [game_11eyes]
+  flags: [nonameid, game_11eyes]
 
 - pattern: 10 32 04
   name: CVinit2
   operands: []
-  flags: [game_11eyes]
+  flags: [nonameid, game_11eyes]
 
 - pattern: 10 32 05
   name: CVsaveSystemFlag
   operands: []
-  flags: [game_11eyes]
+  flags: [nonameid, game_11eyes]

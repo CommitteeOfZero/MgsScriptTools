@@ -711,103 +711,183 @@
 
 - pattern: 00 43 00
   name: SystemMesInit
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 01
+  name: SystemMesInitTitle
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 02
+  name: SystemMesInit2
+  operands: [int8,expr]
+  flags: [multisystemmes]
+
+- pattern: 00 43 03
+  name: SystemMesSetMesScx
+  operands: [int8,int16]
+  flags: [multisystemmes]
+
+- pattern: 00 43 04
+  name: SystemMesSetSelScx
+  operands: [int8,int16]
+  flags: [multisystemmes]
+
+- pattern: 00 43 05
+  name: SystemMesMain
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 06
+  name: SystemMesFadeIn
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 07
+  name: SystemMesFadeOut
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 09
+  name: SystemMes_09
+  operands: [int8,expr]
+  flags: [multisystemmes]
+
+- pattern: 00 43 0B
+  name: SystemMesInitTitleEx
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 0C
+  name: SystemMes_0C
+  operands: [int8,expr]
+  flags: [multisystemmes]
+
+- pattern: 00 43 0D
+  name: SystemMesSetMesExScx
+  operands: [int8,int16]
+  flags: [multisystemmes]
+
+- pattern: 00 43 0E
+  name: SystemMesSetSelExScx
+  operands: [int8,int16]
+  flags: [multisystemmes]
+
+- pattern: 00 43 0F
+  name: SystemMes_0F
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 10
+  name: SystemMes_10
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 11
+  name: SystemMes_11
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 00
+  name: SystemMesInit
   operands: []
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 01
   name: SystemMesInitTitle
   operands: []
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 02
   name: SystemMesInit2
   operands: [expr]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 03
   name: SystemMesSetMesScx
   operands: [int16]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 04
   name: SystemMesSetSelScx
   operands: [int16]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 05
   name: SystemMesMain
   operands: []
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 06
   name: SystemMesFadeIn
   operands: []
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 07
   name: SystemMesFadeOut
   operands: []
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 09
   name: SystemMes_09
   operands: [expr]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 0B
   name: SystemMesInitTitleEx
   operands: []
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 0C
   name: SystemMes_0C
   operands: [expr]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 0D
   name: SystemMesSetMesExScx
   operands: [int16]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 0E
   name: SystemMesSetSelExScx
   operands: [int16]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 0F
   name: SystemMes_0F
   operands: []
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 10
   name: SystemMes_10
   operands: []
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 11
   name: SystemMes_11
   operands: []
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 83
   name: SystemMesSetMesMsb
   operands: [expr]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 84
   name: SystemMesSetSelMsb
   operands: [expr]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 8D
   name: SystemMesSetMesExMsb
   operands: [expr]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 43 8E
   name: SystemMesSetSelExMsb
   operands: [expr]
-  flags: []
+  flags: [~multisystemmes]
 
 - pattern: 00 44 00
   name: SystemMenuInit
@@ -840,9 +920,24 @@
   flags: []
 
 - pattern: 00 4B 00
+  name: DebugEditor_00
+  operands: []
+  flags: [debugeditor4b]
+
+- pattern: 00 4B 01
+  name: DebugEditor_01
+  operands: []
+  flags: [debugeditor4b]
+
+- pattern: 00 4B 00
   name: SysSEinit
   operands: []
-  flags: []
+  flags: [new_sseinit]
+
+- pattern: 00 4B
+  name: SysSEinit
+  operands: []
+  flags: [~new_sseinit, ~debugeditor4b]
 
 - pattern: 00 4C 00
   name: ScriptKeyWait_00
@@ -922,6 +1017,11 @@
 - pattern: 00 53 01
   name: ControlOnJump
   operands: [expr, int16]
+  flags: []
+
+- pattern: 00 54 03
+  name: KeyboardOnJump03
+  operands: [expr,expr,int16]
   flags: []
 
 - pattern: 00 55 00

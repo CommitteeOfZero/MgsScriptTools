@@ -582,7 +582,7 @@
 - pattern: 01 27
   name: Unk_01_27
   operands: []
-  flags: [~movie_01_27]
+  flags: [~movie_01_27, ~game_chlcc]
 
 - pattern: 01 27 00
   name: MovieRestart
@@ -619,4 +619,9 @@
 - pattern: 01 28 03
   name: MovieMain_03
   operands: []
+  flags: []
+
+- pattern: 01 2B
+  name: SFDpause
+  operands: [int8]
   flags: []

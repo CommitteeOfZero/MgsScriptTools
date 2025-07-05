@@ -6,6 +6,7 @@ instructions:
 - instructions/base/base_extra.yaml
 - instructions/11eyes.yaml
 - instructions/chaos_head_noah.yaml
+- instructions/memories_off_6_old.yaml
 - instructions/memories_off_6.yaml
 - instructions/memories_off_7.yaml
 - instructions/memories_off_8.yaml
@@ -32,6 +33,42 @@ charset:
   iwakura_aria: charset/iwakura_aria.json
 
 flags:
+  memories_off_6_old:
+    game_mo6tw: yes
+    new_bgmstop: yes
+    new_bgmplay: yes
+    new_createsurface: yes
+    new_loaddata: no
+    new_memberwrite: no
+    new_playmovie: no
+    new_presence: no
+    new_pressstart: no
+    new_save: no
+    new_seplay: no
+    new_setdic: no
+    new_setevflag: no
+    new_scriptload: no
+    new_sseplay: no
+    new_sseinit: no
+    new_titlemenu: no
+    new_voicestop: no
+    new_voiceplay: no
+    old_ev: yes
+    add_contents: no
+    
+
+    bgrelease: no
+    bgloadex: yes
+    chaload: yes
+    mescls: no
+    movie_01_27: no
+    return_labels: no
+    effyuge: no
+    debugeditor4b: yes
+    nonameid: yes
+    multisystemmes: no
+    option_default_arg: no
+
   memories_off_historia:
     new_bgmstop: yes
     new_bgmplay: yes
@@ -51,9 +88,11 @@ flags:
     new_setflag: no
     new_scriptload: no
     new_sseplay: no
+    new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     add_contents: yes
+    option_default_arg: no
 
     effyuge: yes
     bgrelease: yes
@@ -61,6 +100,7 @@ flags:
     mescls: yes
     movie_01_27: yes
     return_labels: yes
+    multisystemmes: no
 
   chaos_head_lcc_ps3:
     game_chlcc: yes
@@ -69,7 +109,7 @@ flags:
     new_bgmstop: yes
     new_createsurface: yes
     new_createthread: no
-    new_ev: yes
+    old_ev: yes
     new_messetid: no
     new_playmovie: yes
     new_presence: yes
@@ -87,11 +127,14 @@ flags:
     add_contents: no
 
     achchktitle: no
+    bgrelease: no
     effyuge: no
     chaload: yes
     mescls: yes
     movie_01_27: yes
     return_labels: no
+    multisystemmes: no
+    option_default_arg: yes
 
   chaos_head_switch:
     game_chn: yes
@@ -113,6 +156,7 @@ flags:
     new_setevflag: yes
     new_setflag: no
     new_sseplay: yes
+    new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     add_contents: yes
@@ -124,6 +168,8 @@ flags:
     mescls: yes
     movie_01_27: yes
     return_labels: yes
+    multisystemmes: no
+    option_default_arg: no
 
   chaos_head_windows:
     game_chn: yes
@@ -145,16 +191,20 @@ flags:
     new_setevflag: yes
     new_setflag: no
     new_sseplay: yes
+    new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     add_contents: yes
 
+    achchktitle: true
     effyuge: yes
     bgrelease: yes
     chaload: yes
     mescls: yes
     movie_01_27: yes
     return_labels: yes
+    multisystemmes: no
+    option_default_arg: no
 
   chaos_child_lcc_ps4:
     cc_common: yes
@@ -164,6 +214,7 @@ flags:
     new_bgmstop: yes
     new_createsurface: yes
     new_createthread: no
+    new_loaddata: yes
     new_messetid: no
     new_playmovie: yes
     new_presence: yes
@@ -176,17 +227,22 @@ flags:
     new_setevflag: no
     new_setflag: no
     new_sseplay: no
+    new_sseinit: no
+    new_sseinit: no
     new_titlemenu: yes
     new_voiceplay: no
     new_voicestop: yes
     add_contents: no
     bgrelease: yes
 
+    achchktitle: yes
     effyuge: no
     chaload: yes
     mescls: yes
     movie_01_27: yes
     return_labels: yes
+    multisystemmes: yes
+    option_default_arg: no
 
   famicom_tantei_club:
     game_ftc: yes
@@ -208,6 +264,7 @@ flags:
     new_setevflag: yes
     new_setflag: yes
     new_sseplay: yes
+    new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     bgrelease: yes
@@ -216,6 +273,8 @@ flags:
     mescls: yes
     movie_01_27: yes
     return_labels: yes
+    multisystemmes: no
+    option_default_arg: no
 
   iwakura_aria_windows:
     game_ia: yes
@@ -236,6 +295,7 @@ flags:
     new_setevflag: yes
     new_setflag: yes
     new_sseplay: yes
+    new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     bgrelease: yes
@@ -245,6 +305,8 @@ flags:
     movie_01_27: yes
     return_labels: yes
     multilang: yes
+    multisystemmes: no
+    option_default_arg: no
 
   chaos_child_switch:
     cc_common: yes
@@ -278,3 +340,5 @@ flags:
     mescls: yes
     movie_01_27: yes
     return_labels: yes
+    multisystemmes: yes
+    option_default_arg: no
