@@ -23,7 +23,7 @@ stringtags:
 - stringtags/famicom_tantei_club.yaml
 
 charset:
-  chaos_head_lcc: charset/chaos_head_lcc.json
+  chaos_head_lcc-extended: charset/chaos_head_lcc-extended.json
   chaos_head_noah: charset/chaos_head_noah.json
   chaos_head_noah-extended: charset/chaos_head_noah-extended.json
   chaos_child-extended: charset/chaos_child-extended.json
