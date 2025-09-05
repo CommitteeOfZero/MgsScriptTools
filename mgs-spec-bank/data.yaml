@@ -22,6 +22,9 @@ stringtags:
 - stringtags/base.yaml
 - stringtags/famicom_tantei_club.yaml
 
+datadirectives:
+- datadirectives/base.yaml
+
 charset:
   chaos_head_lcc-extended: charset/chaos_head_lcc-extended.json
   chaos_head_noah: charset/chaos_head_noah.json
@@ -68,6 +71,7 @@ flags:
     nonameid: yes
     multisystemmes: no
     option_default_arg: no
+    stringid_16: no
 
   memories_off_historia:
     new_bgmstop: yes
@@ -101,6 +105,7 @@ flags:
     movie_01_27: yes
     return_labels: yes
     multisystemmes: no
+    stringid_16: no
 
   chaos_head_lcc_ps3:
     game_chlcc: yes
@@ -135,6 +140,7 @@ flags:
     return_labels: no
     multisystemmes: no
     option_default_arg: yes
+    stringid_16: yes
 
   chaos_head_switch:
     game_chn: yes
@@ -170,6 +176,7 @@ flags:
     return_labels: yes
     multisystemmes: no
     option_default_arg: no
+    stringid_16: no
 
   chaos_head_windows:
     game_chn: yes
@@ -205,6 +212,7 @@ flags:
     return_labels: yes
     multisystemmes: no
     option_default_arg: no
+    stringid_16: no
 
   chaos_child_lcc_ps4:
     cc_common: yes
@@ -243,9 +251,11 @@ flags:
     return_labels: yes
     multisystemmes: yes
     option_default_arg: no
+    stringid_16: yes
 
   famicom_tantei_club:
     game_ftc: yes
+    stringid_16: no
 
   iwakura_aria_switch:
     game_ia: yes
@@ -275,6 +285,7 @@ flags:
     return_labels: yes
     multisystemmes: no
     option_default_arg: no
+    stringid_16: no
 
   iwakura_aria_windows:
     game_ia: yes
@@ -307,6 +318,7 @@ flags:
     multilang: yes
     multisystemmes: no
     option_default_arg: no
+    stringid_16: no
 
   chaos_child_switch:
     cc_common: yes
@@ -342,3 +354,4 @@ flags:
     return_labels: yes
     multisystemmes: yes
     option_default_arg: no
+    stringid_16: no

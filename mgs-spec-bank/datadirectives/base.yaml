@@ -1,0 +1,19 @@
+- name: "StringID"
+  operands: [int32]
+  flags: [~stringid_16]
+
+- name: "StringID"
+  operands: [int16]
+  flags: [stringid_16]
+
+- name: "dw"
+  operands: [int16]
+  flags: []
+
+- name: "Adr"
+  operands: [int16]
+  flags: []
+
+- name: "dd"
+  operands: [int32]
+  flags: []

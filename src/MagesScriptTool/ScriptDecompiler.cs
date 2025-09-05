@@ -4,6 +4,7 @@ namespace MagesScriptTool;
 
 sealed class ScriptDecompiler {
 	readonly InstructionEncoding _instructionEncoding;
+	readonly DataDirectiveEncoding _dataDirectiveEncoding;
 
 	readonly ImmutableArray<byte> _code;
 	readonly ImmutableArray<int> _labels;
@@ -14,8 +15,9 @@ sealed class ScriptDecompiler {
 
 	readonly Dictionary<UncompiledScriptElementInstruction, int> _instructionPositions = [];
 
-	public ScriptDecompiler(InstructionEncoding instructionEncoding, CompiledScript compiledScript) {
+	public ScriptDecompiler(InstructionEncoding instructionEncoding, DataDirectiveEncoding dataDirectiveEncoding, CompiledScript compiledScript) {
 		_instructionEncoding = instructionEncoding;
+		_dataDirectiveEncoding = dataDirectiveEncoding;
 
 		_code = compiledScript.Code;
 		_labels = compiledScript.Labels;
@@ -142,6 +144,7 @@ sealed class ScriptDecompiler {
 	sealed class Chunk : Stream {
 		readonly ScriptDecompiler _parent;
 		readonly InstructionEncoding _instructionEncoding;
+		readonly DataDirectiveEncoding _dataDirectiveEncoding;
 		readonly ImmutableArray<byte> _code;
 
 		readonly public int _index;
@@ -171,6 +174,7 @@ sealed class ScriptDecompiler {
 		public Chunk(ScriptDecompiler parent, int index, int start, int end) {
 			_parent = parent;
 			_instructionEncoding = parent._instructionEncoding;
+			_dataDirectiveEncoding = parent._dataDirectiveEncoding;
 			_code = parent._code;
 
 			_index = index;
@@ -257,39 +261,39 @@ sealed class ScriptDecompiler {
 
 		void DecodeInt16Table() {
 			while (Position < Length) {
-				AddInstruction(new("dw", [DecodeInt16()]));
+				AddDataDirective(_dataDirectiveEncoding.Decode(this, "dw"));
 			}
 		}
 
 		void DecodeInt32Table() {
 			while (Position < Length) {
-				AddInstruction(new("dd", [DecodeInt32()]));
+				AddDataDirective(_dataDirectiveEncoding.Decode(this, "dd"));
 			}
 		}
 
 		void DecodeAdrTable() {
 			while (Position < Length) {
-				AddInstruction(new("Adr", [DecodeInt16()]));
+				AddDataDirective(_dataDirectiveEncoding.Decode(this, "Adr"));
 			}
 		}
 
 		void DecodeTextTable() {
 			while (Position < Length) {
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
 			}
 		}
 
 		void DecodeNameIdTable() {
 			SetIncomplete();
 			while (true) {
-				ExpressionNode id = DecodeInt16();
-				AddInstruction(new("dw", [id]));
-				if (id.GetInt() == 0xFFFF) {
+				DataDirective id = _dataDirectiveEncoding.Decode(this, "dw");
+				AddDataDirective(id);
+				if ((id.Operands[0].GetInt() & 0xFFFF) == 0xFFFF) {
 					break;
 				}
 
-				AddInstruction(new("StringID", [DecodeInt32()]));
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
 			}
 			SetComplete();
 		}
@@ -298,9 +302,9 @@ sealed class ScriptDecompiler {
 			SetIncomplete();
 			int index = 0;
 			while (true) {
-				ExpressionNode value0 = DecodeInt16();
-				AddInstruction(new("dw", [value0]));
-				if (value0.GetInt() == 0xFF) {
+				DataDirective pageCount = _dataDirectiveEncoding.Decode(this, "dw");
+				AddDataDirective(pageCount);
+				if ((pageCount.Operands[0].GetInt() & 0xFFFF) == 0xFF) {
 					break;
 				}
 
@@ -308,19 +312,21 @@ sealed class ScriptDecompiler {
 				index++;
 
 				// Category
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
 
 				// Name
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
 
 				// Pronounciation
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
 
 				// Sorting key
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
 
 				// Content
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				for (int i = 0; i < pageCount.Operands[0].GetInt(); i++) {
+					AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+				}
 			}
 			SetComplete();
 		}
@@ -328,22 +334,16 @@ sealed class ScriptDecompiler {
 		void DecodeEncycSortTable() {
 			SetIncomplete();
 
-			AddInstruction(new("StringID", [DecodeInt32()]));
-			AddInstruction(new("StringID", [DecodeInt32()]));
+			AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+			AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
 
-			while (true) {
-				ExpressionNode value0 = DecodeInt16();
-				AddInstruction(new("dw", [value0]));
-				if (value0.GetInt() == 0xFFFF) {
-					break;
-				}
-			}
-
-			while (true) {
-				ExpressionNode value0 = DecodeInt16();
-				AddInstruction(new("dw", [value0]));
-				if (value0.GetInt() == 0xFFFF) {
-					break;
+			for (int i = 0; i < 2; i++) {
+				while (true) {
+					DataDirective value0 = _dataDirectiveEncoding.Decode(this, "dw");
+					AddDataDirective(value0);
+					if ((value0.Operands[0].GetInt() & 0xFFFF) == 0xFFFF) {
+						break;
+					}
 				}
 			}
 
@@ -353,7 +353,7 @@ sealed class ScriptDecompiler {
 		void DecodeMesModeFormatTable() {
 			int index = 0;
 			while (Position < Length) {
-				ExpressionNode value0 = DecodeInt16();
+				DataDirective value0 = _dataDirectiveEncoding.Decode(this, "dw");
 				string? comment = index switch {
 					 0 => "display mode",
 					 1 => "message window ID",
@@ -380,33 +380,9 @@ sealed class ScriptDecompiler {
 				if (comment is not null) {
 					AddComment(comment);
 				}
-				AddInstruction(new("dw", [value0]));
+				AddDataDirective(value0);
 				index++;
 			}
-		}
-
-		ExpressionNodeNumber DecodeInt16() {
-			int value = 0;
-			value |= GetByte() << 0;
-			value |= GetByte() << 8;
-			return new(value);
-		}
-
-		ExpressionNodeNumber DecodeInt32() {
-			int value = 0;
-			value |= GetByte() <<  0;
-			value |= GetByte() <<  8;
-			value |= GetByte() << 16;
-			value |= GetByte() << 24;
-			return new(value);
-		}
-
-		byte GetByte() {
-			int value = ReadByte();
-			if (value < 0) {
-				throw new EndOfStreamException();
-			}
-			return (byte)value;
 		}
 
 		void Reset() {
@@ -425,6 +401,12 @@ sealed class ScriptDecompiler {
 		public void AddInstruction(Instruction instruction) {
 			UncompiledScriptElementInstruction element = new(instruction);
 			_parent._instructionPositions[element] = LastPosition;
+			Body.Add(element);
+			UpdateLastPosition();
+		}
+
+		public void AddDataDirective(DataDirective dataDirective) {
+			UncompiledScriptElementDataDirective element = new(dataDirective);
 			Body.Add(element);
 			UpdateLastPosition();
 		}

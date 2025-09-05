@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Text;
 
@@ -42,6 +43,11 @@ static class UncompiledScriptSyntax {
 						int position = _instructionPositions[element];
 						_sdbBuilder.Append($"{position,6},{_row,6}, {s}\n");
 					}
+					Append($"\t{s}\n");
+					break;
+				}
+				case UncompiledScriptElementDataDirective { Value: DataDirective dataDirective }: {
+					string s = FormatDataDirective(dataDirective);
 					Append($"\t{s}\n");
 					break;
 				}
@@ -111,6 +117,19 @@ static class UncompiledScriptSyntax {
 			return sb.ToString();
 		}
 
+		string FormatDataDirective(DataDirective dataDirective) {
+			StringBuilder sb = new();
+			sb.Append(dataDirective.Name);
+			for (int i = 0; i < dataDirective.Operands.Length; i++) {
+				if (i != 0) {
+					sb.Append(",");
+				}
+				sb.Append(" ");
+				ExpressionSyntax.Format(sb, dataDirective.Operands[i]);
+			}
+			return sb.ToString();
+		} 
+
 		void Append(string s) {
 			foreach (char c in s) {
 				if (c == '\n') {
@@ -140,11 +159,16 @@ static class UncompiledScriptSyntax {
 
 		UncompiledScriptElement ParseElement() {
 			char ch = _reader.Peek(0);
-			if (IsInstructionNameStart(ch)) {
+			if (IsIdentifierStart(ch)) {
 				string name = ParseInstructionName();
 				switch (name) {
 					case "hex": {
 						return new UncompiledScriptElementRaw(ParseRaw());
+					} case "StringID" or "Adr" or "dw" or "dd": {
+						ImmutableArray<ExpressionNode> operands = ParseOperands();
+						DataDirective dataDirective = new(name, operands);
+						return new UncompiledScriptElementDataDirective(dataDirective);
+						break;
 					}
 					default: {
 						ImmutableArray<ExpressionNode> operands = ParseOperands();
@@ -231,9 +255,9 @@ static class UncompiledScriptSyntax {
 		}
 
 		string ParseInstructionName() {
-			Debug.Assert(IsInstructionNameStart(_reader.Peek(0)));
+			Debug.Assert(IsIdentifierStart(_reader.Peek(0)));
 			string s = "";
-			while (IsInstructionNamePart(_reader.Peek(0))) {
+			while (IsIdentifierPart(_reader.Peek(0))) {
 				s += _reader.Next();
 			}
 			return s;
@@ -264,12 +288,12 @@ static class UncompiledScriptSyntax {
 			};
 		}
 
-		static bool IsInstructionNameStart(char c) {
+		static bool IsIdentifierStart(char c) {
 			return c is '_' or (>= 'A' and <= 'Z') or (>= 'a' and <= 'z');
 		}
 
-		static bool IsInstructionNamePart(char c) {
-			return IsInstructionNameStart(c) || IsDigit(c);
+		static bool IsIdentifierPart(char c) {
+			return IsIdentifierStart(c) || IsDigit(c);
 		}
 
 		static bool IsDigit(char c) {
