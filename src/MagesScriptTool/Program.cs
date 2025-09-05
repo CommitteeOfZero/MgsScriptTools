@@ -78,7 +78,6 @@ static class Program {
 		public readonly bool GenerateSdb;
 
 		public readonly InstructionEncoding InstructionEncoding;
-		public readonly DataDirectiveEncoding DataDirectiveEncoding;
 		public readonly UncompiledStringTableSyntax UncompiledStringTableSyntax;
 		public readonly StringGlyphSyntax StringGlyphSyntax;
 		public readonly CompiledScriptPackageEncoding CompiledScriptPackageEncoding;
@@ -111,11 +110,6 @@ static class Program {
 			ImmutableArray<StringTagSpec> stringTagSpecs = bank.GetStringTagSpecs(flags);
 			StringTagsSpec stringTagsSpec = new(stringTagSpecs);
 
-			ImmutableArray<DataDirectiveSpec> dataDirectiveSpecs = bank.GetDataDirectiveSpecs(flags);
-			DataDirectivesSpec dataDirectivesSpec = new(dataDirectiveSpecs);
-
-			DataDirectiveEncoding = new(dataDirectivesSpec);
-			
 			CompiledStringEncoding compiledStringEncoding = new(stringTagsSpec);
 			CompiledScriptPackageEncoding = new(compiledStringEncoding);
 			CompiledStringTableEncoding = new(compiledStringEncoding);
@@ -234,7 +228,7 @@ static class Program {
 			ImmutableArray<UncompiledScriptElement> uncompiledScriptElements = await ParseUncompiledScript(tool, uncompiledScriptPath);
 			ImmutableArray<StringTableEntry> uncompiledStringTableEntries = await ParseUncompiledStringTable(tool, uncompiledStringTablePath);
 
-			ScriptCompiler compiler = new(tool.InstructionEncoding, tool.DataDirectiveEncoding);
+			ScriptCompiler compiler = new(tool.InstructionEncoding);
 			CompiledScript compiledScript = compiler.Compile(uncompiledScriptElements);
 
 			List<ImmutableArray<StringToken>> compiledStrings = [];
@@ -298,7 +292,7 @@ static class Program {
 		try {
 			CompiledScriptPackage compiledScriptPackage = await DecodeCompiledScriptPackage(tool, compiledScriptPackagePath);
 
-			ScriptDecompiler decompiler = new(tool.InstructionEncoding, tool.DataDirectiveEncoding, compiledScriptPackage.Script);
+			ScriptDecompiler decompiler = new(tool.InstructionEncoding, compiledScriptPackage.Script);
 			(ImmutableArray<UncompiledScriptElement> uncompiledScriptElements, ImmutableDictionary<UncompiledScriptElementInstruction, int> instructionPositions) = decompiler.Decompile();
 
 			ImmutableArray<ImmutableArray<StringToken>> compiledStrings = compiledScriptPackage.Strings;

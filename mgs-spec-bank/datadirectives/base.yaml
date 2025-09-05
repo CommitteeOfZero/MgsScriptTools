@@ -3,15 +3,15 @@
   flags: [~stringid_16]
 
 - name: "StringID"
-  operands: [int16]
+  operands: [uint16]
   flags: [stringid_16]
 
 - name: "dw"
-  operands: [int16]
+  operands: [uint16]
   flags: []
 
 - name: "Adr"
-  operands: [int16]
+  operands: [uint16]
   flags: []
 
 - name: "dd"

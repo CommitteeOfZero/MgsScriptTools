@@ -23,9 +23,20 @@ class SpecBank {
 				if (!spec.CheckFlags(flags)) {
 					continue;
 				}
-				result.Add(new(spec.Name, spec.ParsePattern(), spec.ParseOperands()));
+				result.Add(new VmInstructionSpec(spec.Name, spec.ParsePattern(), spec.ParseOperands()));
 			}
 		}
+
+		foreach (string path in _index.DataDirectives) {
+			SerializedDataDirectiveSpec[] specs = SerializedDataDirectiveSpec.LoadList(Path.Join(_path, path));
+			foreach (SerializedDataDirectiveSpec spec in specs) {
+				if (!spec.CheckFlags(flags)) {
+					continue;
+				}
+				result.Add(new DataDirectiveSpec(spec.Name, spec.ParseOperands()));
+			}
+		}
+
 		return [..result];
 	}
 
@@ -110,20 +121,6 @@ class SpecBank {
 				}
 			}
 		}
-	}
-
-	public ImmutableArray<DataDirectiveSpec> GetDataDirectiveSpecs(ImmutableDictionary<string, bool> flags) {
-		List<DataDirectiveSpec> result = [];
-		foreach (string path in _index.DataDirectives) {
-			SerializedDataDirectiveSpec[] specs = SerializedDataDirectiveSpec.LoadList(Path.Join(_path, path));
-			foreach (SerializedDataDirectiveSpec spec in specs) {
-				if (!spec.CheckFlags(flags)) {
-					continue;
-				}
-				result.Add(new(spec.Name, spec.ParseOperands()));
-			}
-		}
-		return [..result];
 	}
 
 	public ImmutableDictionary<string, bool> GetFlags(string key) {
@@ -291,6 +288,7 @@ class SpecBank {
 					"expr" => OperandKind.Expr,
 					"uint8" => OperandKind.UInt8,
 					"int8" => OperandKind.Int8,
+					"uint16" => OperandKind.UInt16,
 					"int16" => OperandKind.Int16,
 					"int32" => OperandKind.Int32,
 					"str" => OperandKind.Str,

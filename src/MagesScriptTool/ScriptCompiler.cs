@@ -4,14 +4,12 @@ namespace MagesScriptTool;
 
 sealed class ScriptCompiler {
 	readonly InstructionEncoding _instructionEncoding;
-	readonly DataDirectiveEncoding _dataDirectiveEncoding;
 	readonly MemoryStream _stream = new();
 	readonly SortedDictionary<int, int> _labelTable = [];
 	readonly SortedDictionary<int, int> _returnLabelTable = [];
 
-	public ScriptCompiler(InstructionEncoding instructionEncoding, DataDirectiveEncoding dataDirectiveEncoding) {
+	public ScriptCompiler(InstructionEncoding instructionEncoding) {
 		_instructionEncoding = instructionEncoding;
-		_dataDirectiveEncoding = dataDirectiveEncoding;
 	}
 
 	public CompiledScript Compile(ImmutableArray<UncompiledScriptElement> elements) {
@@ -42,10 +40,6 @@ sealed class ScriptCompiler {
 		switch (element) {
 			case UncompiledScriptElementInstruction { Value: Instruction instruction }: {
 				_instructionEncoding.Encode(_stream, instruction);
-				break;
-			}
-			case UncompiledScriptElementDataDirective { Value: DataDirective dataDirective }: {
-				_dataDirectiveEncoding.Encode(_stream, dataDirective);
 				break;
 			}
 			case UncompiledScriptElementLabel { Index: int index }: {

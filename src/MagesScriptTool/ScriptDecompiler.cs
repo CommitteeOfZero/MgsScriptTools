@@ -4,8 +4,6 @@ namespace MagesScriptTool;
 
 sealed class ScriptDecompiler {
 	readonly InstructionEncoding _instructionEncoding;
-	readonly DataDirectiveEncoding _dataDirectiveEncoding;
-
 	readonly ImmutableArray<byte> _code;
 	readonly ImmutableArray<int> _labels;
 	readonly ImmutableArray<int> _returnLabels;
@@ -15,9 +13,8 @@ sealed class ScriptDecompiler {
 
 	readonly Dictionary<UncompiledScriptElementInstruction, int> _instructionPositions = [];
 
-	public ScriptDecompiler(InstructionEncoding instructionEncoding, DataDirectiveEncoding dataDirectiveEncoding, CompiledScript compiledScript) {
+	public ScriptDecompiler(InstructionEncoding instructionEncoding, CompiledScript compiledScript) {
 		_instructionEncoding = instructionEncoding;
-		_dataDirectiveEncoding = dataDirectiveEncoding;
 
 		_code = compiledScript.Code;
 		_labels = compiledScript.Labels;
@@ -144,7 +141,6 @@ sealed class ScriptDecompiler {
 	sealed class Chunk : Stream {
 		readonly ScriptDecompiler _parent;
 		readonly InstructionEncoding _instructionEncoding;
-		readonly DataDirectiveEncoding _dataDirectiveEncoding;
 		readonly ImmutableArray<byte> _code;
 
 		readonly public int _index;
@@ -174,7 +170,6 @@ sealed class ScriptDecompiler {
 		public Chunk(ScriptDecompiler parent, int index, int start, int end) {
 			_parent = parent;
 			_instructionEncoding = parent._instructionEncoding;
-			_dataDirectiveEncoding = parent._dataDirectiveEncoding;
 			_code = parent._code;
 
 			_index = index;
@@ -261,39 +256,39 @@ sealed class ScriptDecompiler {
 
 		void DecodeInt16Table() {
 			while (Position < Length) {
-				AddDataDirective(_dataDirectiveEncoding.Decode(this, "dw"));
+				AddInstruction(_instructionEncoding.Decode(this, "dw"));
 			}
 		}
 
 		void DecodeInt32Table() {
 			while (Position < Length) {
-				AddDataDirective(_dataDirectiveEncoding.Decode(this, "dd"));
+				AddInstruction(_instructionEncoding.Decode(this, "dd"));
 			}
 		}
 
 		void DecodeAdrTable() {
 			while (Position < Length) {
-				AddDataDirective(_dataDirectiveEncoding.Decode(this, "Adr"));
+				AddInstruction(_instructionEncoding.Decode(this, "Adr"));
 			}
 		}
 
 		void DecodeTextTable() {
 			while (Position < Length) {
-				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 			}
 		}
 
 		void DecodeNameIdTable() {
 			SetIncomplete();
 			while (true) {
-				DataDirective id = _dataDirectiveEncoding.Decode(this, "dw");
-				AddDataDirective(id);
+				Instruction id = _instructionEncoding.Decode(this, "dw");
+				AddInstruction(id);
 				if ((id.Operands[0].GetInt() & 0xFFFF) == 0xFFFF) {
 					break;
 				}
 
-				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
-				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 			}
 			SetComplete();
 		}
@@ -302,8 +297,8 @@ sealed class ScriptDecompiler {
 			SetIncomplete();
 			int index = 0;
 			while (true) {
-				DataDirective pageCount = _dataDirectiveEncoding.Decode(this, "dw");
-				AddDataDirective(pageCount);
+				Instruction pageCount = _instructionEncoding.Decode(this, "dw");
+				AddInstruction(pageCount);
 				if ((pageCount.Operands[0].GetInt() & 0xFFFF) == 0xFF) {
 					break;
 				}
@@ -312,20 +307,20 @@ sealed class ScriptDecompiler {
 				index++;
 
 				// Category
-				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 
 				// Name
-				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 
 				// Pronounciation
-				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 
 				// Sorting key
-				AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 
 				// Content
 				for (int i = 0; i < pageCount.Operands[0].GetInt(); i++) {
-					AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+					AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 				}
 			}
 			SetComplete();
@@ -334,13 +329,13 @@ sealed class ScriptDecompiler {
 		void DecodeEncycSortTable() {
 			SetIncomplete();
 
-			AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
-			AddDataDirective(_dataDirectiveEncoding.Decode(this, "StringID"));
+			AddInstruction(_instructionEncoding.Decode(this, "StringID"));
+			AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 
 			for (int i = 0; i < 2; i++) {
 				while (true) {
-					DataDirective value0 = _dataDirectiveEncoding.Decode(this, "dw");
-					AddDataDirective(value0);
+					Instruction value0 = _instructionEncoding.Decode(this, "dw");
+					AddInstruction(value0);
 					if ((value0.Operands[0].GetInt() & 0xFFFF) == 0xFFFF) {
 						break;
 					}
@@ -353,7 +348,7 @@ sealed class ScriptDecompiler {
 		void DecodeMesModeFormatTable() {
 			int index = 0;
 			while (Position < Length) {
-				DataDirective value0 = _dataDirectiveEncoding.Decode(this, "dw");
+				Instruction value0 = _instructionEncoding.Decode(this, "dw");
 				string? comment = index switch {
 					 0 => "display mode",
 					 1 => "message window ID",
@@ -380,7 +375,7 @@ sealed class ScriptDecompiler {
 				if (comment is not null) {
 					AddComment(comment);
 				}
-				AddDataDirective(value0);
+				AddInstruction(value0);
 				index++;
 			}
 		}
@@ -401,12 +396,6 @@ sealed class ScriptDecompiler {
 		public void AddInstruction(Instruction instruction) {
 			UncompiledScriptElementInstruction element = new(instruction);
 			_parent._instructionPositions[element] = LastPosition;
-			Body.Add(element);
-			UpdateLastPosition();
-		}
-
-		public void AddDataDirective(DataDirective dataDirective) {
-			UncompiledScriptElementDataDirective element = new(dataDirective);
 			Body.Add(element);
 			UpdateLastPosition();
 		}

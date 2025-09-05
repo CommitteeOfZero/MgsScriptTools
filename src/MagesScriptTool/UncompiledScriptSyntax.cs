@@ -46,11 +46,6 @@ static class UncompiledScriptSyntax {
 					Append($"\t{s}\n");
 					break;
 				}
-				case UncompiledScriptElementDataDirective { Value: DataDirective dataDirective }: {
-					string s = FormatDataDirective(dataDirective);
-					Append($"\t{s}\n");
-					break;
-				}
 				case UncompiledScriptElementLabel { Index: int index }: {
 					Append($"{index}");
 					Append(":");
@@ -117,19 +112,6 @@ static class UncompiledScriptSyntax {
 			return sb.ToString();
 		}
 
-		string FormatDataDirective(DataDirective dataDirective) {
-			StringBuilder sb = new();
-			sb.Append(dataDirective.Name);
-			for (int i = 0; i < dataDirective.Operands.Length; i++) {
-				if (i != 0) {
-					sb.Append(",");
-				}
-				sb.Append(" ");
-				ExpressionSyntax.Format(sb, dataDirective.Operands[i]);
-			}
-			return sb.ToString();
-		} 
-
 		void Append(string s) {
 			foreach (char c in s) {
 				if (c == '\n') {
@@ -164,11 +146,6 @@ static class UncompiledScriptSyntax {
 				switch (name) {
 					case "hex": {
 						return new UncompiledScriptElementRaw(ParseRaw());
-					} case "StringID" or "Adr" or "dw" or "dd": {
-						ImmutableArray<ExpressionNode> operands = ParseOperands();
-						DataDirective dataDirective = new(name, operands);
-						return new UncompiledScriptElementDataDirective(dataDirective);
-						break;
 					}
 					default: {
 						ImmutableArray<ExpressionNode> operands = ParseOperands();
