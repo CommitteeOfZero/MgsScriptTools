@@ -4,7 +4,6 @@ namespace MagesScriptTool;
 
 sealed class ScriptDecompiler {
 	readonly InstructionEncoding _instructionEncoding;
-
 	readonly ImmutableArray<byte> _code;
 	readonly ImmutableArray<int> _labels;
 	readonly ImmutableArray<int> _returnLabels;
@@ -257,39 +256,39 @@ sealed class ScriptDecompiler {
 
 		void DecodeInt16Table() {
 			while (Position < Length) {
-				AddInstruction(new("dw", [DecodeInt16()]));
+				AddInstruction(_instructionEncoding.Decode(this, "dw"));
 			}
 		}
 
 		void DecodeInt32Table() {
 			while (Position < Length) {
-				AddInstruction(new("dd", [DecodeInt32()]));
+				AddInstruction(_instructionEncoding.Decode(this, "dd"));
 			}
 		}
 
 		void DecodeAdrTable() {
 			while (Position < Length) {
-				AddInstruction(new("Adr", [DecodeInt16()]));
+				AddInstruction(_instructionEncoding.Decode(this, "Adr"));
 			}
 		}
 
 		void DecodeTextTable() {
 			while (Position < Length) {
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 			}
 		}
 
 		void DecodeNameIdTable() {
 			SetIncomplete();
 			while (true) {
-				ExpressionNode id = DecodeInt16();
-				AddInstruction(new("dw", [id]));
-				if (id.GetInt() == 0xFFFF) {
+				Instruction id = _instructionEncoding.Decode(this, "dw");
+				AddInstruction(id);
+				if ((id.Operands[0].GetInt() & 0xFFFF) == 0xFFFF) {
 					break;
 				}
 
-				AddInstruction(new("StringID", [DecodeInt32()]));
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 			}
 			SetComplete();
 		}
@@ -298,9 +297,9 @@ sealed class ScriptDecompiler {
 			SetIncomplete();
 			int index = 0;
 			while (true) {
-				ExpressionNode value0 = DecodeInt16();
-				AddInstruction(new("dw", [value0]));
-				if (value0.GetInt() == 0xFF) {
+				Instruction pageCount = _instructionEncoding.Decode(this, "dw");
+				AddInstruction(pageCount);
+				if ((pageCount.Operands[0].GetInt() & 0xFFFF) == 0xFF) {
 					break;
 				}
 
@@ -308,19 +307,21 @@ sealed class ScriptDecompiler {
 				index++;
 
 				// Category
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 
 				// Name
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 
 				// Pronounciation
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 
 				// Sorting key
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 
 				// Content
-				AddInstruction(new("StringID", [DecodeInt32()]));
+				for (int i = 0; i < pageCount.Operands[0].GetInt(); i++) {
+					AddInstruction(_instructionEncoding.Decode(this, "StringID"));
+				}
 			}
 			SetComplete();
 		}
@@ -328,22 +329,16 @@ sealed class ScriptDecompiler {
 		void DecodeEncycSortTable() {
 			SetIncomplete();
 
-			AddInstruction(new("StringID", [DecodeInt32()]));
-			AddInstruction(new("StringID", [DecodeInt32()]));
+			AddInstruction(_instructionEncoding.Decode(this, "StringID"));
+			AddInstruction(_instructionEncoding.Decode(this, "StringID"));
 
-			while (true) {
-				ExpressionNode value0 = DecodeInt16();
-				AddInstruction(new("dw", [value0]));
-				if (value0.GetInt() == 0xFFFF) {
-					break;
-				}
-			}
-
-			while (true) {
-				ExpressionNode value0 = DecodeInt16();
-				AddInstruction(new("dw", [value0]));
-				if (value0.GetInt() == 0xFFFF) {
-					break;
+			for (int i = 0; i < 2; i++) {
+				while (true) {
+					Instruction value0 = _instructionEncoding.Decode(this, "dw");
+					AddInstruction(value0);
+					if ((value0.Operands[0].GetInt() & 0xFFFF) == 0xFFFF) {
+						break;
+					}
 				}
 			}
 
@@ -353,7 +348,7 @@ sealed class ScriptDecompiler {
 		void DecodeMesModeFormatTable() {
 			int index = 0;
 			while (Position < Length) {
-				ExpressionNode value0 = DecodeInt16();
+				Instruction value0 = _instructionEncoding.Decode(this, "dw");
 				string? comment = index switch {
 					 0 => "display mode",
 					 1 => "message window ID",
@@ -380,33 +375,9 @@ sealed class ScriptDecompiler {
 				if (comment is not null) {
 					AddComment(comment);
 				}
-				AddInstruction(new("dw", [value0]));
+				AddInstruction(value0);
 				index++;
 			}
-		}
-
-		ExpressionNodeNumber DecodeInt16() {
-			int value = 0;
-			value |= GetByte() << 0;
-			value |= GetByte() << 8;
-			return new(value);
-		}
-
-		ExpressionNodeNumber DecodeInt32() {
-			int value = 0;
-			value |= GetByte() <<  0;
-			value |= GetByte() <<  8;
-			value |= GetByte() << 16;
-			value |= GetByte() << 24;
-			return new(value);
-		}
-
-		byte GetByte() {
-			int value = ReadByte();
-			if (value < 0) {
-				throw new EndOfStreamException();
-			}
-			return (byte)value;
 		}
 
 		void Reset() {

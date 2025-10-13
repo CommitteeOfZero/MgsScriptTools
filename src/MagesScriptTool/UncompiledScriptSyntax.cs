@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Text;
 
@@ -140,7 +141,7 @@ static class UncompiledScriptSyntax {
 
 		UncompiledScriptElement ParseElement() {
 			char ch = _reader.Peek(0);
-			if (IsInstructionNameStart(ch)) {
+			if (IsIdentifierStart(ch)) {
 				string name = ParseInstructionName();
 				switch (name) {
 					case "hex": {
@@ -231,9 +232,9 @@ static class UncompiledScriptSyntax {
 		}
 
 		string ParseInstructionName() {
-			Debug.Assert(IsInstructionNameStart(_reader.Peek(0)));
+			Debug.Assert(IsIdentifierStart(_reader.Peek(0)));
 			string s = "";
-			while (IsInstructionNamePart(_reader.Peek(0))) {
+			while (IsIdentifierPart(_reader.Peek(0))) {
 				s += _reader.Next();
 			}
 			return s;
@@ -264,12 +265,12 @@ static class UncompiledScriptSyntax {
 			};
 		}
 
-		static bool IsInstructionNameStart(char c) {
+		static bool IsIdentifierStart(char c) {
 			return c is '_' or (>= 'A' and <= 'Z') or (>= 'a' and <= 'z');
 		}
 
-		static bool IsInstructionNamePart(char c) {
-			return IsInstructionNameStart(c) || IsDigit(c);
+		static bool IsIdentifierPart(char c) {
+			return IsIdentifierStart(c) || IsDigit(c);
 		}
 
 		static bool IsDigit(char c) {

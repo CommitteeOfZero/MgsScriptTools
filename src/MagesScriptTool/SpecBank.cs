@@ -23,9 +23,20 @@ class SpecBank {
 				if (!spec.CheckFlags(flags)) {
 					continue;
 				}
-				result.Add(new(spec.Name, spec.ParsePattern(), spec.ParseOperands()));
+				result.Add(new VmInstructionSpec(spec.Name, spec.ParsePattern(), spec.ParseOperands()));
 			}
 		}
+
+		foreach (string path in _index.DataDirectives) {
+			SerializedDataDirectiveSpec[] specs = SerializedDataDirectiveSpec.LoadList(Path.Join(_path, path));
+			foreach (SerializedDataDirectiveSpec spec in specs) {
+				if (!spec.CheckFlags(flags)) {
+					continue;
+				}
+				result.Add(new DataDirectiveSpec(spec.Name, spec.ParseOperands()));
+			}
+		}
+
 		return [..result];
 	}
 
@@ -127,6 +138,9 @@ class SpecBank {
 
 		[YamlMember(Alias = "stringtags", ApplyNamingConventions = false)]
 		public string[] StringTags { get; set; } = default!;
+
+		[YamlMember(Alias = "datadirectives", ApplyNamingConventions = false)]
+		public string[] DataDirectives { get; set; } = default!;
 
 		[YamlMember(Alias = "macros", ApplyNamingConventions = false)]
 		public string[] Macros { get; set; } = default!;
@@ -254,6 +268,54 @@ class SpecBank {
 			string text = File.ReadAllText(path, new UTF8Encoding(false, true));
 			IDeserializer deserializer = new DeserializerBuilder().Build();
 			return deserializer.Deserialize<SerializedStringTagSpec[]>(text);
+		}
+	}
+
+	sealed class SerializedDataDirectiveSpec {
+		[YamlMember(Alias = "name", ApplyNamingConventions = false)]
+		public string Name { get; set; } = default!;
+
+		[YamlMember(Alias = "operands", ApplyNamingConventions = false)]
+		public string[] Operands { get; set; } = default!;
+
+		[YamlMember(Alias = "flags", ApplyNamingConventions = false)]
+		public string[] Flags { get; set; } = default!;
+
+		public ImmutableArray<OperandKind> ParseOperands() {
+			List<OperandKind> operands = [];
+			for (int i = 0; i < Operands.Length; i++) {
+				operands.Add(Operands[i] switch {
+					"expr" => OperandKind.Expr,
+					"uint8" => OperandKind.UInt8,
+					"int8" => OperandKind.Int8,
+					"uint16" => OperandKind.UInt16,
+					"int16" => OperandKind.Int16,
+					"int32" => OperandKind.Int32,
+					"str" => OperandKind.Str,
+					_ => throw new Exception($"Unrecognized operand kind name: {Operands[i]}."),
+				});
+			}
+			return [..operands];
+		}
+		public bool CheckFlags(ImmutableDictionary<string, bool> flags) {
+			foreach (string flag in Flags) {
+				string name;
+				bool value;
+				if (flag.StartsWith('~')) {
+					(name, value) = (flag[1..], false);
+				} else {
+					(name, value) = (flag, true);
+				}
+				if (!flags.ContainsKey(name) || flags[name] != value) {
+					return false;
+				}
+			}
+			return true;
+		}
+		public static SerializedDataDirectiveSpec[] LoadList(string path) {
+			string text = File.ReadAllText(path, new UTF8Encoding(false, true));
+			IDeserializer deserializer = new DeserializerBuilder().Build();
+			return deserializer.Deserialize<SerializedDataDirectiveSpec[]>(text);
 		}
 	}
 }

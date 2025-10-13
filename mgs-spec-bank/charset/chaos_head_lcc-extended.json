@@ -8978,5 +8978,353 @@
 				"text": "="
 			}
 		]
+	},
+	{
+		"parameters": {
+			"encoding": {
+				"style": "italic"
+			},
+			"rasterization": {
+				"font": "italic"
+			}
+		},
+		"glyphs": [
+			{
+				"units": [2368],
+				"text": "!"
+			},
+			{
+				"units": [2369],
+				"text": "'"
+			},
+			{
+				"units": [2370],
+				"text": ","
+			},
+			{
+				"units": [2371],
+				"text": "-"
+			},
+			{
+				"units": [2372],
+				"text": "."
+			},
+			{
+				"units": [2373],
+				"text": "0"
+			},
+			{
+				"units": [2374],
+				"text": "1"
+			},
+			{
+				"units": [2375],
+				"text": "2"
+			},
+			{
+				"units": [2376],
+				"text": "3"
+			},
+			{
+				"units": [2377],
+				"text": "4"
+			},
+			{
+				"units": [2378],
+				"text": "5"
+			},
+			{
+				"units": [2379],
+				"text": "6"
+			},
+			{
+				"units": [2380],
+				"text": "7"
+			},
+			{
+				"units": [2381],
+				"text": "8"
+			},
+			{
+				"units": [2382],
+				"text": "9"
+			},
+			{
+				"units": [2383],
+				"text": ":"
+			},
+			{
+				"units": [2384],
+				"text": "?"
+			},
+			{
+				"units": [2385],
+				"text": "A"
+			},
+			{
+				"units": [2386],
+				"text": "B"
+			},
+			{
+				"units": [2387],
+				"text": "C"
+			},
+			{
+				"units": [2388],
+				"text": "D"
+			},
+			{
+				"units": [2389],
+				"text": "E"
+			},
+			{
+				"units": [2390],
+				"text": "F"
+			},
+			{
+				"units": [2391],
+				"text": "G"
+			},
+			{
+				"units": [2392],
+				"text": "H"
+			},
+			{
+				"units": [2393],
+				"text": "I"
+			},
+			{
+				"units": [2394],
+				"text": "J"
+			},
+			{
+				"units": [2395],
+				"text": "K"
+			},
+			{
+				"units": [2396],
+				"text": "L"
+			},
+			{
+				"units": [2397],
+				"text": "M"
+			},
+			{
+				"units": [2398],
+				"text": "N"
+			},
+			{
+				"units": [2399],
+				"text": "O"
+			},
+			{
+				"units": [2400],
+				"text": "P"
+			},
+			{
+				"units": [2401],
+				"text": "Q"
+			},
+			{
+				"units": [2402],
+				"text": "R"
+			},
+			{
+				"units": [2403],
+				"text": "S"
+			},
+			{
+				"units": [2405],
+				"text": "T"
+			},
+			{
+				"units": [2406],
+				"text": "U"
+			},
+			{
+				"units": [2407],
+				"text": "V"
+			},
+			{
+				"units": [2408],
+				"text": "W"
+			},
+			{
+				"units": [2409],
+				"text": "X"
+			},
+			{
+				"units": [2410],
+				"text": "Y"
+			},
+			{
+				"units": [2411],
+				"text": "Z"
+			},
+			{
+				"units": [2412],
+				"text": "a"
+			},
+			{
+				"units": [2413],
+				"text": "b"
+			},
+			{
+				"units": [2414],
+				"text": "c"
+			},
+			{
+				"units": [2415],
+				"text": "d"
+			},
+			{
+				"units": [2416],
+				"text": "e"
+			},
+			{
+				"units": [2417],
+				"text": "f"
+			},
+			{
+				"units": [2418],
+				"text": "g"
+			},
+			{
+				"units": [2419],
+				"text": "h"
+			},
+			{
+				"units": [2420],
+				"text": "i"
+			},
+			{
+				"units": [2421],
+				"text": "j"
+			},
+			{
+				"units": [2422],
+				"text": "k"
+			},
+			{
+				"units": [2423],
+				"text": "l"
+			},
+			{
+				"units": [2424],
+				"text": "m"
+			},
+			{
+				"units": [2425],
+				"text": "n"
+			},
+			{
+				"units": [2426],
+				"text": "o"
+			},
+			{
+				"units": [2427],
+				"text": "p"
+			},
+			{
+				"units": [2428],
+				"text": "q"
+			},
+			{
+				"units": [2429],
+				"text": "r"
+			},
+			{
+				"units": [2430],
+				"text": "s"
+			},
+			{
+				"units": [2431],
+				"text": "t"
+			},
+			{
+				"units": [2432],
+				"text": "u"
+			},
+			{
+				"units": [2433],
+				"text": "v"
+			},
+			{
+				"units": [2434],
+				"text": "w"
+			},
+			{
+				"units": [2435],
+				"text": "x"
+			},
+			{
+				"units": [2436],
+				"text": "y"
+			},
+			{
+				"units": [2437],
+				"text": "z"
+			},
+			{
+				"units": [2438],
+				"text": "—"
+			},
+			{
+				"units": [2439],
+				"text": "‘"
+			},
+			{
+				"units": [2440],
+				"text": "’"
+			},
+			{
+				"units": [2441],
+				"text": "“"
+			},
+			{
+				"units": [2442],
+				"text": "”"
+			},
+			{
+				"units": [2443],
+				"text": "Ⅱ"
+			},
+			{
+				"units": [2444],
+				"text": "("
+			},
+			{
+				"units": [2445],
+				"text": ")"
+			},
+			{
+				"units": [2446],
+				"text": "♪"
+			},
+			{
+				"units": [2447],
+				"text": "/"
+			},
+			{
+				"units": [2448],
+				"text": "+"
+			},
+			{
+				"units": [2449],
+				"text": "@"
+			},
+			{
+				"units": [2450],
+				"text": "*"
+			},
+			{
+				"units": [2451],
+				"text": ";"
+			},
+			{
+				"units": [2452],
+				"text": "☆"
+			}
+		]
 	}
 ]

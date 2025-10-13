@@ -4,7 +4,6 @@ namespace MagesScriptTool;
 
 sealed class ScriptCompiler {
 	readonly InstructionEncoding _instructionEncoding;
-
 	readonly MemoryStream _stream = new();
 	readonly SortedDictionary<int, int> _labelTable = [];
 	readonly SortedDictionary<int, int> _returnLabelTable = [];
@@ -40,7 +39,7 @@ sealed class ScriptCompiler {
 	void ProcessElement(UncompiledScriptElement element) {
 		switch (element) {
 			case UncompiledScriptElementInstruction { Value: Instruction instruction }: {
-				ProcessInstruction(instruction);
+				_instructionEncoding.Encode(_stream, instruction);
 				break;
 			}
 			case UncompiledScriptElementLabel { Index: int index }: {
@@ -69,42 +68,4 @@ sealed class ScriptCompiler {
 		}
 	}
 
-	void ProcessInstruction(Instruction instruction) {
-		switch (instruction.Name.ToLowerInvariant()) {
-			case "dw" or "adr": {
-				foreach (ExpressionNode operand in instruction.Operands) {
-					EncodeInt16(operand);
-				}
-				break;
-			}
-			case "dd" or "stringid": {
-				foreach (ExpressionNode operand in instruction.Operands) {
-					EncodeInt32(operand);
-				}
-				break;
-			}
-			default: {
-				_instructionEncoding.Encode(_stream, instruction);
-				break;
-			}
-		}
-	}
-
-	void EncodeInt16(ExpressionNode expression) {
-		int value = expression.GetInt();
-		PutByte((byte)((value >> 00) & 0xFF));
-		PutByte((byte)((value >> 08) & 0xFF));
-	}
-
-	void EncodeInt32(ExpressionNode expression) {
-		int value = expression.GetInt();
-		PutByte((byte)((value >> 00) & 0xFF));
-		PutByte((byte)((value >> 08) & 0xFF));
-		PutByte((byte)((value >> 16) & 0xFF));
-		PutByte((byte)((value >> 24) & 0xFF));
-	}
-
-	void PutByte(byte value) {
-		_stream.WriteByte(value);
-	}
 }

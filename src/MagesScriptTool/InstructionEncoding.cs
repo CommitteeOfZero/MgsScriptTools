@@ -1,20 +1,24 @@
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Text;
+using System.Xml;
 
 namespace MagesScriptTool;
 
 sealed class InstructionEncoding {
-	readonly ImmutableTree<byte, InstructionSpec> _tree;
-	readonly ImmutableDictionary<string, InstructionSpec> _table;
+	readonly ImmutableTree<byte, VmInstructionSpec> _opcodeTree;
+	readonly ImmutableDictionary<string, InstructionSpec> _specTable;
 
-	InstructionEncoding(ImmutableTree<byte, InstructionSpec> tree, ImmutableDictionary<string, InstructionSpec> table) {
-		_tree = tree;
-		_table = table;
+	InstructionEncoding(ImmutableTree<byte, VmInstructionSpec> opcodeTree, ImmutableDictionary<string, InstructionSpec> specTable) {
+		_opcodeTree = opcodeTree;
+		_specTable = specTable;
 	}
 
 	public void Encode(Stream stream, Instruction instruction) {
-		InstructionSpec spec = _table[instruction.Name];
-		PutBytes(stream, spec.Opcode.AsSpan());
+		InstructionSpec spec = _specTable[instruction.Name];
+		if (spec is VmInstructionSpec vmInstructionSpec) {
+			PutBytes(stream, vmInstructionSpec.Opcode.AsSpan());
+		}
 		ImmutableArray<OperandKind> kinds = spec.Operands;
 		ImmutableArray<ExpressionNode> operands = instruction.Operands;
 		if (operands.Length != kinds.Length) {
@@ -32,9 +36,22 @@ sealed class InstructionEncoding {
 		foreach (OperandKind operandSpec in operandSpecs) {
 			operands.Add(DecodeOperand(stream, operandSpec));
 		}
-		return new(spec.Name, [..operands]);
+		return new (spec.Name, [..operands]);
 	}
 
+	public Instruction Decode(Stream stream, string dataDirective) {
+		DataDirectiveSpec spec = _specTable.GetValueOrDefault(dataDirective) switch {
+			DataDirectiveSpec dataDirectiveSpec => dataDirectiveSpec,
+			_ => throw new Exception($"Unrecognized data directive name: {dataDirective}")
+		};
+		
+		ImmutableArray<OperandKind> operandSpecs = spec.Operands;
+		List<ExpressionNode> operands = [];
+		foreach (OperandKind operandSpec in operandSpecs) {
+			operands.Add(DecodeOperand(stream, operandSpec));
+		}
+		return new (spec.Name, [..operands]);
+	}
 	static void EncodeOperand(Stream stream, OperandKind kind, ExpressionNode operand) {
 		switch (kind) {
 			case OperandKind.Expr: {
@@ -45,6 +62,7 @@ sealed class InstructionEncoding {
 				EncodeOperandInt8(stream, operand);
 				break;
 			}
+			case OperandKind.UInt16:
 			case OperandKind.Int16: {
 				EncodeOperandInt16(stream, operand);
 				break;
@@ -95,17 +113,17 @@ sealed class InstructionEncoding {
 		stream.Write(data);
 	}
 
-	InstructionSpec DecodeOpcode(Stream stream) {
+	VmInstructionSpec DecodeOpcode(Stream stream) {
 		long start = stream.Position;
-		ImmutableTree<byte, InstructionSpec> cursor = _tree;
+		ImmutableTree<byte, VmInstructionSpec> cursor = _opcodeTree;
 		while (true) {
 			byte b = GetByte(stream);
-			ImmutableTree<byte, InstructionSpec>? next = cursor[b];
+			ImmutableTree<byte, VmInstructionSpec>? next = cursor[b];
 			if (next is null) {
 				throw new Exception($"Unrecognized instruction at {start}.");
 			}
 			cursor = next;
-			if (cursor.Value is InstructionSpec opcodeSpec) {
+			if (cursor.Value is VmInstructionSpec opcodeSpec) {
 				return opcodeSpec;
 			}
 		}
@@ -115,6 +133,7 @@ sealed class InstructionEncoding {
 		return kind switch {
 			OperandKind.Expr => ExpressionEncoding.Decode(stream),
 			OperandKind.Int8 => DecodeOperandInt8(stream),
+			OperandKind.UInt16 => DecodeOperandUInt16(stream),
 			OperandKind.Int16 => DecodeOperandInt16(stream),
 			OperandKind.Int32 => DecodeOperandInt32(stream),
 			OperandKind.Str => DecodeOperandStr(stream),
@@ -135,6 +154,13 @@ sealed class InstructionEncoding {
 		int value = 0;
 		value |= GetByte(stream);
 		value = SignExtend(value, 8);
+		return new(value);
+	}
+
+	static ExpressionNodeNumber DecodeOperandUInt16(Stream stream) {
+		int value = 0;
+		value |= GetByte(stream) << 0;
+		value |= GetByte(stream) << 8;
 		return new(value);
 	}
 
@@ -169,10 +195,10 @@ sealed class InstructionEncoding {
 		return value | ~(sign - 1);
 	}
 
-	public static InstructionEncoding BuildFrom(ImmutableArray<InstructionSpec> opcodeSpecs) {
-		ImmutableTree<byte, InstructionSpec> tree = BuildOpcodeTree(opcodeSpecs);
+	public static InstructionEncoding BuildFrom(ImmutableArray<InstructionSpec> specs) {
+		ImmutableTree<byte, VmInstructionSpec> tree = BuildOpcodeTree(specs);
 		Dictionary<string, InstructionSpec> table = [];
-		foreach (InstructionSpec spec in opcodeSpecs) {
+		foreach (InstructionSpec spec in specs) {
 			if (table.ContainsKey(spec.Name)) {
 				throw new Exception($"Duplicate instruction name: {spec.Name}.");
 			}
@@ -181,14 +207,16 @@ sealed class InstructionEncoding {
 		return new(tree, table.ToImmutableDictionary());
 	}
 
-	static ImmutableTree<byte, InstructionSpec> BuildOpcodeTree(ImmutableArray<InstructionSpec> specs) {
-		Tree<byte, InstructionSpec> tree = new();
+	static ImmutableTree<byte, VmInstructionSpec> BuildOpcodeTree(ImmutableArray<InstructionSpec> specs) {
+		Tree<byte, VmInstructionSpec> tree = new();
 		foreach (InstructionSpec spec in specs) {
-			ImmutableArray<byte> opcode = spec.Opcode;
+			if (spec is not VmInstructionSpec) continue;
+			VmInstructionSpec vmInstructionSpec = (VmInstructionSpec)spec;
+			ImmutableArray<byte> opcode = vmInstructionSpec.Opcode;
 			if (opcode.Length == 0) {
 				throw new Exception($"Empty opcode: {spec.Name}.");
 			}
-			Tree<byte, InstructionSpec> cursor = tree;
+			Tree<byte, VmInstructionSpec> cursor = tree;
 			for (int i = 0; i < opcode.Length; i++) {
 				if (cursor.HasValue) {
 					throw new Exception($"Duplicate opcode prefix: {Convert.ToHexString(opcode.AsSpan()[..i])}.");
@@ -201,7 +229,7 @@ sealed class InstructionEncoding {
 			if (cursor.HasValue) {
 				throw new Exception($"Duplicate opcode: {Convert.ToHexString(opcode.AsSpan())}.");
 			}
-			cursor.Value = spec;
+			cursor.Value = vmInstructionSpec;
 		}
 		return tree.ToImmutableTree();
 	}

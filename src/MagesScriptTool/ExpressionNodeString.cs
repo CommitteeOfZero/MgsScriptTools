@@ -7,7 +7,7 @@ sealed class ExpressionNodeString : ExpressionNode {
 		Value = value;
 	}
 
-    public override string GetString() {
+	public override string GetString() {
 		return Value;
-    }
+	}
 }

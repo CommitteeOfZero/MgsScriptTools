@@ -101,7 +101,7 @@ static class Program {
 			ImmutableArray<InstructionSpec> instructionSpecs = bank.GetInstructionSpecs(flags);
 			InstructionEncoding = InstructionEncoding.BuildFrom(instructionSpecs);
 
-            UncompiledStringSyntax uncompiledStringSyntax = new();
+	        UncompiledStringSyntax uncompiledStringSyntax = new();
 			UncompiledStringTableSyntax = new(uncompiledStringSyntax);
 
 			ImmutableArray<GlyphSpec> glyphSpecs = bank.GetGlyphSpecs(charsetName);
@@ -109,6 +109,7 @@ static class Program {
 
 			ImmutableArray<StringTagSpec> stringTagSpecs = bank.GetStringTagSpecs(flags);
 			StringTagsSpec stringTagsSpec = new(stringTagSpecs);
+
 			CompiledStringEncoding compiledStringEncoding = new(stringTagsSpec);
 			CompiledScriptPackageEncoding = new(compiledStringEncoding);
 			CompiledStringTableEncoding = new(compiledStringEncoding);
