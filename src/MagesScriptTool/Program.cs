@@ -59,6 +59,12 @@ static class Program {
 		IsRequired = true,
 	};
 
+	static readonly Option<CompiledStringUnitEncoding> StringUnitEncodingOption = new(
+		name: "--string-unit-encoding",
+		getDefaultValue: () => CompiledStringUnitEncoding.UInt16,
+		description: "The encoding to use for compiled string units."
+	);
+
 	static readonly Option<bool> GenerateSdbOption = new(
 		name: "--generate-sdb",
 		description: "Enable generation of SDB files. (currently only works for decompilation)"
@@ -94,6 +100,7 @@ static class Program {
 			string bankDirectory = result.GetValueForOption(BankDirectoryOption)!;
 			string flagSet = result.GetValueForOption(FlagSetOption)!;
 			string charsetName = result.GetValueForOption(CharsetOption)!;
+			CompiledStringUnitEncoding compiledStringUnitEncoding = result.GetValueForOption(StringUnitEncodingOption)!;
 
 			SpecBank bank = SpecBank.Load(bankDirectory);
 			ImmutableDictionary<string, bool> flags = bank.GetFlags(flagSet);
@@ -110,7 +117,7 @@ static class Program {
 			ImmutableArray<StringTagSpec> stringTagSpecs = bank.GetStringTagSpecs(flags);
 			StringTagsSpec stringTagsSpec = new(stringTagSpecs);
 
-			CompiledStringEncoding compiledStringEncoding = new(stringTagsSpec);
+			CompiledStringEncoding compiledStringEncoding = new(compiledStringUnitEncoding, stringTagsSpec);
 			CompiledScriptPackageEncoding = new(compiledStringEncoding);
 			CompiledStringTableEncoding = new(compiledStringEncoding);
 		}
@@ -143,6 +150,7 @@ static class Program {
 		rootCommand.AddGlobalOption(BankDirectoryOption);
 		rootCommand.AddGlobalOption(FlagSetOption);
 		rootCommand.AddGlobalOption(CharsetOption);
+		rootCommand.AddGlobalOption(StringUnitEncodingOption);
 
 		rootCommand.SetHandler(async context => {
 			try {

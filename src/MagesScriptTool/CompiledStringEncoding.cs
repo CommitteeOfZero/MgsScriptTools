@@ -3,27 +3,31 @@ using System.Collections.Immutable;
 namespace MagesScriptTool;
 
 sealed class CompiledStringEncoding {
+	readonly CompiledStringUnitEncoding _unitEncoding;
 	readonly StringTagsSpec _spec;
 
-	public CompiledStringEncoding(StringTagsSpec spec) {
+	public CompiledStringEncoding(CompiledStringUnitEncoding unitEncoding, StringTagsSpec spec) {
+		_unitEncoding = unitEncoding;
 		_spec = spec;
 	}
 
 	public void Encode(Stream stream, ImmutableArray<StringToken> tokens) {
-		new CompiledStringEncoder(stream, _spec, tokens).Encode();
+		new CompiledStringEncoder(stream, _unitEncoding, _spec, tokens).Encode();
 	}
 
 	public ImmutableArray<StringToken> Decode(Stream stream) {
-		return new CompiledStringDecoder(stream, _spec).Decode();
+		return new CompiledStringDecoder(stream, _unitEncoding, _spec).Decode();
 	}
 
 	sealed class CompiledStringEncoder {
 		readonly Stream _stream;
+		readonly CompiledStringUnitEncoding _unitEncoding;
 		readonly StringTagsSpec _spec;
 		readonly ImmutableArray<StringToken> _tokens;
 
-		public CompiledStringEncoder(Stream stream, StringTagsSpec spec, ImmutableArray<StringToken> tokens) {
+		public CompiledStringEncoder(Stream stream, CompiledStringUnitEncoding unitEncoding, StringTagsSpec spec, ImmutableArray<StringToken> tokens) {
 			_stream = stream;
+			_unitEncoding = unitEncoding;
 			_spec = spec;
 			_tokens = tokens;
 		}
@@ -64,8 +68,23 @@ sealed class CompiledStringEncoding {
 
 		void EncodeUnit(StringTokenUnit unit) {
 			int value = unit.Value;
-			PutByte((byte)((value >> 8) & 0x7F | 0x80));
-			PutByte((byte)((value >> 0) & 0xFF));
+			switch (_unitEncoding) {
+				case CompiledStringUnitEncoding.UInt16: {
+					PutByte((byte)((value >> 8) & 0x7F | 0x80));
+					PutByte((byte)((value >> 0) & 0xFF));
+					break;
+				}
+				case CompiledStringUnitEncoding.UInt32: {
+					PutByte((byte)((value >> 24) & 0x7F | 0x80));
+					PutByte((byte)((value >> 16) & 0xFF));
+					PutByte((byte)((value >>  8) & 0xFF));
+					PutByte((byte)((value >>  0) & 0xFF));
+					break;
+				}
+				default: {
+					throw new NotImplementedException($"{_unitEncoding} is not implemented.");
+				}
+			}
 		}
 
 		void EncodeOperand(OperandKind kind, ExpressionNode expression) {
@@ -107,10 +126,12 @@ sealed class CompiledStringEncoding {
 
 	sealed class CompiledStringDecoder {
 		readonly Stream _stream;
+		readonly CompiledStringUnitEncoding _unitEncoding;
 		readonly StringTagsSpec _spec;
 
-		public CompiledStringDecoder(Stream stream, StringTagsSpec spec) {
+		public CompiledStringDecoder(Stream stream, CompiledStringUnitEncoding unitEncoding, StringTagsSpec spec) {
 			_stream = stream;
+			_unitEncoding = unitEncoding;
 			_spec = spec;
 		}
 
@@ -154,8 +175,23 @@ sealed class CompiledStringEncoding {
 
 		StringTokenUnit DecodeUnit() {
 			int value = 0;
-			value |= (GetByte() & 0x7F) << 8;
-			value |= (GetByte() & 0xFF) << 0;
+			switch (_unitEncoding) {
+				case CompiledStringUnitEncoding.UInt16: {
+					value |= (GetByte() & 0x7F) << 8;
+					value |= (GetByte() & 0xFF) << 0;
+					break;
+				}
+				case CompiledStringUnitEncoding.UInt32: {
+					value |= (GetByte() & 0x7F) << 24;
+					value |= (GetByte() & 0xFF) << 16;
+					value |= (GetByte() & 0xFF) <<  8;
+					value |= (GetByte() & 0xFF) <<  0;
+					break;
+				}
+				default: {
+					throw new NotImplementedException($"{_unitEncoding} is not implemented.");
+				}
+			};
 			return new(value);
 		}
 
