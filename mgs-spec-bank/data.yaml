@@ -398,3 +398,34 @@ flags:
     multisystemmes: no
     option_default_arg: no
     stringid_16: no
+  
+  choas_head_lcc_switch:
+    game_chlcc: yes
+    
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_createthread: yes
+    new_calc: yes
+    new_messetid: yes
+    new_playmovie: yes
+    new_presence: yes
+    new_resetflag: yes
+    new_save: yes
+    new_scriptload: no
+    new_seplay: yes
+    new_setevflag: yes
+    new_setflag: yes
+    new_sseplay: yes
+    new_sseinit: yes
+    new_titlemenu: yes
+    new_voicestop: yes
+    new_releasesurface: yes
+    bgrelease: yes
+    
+    chaload: yes
+    mescls: yes
+    movie_01_27: yes
+    return_labels: yes
+    multisystemmes: no
+    option_default_arg: no
+    stringid_16: no
