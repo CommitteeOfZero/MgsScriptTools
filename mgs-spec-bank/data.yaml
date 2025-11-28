@@ -367,7 +367,7 @@ flags:
     option_default_arg: no
     stringid_16: no
 
-  choas_child_lcc_switch:
+  chaos_child_lcc_switch:
     cc_common: yes
     game_cclcc: yes
     
@@ -399,7 +399,7 @@ flags:
     option_default_arg: no
     stringid_16: no
   
-  choas_head_lcc_switch:
+  chaos_head_lcc_switch:
     game_chlcc: yes
     
     new_bgmplay: yes
