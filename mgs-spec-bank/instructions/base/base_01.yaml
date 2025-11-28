@@ -25,7 +25,7 @@
 
 - pattern: 01 01 00
   name: ReleaseAllSurfaces
-  operands: [expr]
+  operands: []
   flags: [new_releasesurface]
 
 - pattern: 01 02
