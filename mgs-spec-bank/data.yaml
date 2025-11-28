@@ -57,6 +57,7 @@ flags:
     new_titlemenu: no
     new_voicestop: no
     new_voiceplay: no
+    new_releasesurface: no
     old_ev: yes
     add_contents: no
     
@@ -96,6 +97,7 @@ flags:
     new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
+    new_releasesurface: no
     add_contents: yes
     option_default_arg: no
 
@@ -130,6 +132,7 @@ flags:
     new_titlemenu: no
     new_voiceplay: no
     new_voicestop: no
+    new_releasesurface: no
     add_contents: no
 
     achchktitle: no
@@ -166,6 +169,7 @@ flags:
     new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
+    new_releasesurface: no
     add_contents: yes
 
     achchktitle: yes
@@ -202,6 +206,7 @@ flags:
     new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
+    new_releasesurface: no
     add_contents: yes
 
     achchktitle: true
@@ -241,6 +246,7 @@ flags:
     new_titlemenu: yes
     new_voiceplay: no
     new_voicestop: yes
+    new_releasesurface: no
     add_contents: no
     bgrelease: yes
 
@@ -257,6 +263,7 @@ flags:
   famicom_tantei_club:
     game_ftc: yes
     stringid_16: no
+    new_releasesurface: no
 
   iwakura_aria_switch:
     game_ia: yes
@@ -278,6 +285,7 @@ flags:
     new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
+    new_releasesurface: no
     bgrelease: yes
     
     chaload: yes
@@ -310,6 +318,7 @@ flags:
     new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
+    new_releasesurface: no
     bgrelease: yes
     
     chaload: yes
@@ -344,6 +353,7 @@ flags:
     new_sseplay: yes
     new_titlemenu: yes
     new_voicestop: yes
+    new_releasesurface: no
     add_contents: yes
 
     achchktitle: yes
@@ -354,5 +364,37 @@ flags:
     movie_01_27: yes
     return_labels: yes
     multisystemmes: yes
+    option_default_arg: no
+    stringid_16: no
+
+  choas_child_lcc_switch:
+    cc_common: yes
+    game_cclcc: yes
+    
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_createthread: yes
+    new_calc: yes
+    new_messetid: yes
+    new_playmovie: yes
+    new_presence: yes
+    new_resetflag: yes
+    new_save: yes
+    new_scriptload: no
+    new_seplay: yes
+    new_setevflag: yes
+    new_setflag: yes
+    new_sseplay: yes
+    new_sseinit: yes
+    new_titlemenu: yes
+    new_voicestop: yes
+    new_releasesurface: yes
+    bgrelease: yes
+    
+    chaload: yes
+    mescls: yes
+    movie_01_27: yes
+    return_labels: yes
+    multisystemmes: no
     option_default_arg: no
     stringid_16: no

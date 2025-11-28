@@ -16,7 +16,17 @@
 - pattern: 01 01
   name: ReleaseSurface
   operands: [expr]
-  flags: []
+  flags: [~new_releasesurface]
+
+- pattern: 01 01 01
+  name: ReleaseSurface
+  operands: [expr]
+  flags: [new_releasesurface]
+
+- pattern: 01 01 00
+  name: ReleaseAllSurfaces
+  operands: [expr]
+  flags: [new_releasesurface]
 
 - pattern: 01 02
   name: LoadPic
