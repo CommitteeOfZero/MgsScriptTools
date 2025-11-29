@@ -46556,6 +46556,54 @@
 	{
 		"parameters": {
 			"encoding": {
+				"style": "normal"
+			},
+			"rasterization": {
+				"font": "normal"
+			}
+		},
+		"glyphs": [
+			{
+				"units": [8800],
+				"text": "à"
+			},
+			{
+				"units": [8801],
+				"text": "ç"
+			},
+			{
+				"units": [8802],
+				"text": "é"
+			},
+			{
+				"units": [8803],
+				"text": "ê"
+			},
+			{
+				"units": [8804],
+				"text": "í"
+			},
+			{
+				"units": [8805],
+				"text": "ï"
+			},
+			{
+				"units": [8806],
+				"text": "ó"
+			},
+			{
+				"units": [8807],
+				"text": "—"
+			},
+			{
+				"units": [8808],
+				"text": "–"
+			}
+		]
+	},
+	{
+		"parameters": {
+			"encoding": {
 				"style": "italic"
 			},
 			"rasterization": {

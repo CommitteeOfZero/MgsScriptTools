@@ -35,6 +35,7 @@ charset:
   famicom_tantei_club: charset/famicom_tantei_club.json
   iwakura_aria: charset/iwakura_aria.json
   lcc_double_pack: charset/lcc_double_pack.json
+  lcc_double_pack-extended: charset/lcc_double_pack-extended.json
 
 flags:
   memories_off_6_old:
