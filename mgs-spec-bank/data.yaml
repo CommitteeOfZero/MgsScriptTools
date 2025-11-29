@@ -243,7 +243,6 @@ flags:
     new_setflag: no
     new_sseplay: no
     new_sseinit: no
-    new_sseinit: no
     new_titlemenu: yes
     new_voiceplay: no
     new_voicestop: yes
