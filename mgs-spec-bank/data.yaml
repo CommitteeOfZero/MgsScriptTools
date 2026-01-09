@@ -440,7 +440,7 @@ flags:
     new_bgmstop: yes
     new_createsurface: yes
     new_createthread: no
-    new_messetid: yes
+    new_messetid: no
     new_playmovie: no
     new_presence: yes
     new_pressstart: yes
