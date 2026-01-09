@@ -439,14 +439,18 @@ flags:
     new_bgmplay: yes
     new_bgmstop: yes
     new_createsurface: yes
-    new_playmovie: yes
+    new_createthread: no
+    new_messetid: yes
+    new_playmovie: no
     new_presence: yes
     new_pressstart: yes
+    new_resetflag: no
     new_save: yes
     new_scriptload: no
     new_seplay: yes
     new_setdic: yes
     new_setevflag: no
+    new_setflag: no
     new_sseplay: no
     new_sseinit: no
     new_titlemenu: yes
@@ -455,6 +459,7 @@ flags:
     add_contents: no
     bgrelease: yes
 
+    achchktitle: no
     effyuge: no
     chaload: yes
     mescls: yes
