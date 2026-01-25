@@ -73,10 +73,24 @@ class SpecBank {
 			GlyphStyle? style = toStyle(parametersJson.GetProperty("style"));
 
 			List<GlyphSpec> glyphs = [];
-			foreach (JsonElement glyphJson in json.GetProperty("glyphs").EnumerateArray()) {
-				ImmutableArray<int> units = toUnits(glyphJson.GetProperty("units"));
-				string text = toText(glyphJson.GetProperty("text"));
-				glyphs.Add(new(units, text, style));
+			JsonElement glyphsJson = json.GetProperty("glyphs");
+			if(glyphsJson.ValueKind == JsonValueKind.Object) {
+				Int16	unitsOffset = glyphsJson.GetProperty("unitsOffset").GetInt16();
+				string text = toText(glyphsJson.GetProperty("text"));
+				int index = 0;
+				TextElementEnumerator charEnum = StringInfo.GetTextElementEnumerator(text);
+				while (charEnum.MoveNext()) {
+					glyphs.Add(new([unitsOffset + index], charEnum.GetTextElement(), style));
+					index++;
+				}
+			} else if (glyphsJson.ValueKind == JsonValueKind.Array) {
+				foreach (JsonElement glyphJson in glyphsJson.EnumerateArray()) {
+					ImmutableArray<int> units = toUnits(glyphJson.GetProperty("units"));
+					string text = toText(glyphJson.GetProperty("text"));
+					glyphs.Add(new(units, text, style));
+				}
+			} else {
+				throw new NotImplementedException($"{glyphsJson.ValueKind} is not implemented.");
 			}
 			return [..glyphs];
 		}

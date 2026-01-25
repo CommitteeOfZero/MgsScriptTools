@@ -102,28 +102,28 @@ sealed class UncompiledStringSyntax {
 		public ImmutableArray<StringToken> Parse() {
 			List<StringToken> tokens = [];
 			GlyphStyle style = GlyphStyle.Normal;
-			while (_reader.Has(0) && _reader.Peek(0) != '\n') {
-				if (_reader.Peek(0) == '〔') {
-					_reader.Next();
+			while (_reader.Has(0) && _reader.PeekRune(0) != new Rune('\n')) {
+				if (_reader.PeekRune(0) == new Rune('〔')) {
+					_reader.NextRune();
 					tokens.Add(new StringTokenTag("nameStart", []));
-				} else if (_reader.Peek(0) == '〕') {
-					_reader.Next();
+				} else if (_reader.PeekRune(0) == new Rune('〕')) {
+					_reader.NextRune();
 					tokens.Add(new StringTokenTag("nameEnd", []));
-				} else if (_reader.Peek(0) == '\\') {
-					if (_reader.Has(1) && _reader.Peek(1) is '\\' or '〔' or '〕') {
+				} else if (_reader.PeekRune(0) == new Rune('\\')) {
+					if (_reader.Has(1) && (_reader.PeekRune(1) == new Rune('\\') || _reader.PeekRune(1) == new Rune('〔') || _reader.PeekRune(1) == new Rune('〕'))) {
 						_reader.Skip(1);
 						tokens.Add(new StringTokenRune(_reader.NextRune(), style));
 					} else {
-						tokens.Add(ParseTag());
+							tokens.Add(ParseTag());
 					}
 				} else if (ParseUtils.TrySkip(_reader, "<i>")) {
-					style = GlyphStyle.Italic;
+						style = GlyphStyle.Italic;
 				} else if (ParseUtils.TrySkip(_reader, "</i>")) {
-					style = GlyphStyle.Normal;
+						style = GlyphStyle.Normal;
 				} else {
-					tokens.Add(new StringTokenRune(_reader.NextRune(), style));
+						tokens.Add(new StringTokenRune(_reader.NextRune(), style));
 				}
-			}
+		}
 			return [..tokens];
 		}
 

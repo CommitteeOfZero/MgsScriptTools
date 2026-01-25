@@ -1,0 +1,109 @@
+- pattern: 10 37 00
+  name: PhoneSG_00
+  operands: [int8, expr]
+  flags: [game_sghd]
+
+- pattern: 10 37 01
+  name: PhoneSG_01
+  operands: [int8, expr]
+  flags: [game_sghd]
+
+- pattern: 10 37 02
+  name: PhoneSG_02
+  operands: [int8, expr, int16]
+  flags: [game_sghd]
+
+- pattern: 10 37 03
+  name: PhoneSG_03
+  operands: [int8, expr, int16]
+  flags: [game_sghd]
+
+- pattern: 10 37 04
+  name: PhoneSG_04
+  operands: [int16, int16, int16, int16, int16, int16]
+  flags: [game_sghd]
+
+- pattern: 10 37 05
+  name: PhoneSG_05
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 06
+  name: PhoneSG_06
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 07
+  name: PhoneSG_07
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 08
+  name: PhoneSG_08
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 09
+  name: PhoneSG_09
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 0F
+  name: PhoneSG_0F
+  operands: [expr]
+  flags: [game_sghd]
+
+- pattern: 10 37 10
+  name: PhoneSG_10
+  operands: [expr]
+  flags: [game_sghd]
+
+- pattern: 10 37 11
+  name: PhoneSG_11
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 12
+  name: PhoneSG_12
+  operands: [expr, expr]
+  flags: [game_sghd]
+
+- pattern: 10 37 13
+  name: PhoneSG_13
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 14
+  name: PhoneSG_14
+  operands: [expr, expr, expr, expr]
+  flags: [game_sghd]
+
+- pattern: 10 37 15
+  name: PhoneSG_15
+  operands: [expr, expr, expr, expr]
+  flags: [game_sghd]
+
+- pattern: 10 37 16
+  name: PhoneSG_16
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 17
+  name: PhoneSG_17
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 18
+  name: PhoneSG_18
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 19
+  name: PhoneSG_19
+  operands: []
+  flags: [game_sghd]
+
+- pattern: 10 37 1A
+  name: PhoneSG_1A
+  operands: []
+  flags: [game_sghd]

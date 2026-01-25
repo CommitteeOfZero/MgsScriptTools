@@ -14,6 +14,7 @@ instructions:
 - instructions/chaos_child.yaml
 - instructions/chaos_head_lcc.yaml
 - instructions/iwakura_aria.yaml
+- instructions/steins_gate_hd.yaml
 
 macros:
 - macros/chaos_head_noah.yaml
@@ -36,6 +37,7 @@ charset:
   iwakura_aria: charset/iwakura_aria.json
   lcc_double_pack: charset/lcc_double_pack.json
   lcc_double_pack-extended: charset/lcc_double_pack-extended.json
+  steins_gate_hd: charset/steins_gate_hd.json
 
 flags:
   memories_off_6_old:
@@ -130,6 +132,7 @@ flags:
     new_setevflag: no
     new_setflag: no
     new_sseplay: no
+    new_sseinit: no
     new_titlemenu: no
     new_voiceplay: no
     new_voicestop: no
@@ -429,3 +432,36 @@ flags:
     multisystemmes: no
     option_default_arg: no
     stringid_16: no
+
+  steins_gate_hd:
+    game_sghd: yes
+
+    new_bgmplay: yes
+    new_bgmstop: yes
+    new_createsurface: yes
+    new_createthread: no
+    new_messetid: no
+    new_playmovie: no
+    new_presence: yes
+    new_pressstart: yes
+    new_resetflag: no
+    new_save: yes
+    new_scriptload: no
+    new_seplay: yes
+    new_setdic: yes
+    new_setevflag: no
+    new_setflag: no
+    new_sseplay: no
+    new_sseinit: no
+    new_titlemenu: yes
+    new_voiceplay: no
+    new_voicestop: yes
+    add_contents: no
+    bgrelease: yes
+
+    achchktitle: no
+    effyuge: no
+    chaload: yes
+    mescls: yes
+    movie_01_27: yes
+    return_labels: yes
