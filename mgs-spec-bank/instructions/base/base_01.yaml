@@ -592,7 +592,7 @@
 - pattern: 01 27
   name: Unk_01_27
   operands: []
-  flags: [~movie_01_27, ~game_chlcc]
+  flags: [~movie_01_27, ~game_chlcc_ps3]
 
 - pattern: 01 27 00
   name: MovieRestart
@@ -602,12 +602,12 @@
 - pattern: 01 27 01
   name: MoviePause
   operands: []
-  flags: [movie_01_27, ~game_chlcc]
+  flags: [movie_01_27, ~game_chlcc_ps3]
 
 - pattern: 01 27 01 00
   name: Unk_01_27_01_00
   operands: [expr, expr]
-  flags: [game_chlcc]
+  flags: [game_chlcc_ps3]
 
 - pattern: 01 27 05 00
   name: Unk_01_27_05_00

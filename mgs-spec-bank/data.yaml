@@ -114,7 +114,7 @@ flags:
     stringid_16: no
 
   chaos_head_lcc_ps3:
-    game_chlcc: yes
+    game_chlcc_ps3: yes
 
     new_bgmplay: yes
     new_bgmstop: yes
@@ -301,7 +301,7 @@ flags:
 
   iwakura_aria_windows:
     game_ia: yes
-    game_chlcc: no
+    game_chlcc_ps3: no
     
     new_bgmplay: yes
     new_bgmstop: yes
@@ -373,10 +373,13 @@ flags:
   chaos_child_lcc_switch:
     cc_common: yes
     game_cclcc: yes
+    game_chlcc_ps3: no
     
+    new_bgload: yes
     new_bgmplay: yes
     new_bgmstop: yes
     new_createthread: yes
+    new_loaddata: yes
     new_calc: yes
     new_messetid: yes
     new_playmovie: yes
@@ -387,27 +390,30 @@ flags:
     new_seplay: yes
     new_setevflag: yes
     new_setflag: yes
-    new_sseplay: yes
+    new_sseplay: no
     new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     new_releasesurface: yes
+    new_cpuboost: yes
     bgrelease: yes
     
     chaload: yes
     mescls: yes
     movie_01_27: yes
     return_labels: yes
-    multisystemmes: no
+    multisystemmes: yes
     option_default_arg: no
     stringid_16: no
   
   chaos_head_lcc_switch:
-    game_chlcc: yes
+    game_chlcc_ps3: no
     
+    new_bgload: yes
     new_bgmplay: yes
     new_bgmstop: yes
     new_createthread: yes
+    new_loaddata: yes
     new_calc: yes
     new_messetid: yes
     new_playmovie: yes
@@ -418,18 +424,19 @@ flags:
     new_seplay: yes
     new_setevflag: yes
     new_setflag: yes
-    new_sseplay: yes
+    new_sseplay: no
     new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     new_releasesurface: yes
+    new_cpuboost: yes
     bgrelease: yes
     
     chaload: yes
     mescls: yes
     movie_01_27: yes
     return_labels: yes
-    multisystemmes: no
+    multisystemmes: yes
     option_default_arg: no
     stringid_16: no
 

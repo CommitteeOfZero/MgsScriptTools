@@ -674,6 +674,16 @@
   operands: []
   flags: []
 
+- pattern: 00 3B 02
+  name: ADXstartEX
+  operands: []
+  flags: []
+
+- pattern: 00 3B 03
+  name: ADXpauseEX
+  operands: []
+  flags: []
+
 - pattern: 00 3C 00
   name: SEplayWait
   operands: []
@@ -787,6 +797,30 @@
 - pattern: 00 43 11
   name: SystemMes_11
   operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 82
+  name: SystemMes_82
+  operands: [int8,expr]
+  flags: [multisystemmes]
+
+- pattern: 00 43 83 00
+  name: SystemMesSetMesMsb_00
+  operands: [int8,expr]
+  flags: [multisystemmes]
+- pattern: 00 43 83 01
+  name: SystemMesSetMesMsb_01
+  operands: [expr]
+  flags: [multisystemmes]
+
+
+- pattern: 00 43 84 00
+  name: SystemMesSetSelMsb_00
+  operands: [int8,expr]
+  flags: [multisystemmes]
+- pattern: 00 43 84 01
+  name: SystemMesSetSelMsb_01
+  operands: [expr]
   flags: [multisystemmes]
 
 - pattern: 00 43 00
@@ -1039,6 +1073,19 @@
   operands: [int16]
   flags: []
 
+- pattern: 00 5B 00
+  name: UNK_00_5B_00
+  operands: []
+  flags: []
+- pattern: 00 5B 01
+  name: UNK_00_5B_01
+  operands: [expr, expr]
+  flags: []
+- pattern: 00 5B 0A
+  name: UNK_00_5B_0A
+  operands: []
+  flags: []
+
 - pattern: 00 5C
   name: FlagOffReturn
   operands: [int8, expr]
@@ -1050,9 +1097,19 @@
   flags: [multilang]
 
 - pattern: 00 5E
-  name: Unk_00_5E
+  name: CPUBoostMode
   operands: [expr]
-  flags: []
+  flags: [~new_cpuboost]
+
+- pattern: 00 5E 00
+  name: CPUBoostModeOff
+  operands: []
+  flags: [new_cpuboost]
+
+- pattern: 00 5E 01
+  name: CPUBoostModeOn
+  operands: []
+  flags: [new_cpuboost]
 
 - pattern: 00 5F
   name: PackFileAddBind

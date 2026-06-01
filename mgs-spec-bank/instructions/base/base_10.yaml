@@ -6,7 +6,12 @@
 - pattern: 10 01
   name: BGload
   operands: [expr, expr]
-  flags: []
+  flags: [~new_bgload]
+
+- pattern: 10 01 00
+  name: BGload
+  operands: [expr, expr]
+  flags: [new_bgload]
 
 - pattern: 10 02
   name: BGswap
@@ -233,13 +238,23 @@
   operands: []
   flags: []
 
+- pattern: 10 1A 02
+  name: ManualInit_02
+  operands: []
+  flags: []
+
+- pattern: 10 1A 03
+  name: ManualMain_03
+  operands: []
+  flags: []
+
 - pattern: 10 1A 0A
-  name: ManualInit
+  name: ManualInit_0A
   operands: []
   flags: []
 
 - pattern: 10 1A 0B
-  name: ManualMain
+  name: ManualMain_0B
   operands: []
   flags: []
 
@@ -365,6 +380,11 @@
 
 - pattern: 10 22 14
   name: AutoSave_14
+  operands: []
+  flags: []
+
+- pattern: 10 22 28
+  name: AutoSave_28
   operands: []
   flags: []
 
