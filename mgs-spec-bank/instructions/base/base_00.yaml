@@ -539,6 +539,26 @@
   operands: []
   flags: [new_save]
 
+- pattern: 00 2A D2
+  name: SaveD2
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A D3
+  name: SaveD3
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A C8
+  name: SaveC8
+  operands: []
+  flags: [new_save]
+
+- pattern: 00 2A C9
+  name: SaveC9
+  operands: []
+  flags: [new_save]
+
 - pattern: 00 2B
   name: SaveIconLoad
   operands: [expr]
@@ -582,7 +602,12 @@
 - pattern: 00 31
   name: VoiceTableLoad
   operands: [expr]
-  flags: []
+  flags: [~new_voicetable]
+
+- pattern: 00 31
+  name: VoiceTableLoadNew
+  operands: [int8, expr]
+  flags: [new_voicetable]
 
 - pattern: 00 32
   name: SetPadCustom
@@ -729,23 +754,59 @@
   operands: [int8]
   flags: [multisystemmes]
 
+- pattern: 00 43 11
+  name: SystemMesInitTitle11
+  operands: [int8]
+  flags: [multisystemmes]
+
 - pattern: 00 43 02
   name: SystemMesInit2
   operands: [int8,expr]
   flags: [multisystemmes]
 
+- pattern: 00 43 12 81 00 00 00
+  name: SystemMesInit2_12
+  operands: []
+  flags: [multisystemmes]
+
 - pattern: 00 43 03
   name: SystemMesSetMesScx
   operands: [int8,int16]
+  flags: [multisystemmes, ~multisystemmes2]
+
+- pattern: 00 43 93 00 00
+  name: SystemMesSetMesScx93_0
+  operands: [expr]
+  flags: [multisystemmes]
+
+
+- pattern: 00 43 93 00 01
+  name: SystemMesSetMesScx93_1
+  operands: [expr, expr]
   flags: [multisystemmes]
 
 - pattern: 00 43 04
   name: SystemMesSetSelScx
   operands: [int8,int16]
+  flags: [multisystemmes, ~multisystemmes2]
+
+- pattern: 00 43 94 00 01
+  name: SystemMesSetSelScx94_1
+  operands: [expr]
+  flags: [multisystemmes]
+
+- pattern: 00 43 94 00 00
+  name: SystemMesSetSelScx94_0
+  operands: [expr]
   flags: [multisystemmes]
 
 - pattern: 00 43 05
   name: SystemMesMain
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 15
+  name: SystemMesMain2
   operands: [int8]
   flags: [multisystemmes]
 
@@ -754,8 +815,18 @@
   operands: [int8]
   flags: [multisystemmes]
 
+- pattern: 00 43 16
+  name: SystemMesFadeIn_16
+  operands: [int8]
+  flags: [multisystemmes]
+
 - pattern: 00 43 07
   name: SystemMesFadeOut
+  operands: [int8]
+  flags: [multisystemmes]
+
+- pattern: 00 43 17
+  name: SystemMesFadeOut_17
   operands: [int8]
   flags: [multisystemmes]
 
@@ -791,11 +862,6 @@
 
 - pattern: 00 43 10
   name: SystemMes_10
-  operands: [int8]
-  flags: [multisystemmes]
-
-- pattern: 00 43 11
-  name: SystemMes_11
   operands: [int8]
   flags: [multisystemmes]
 
@@ -967,6 +1033,11 @@
   name: SysSEinit
   operands: []
   flags: [new_sseinit]
+  
+- pattern: 00 4B 01
+  name: SysSEinit1
+  operands: []
+  flags: [new_sseinit]
 
 - pattern: 00 4B
   name: SysSEinit
@@ -1074,15 +1145,15 @@
   flags: []
 
 - pattern: 00 5B 00
-  name: UNK_00_5B_00
+  name: SaveIconShow
   operands: []
   flags: []
 - pattern: 00 5B 01
-  name: UNK_00_5B_01
+  name: SaveIconShowAt
   operands: [expr, expr]
   flags: []
 - pattern: 00 5B 0A
-  name: UNK_00_5B_0A
+  name: SaveIconHide
   operands: []
   flags: []
 

@@ -38,3 +38,11 @@
   name: YesNo_0A
   operands: []
   flags: [game_cclcc]
+- pattern: 10 3A 14
+  name: YesNo_14
+  operands: []
+  flags: [game_cclcc]
+- pattern: 10 3F
+  name: LCC_NS_103F
+  operands: [ expr ]
+  flags: [ game_cclcc, ~has_mouse ]

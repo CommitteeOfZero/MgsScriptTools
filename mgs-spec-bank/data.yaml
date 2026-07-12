@@ -252,6 +252,9 @@ flags:
     new_releasesurface: no
     add_contents: no
     bgrelease: yes
+    nonameid: no
+    new_maptrigger: no
+    multisystemmes2: no
 
     achchktitle: yes
     effyuge: no
@@ -374,7 +377,9 @@ flags:
     cc_common: yes
     game_cclcc: yes
     game_chlcc_ps3: no
+    has_mouse: no
     
+    new_voicetable: yes
     new_bgload: yes
     new_bgmplay: yes
     new_bgmstop: yes
@@ -396,15 +401,20 @@ flags:
     new_voicestop: yes
     new_releasesurface: yes
     new_cpuboost: yes
+    new_maptrigger: yes
     bgrelease: yes
     
+    nonameid: no
     chaload: yes
     mescls: yes
     movie_01_27: yes
     return_labels: yes
     multisystemmes: yes
+    multisystemmes2: yes
     option_default_arg: no
-    stringid_16: no
+    option_default_arg2: yes
+    stringid_16: yes
+    achchktitle: yes
   
   chaos_head_lcc_switch:
     game_chlcc_ps3: no

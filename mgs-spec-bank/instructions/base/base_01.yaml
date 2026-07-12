@@ -635,3 +635,8 @@
   name: SFDpause
   operands: [int8]
   flags: []
+  
+- pattern: 01 30
+  name: LoadFontMeta
+  operands: [int8, expr, expr, expr]
+  flags: []
