@@ -188,9 +188,9 @@
   operands: [expr, expr]
   flags: []
 
-- pattern: 00 17 02
-  name: Unk_00_17_02
-  operands: [expr, expr, expr]
+- pattern: 00 17
+  name: KeyWaitTimer
+  operands: [int8, expr, expr, expr]
   flags: []
 
 - pattern: 00 18

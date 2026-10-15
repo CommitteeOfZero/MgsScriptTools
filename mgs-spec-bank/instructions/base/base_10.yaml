@@ -223,6 +223,12 @@
   operands: []
   flags: []
 
+
+- pattern: 10 13 0A
+  name: OptionInit2
+  operands: [ ]
+  flags: [ ]
+
 - pattern: 10 14 01
   name: SystemDataAllReset
   operands: []
@@ -337,6 +343,11 @@
   name: ClistInit2
   operands: []
   flags: []
+  
+- pattern: 10 21 0A
+  name: ClistInitA
+  operands: []
+  flags: []
 
 - pattern: 10 21 14
   name: SetSceneTitleViewFlag
@@ -427,6 +438,11 @@
   name: SaveMenuLockCancel
   operands: []
   flags: []
+  
+- pattern: 10 23 0A
+  name: SaveMenu0A
+  operands: [int8]
+  flags: []  
   
 - pattern: 10 23 0B
   name: SaveMenu0B
@@ -560,6 +576,11 @@
 
 - pattern: 10 33 04
   name: EncycMenuSet
+  operands: []
+  flags: []
+  
+- pattern: 10 33 05
+  name: EncycMenuInit2
   operands: []
   flags: []
 

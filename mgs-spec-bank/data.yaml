@@ -418,7 +418,10 @@ flags:
   
   chaos_head_lcc_switch:
     game_chlcc_ps3: no
+    game_chlcc: yes
+    has_mouse: no
     
+    new_voicetable: yes
     new_bgload: yes
     new_bgmplay: yes
     new_bgmstop: yes
@@ -448,7 +451,9 @@ flags:
     return_labels: yes
     multisystemmes: yes
     option_default_arg: no
+    option_default_arg2: yes
     stringid_16: no
+    new_del_trigger: yes
 
   steins_gate_hd:
     game_sghd: yes

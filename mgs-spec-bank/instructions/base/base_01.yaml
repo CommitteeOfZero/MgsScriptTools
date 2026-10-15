@@ -308,6 +308,11 @@
   name: MesRevVoiceStop
   operands: []
   flags: []
+  
+- pattern: 01 10 0A
+  name: MesRevInit2
+  operands: []
+  flags: []
 
 - pattern: 01 11 00
   name: MessWindowClose

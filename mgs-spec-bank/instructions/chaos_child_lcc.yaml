@@ -43,6 +43,6 @@
   operands: []
   flags: [game_cclcc]
 - pattern: 10 3F
-  name: LCC_NS_103F
+  name: Switch_LaunchApp
   operands: [ expr ]
-  flags: [ game_cclcc, ~has_mouse ]
+  flags: [ ~has_mouse ]
