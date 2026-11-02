@@ -219,7 +219,11 @@ class SpecBank {
 				} else {
 					(name, value) = (flag, true);
 				}
-				if (!flags.ContainsKey(name) || flags[name] != value) {
+				if(!flags.ContainsKey(name)) {
+					if(value) return false;
+					else continue;
+				}
+				if (flags[name] != value) {
 					return false;
 				}
 			}
