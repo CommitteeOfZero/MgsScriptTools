@@ -33,16 +33,11 @@
   name: DelusionTrigger_07
   operands: []
   flags: [game_chlcc_ps3]
-  
-- pattern: 10 2D 
-  name: Unk_102D
-  operands: []
-  flags: [~game_chlcc_ps3]
 
 - pattern: 10 35
   name: AllClearChk
   operands: [ ]
-  flags: [ game_chlcc ]
+  flags: [game_chlcc_ps3]
   
 - pattern: 10 37 01
   name: DelusionTrigger_01

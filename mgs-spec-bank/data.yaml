@@ -103,6 +103,7 @@ flags:
     new_releasesurface: no
     add_contents: yes
     option_default_arg: no
+    new_voiceplay: yes
 
     effyuge: yes
     bgrelease: yes
@@ -122,9 +123,9 @@ flags:
     new_createthread: no
     old_ev: yes
     new_messetid: no
-    new_playmovie: yes
+    new_playmovie: no
     new_presence: yes
-    new_save: yes
+    new_save: no
     new_resetflag: no
     new_scriptload: no
     new_seplay: yes
@@ -138,6 +139,7 @@ flags:
     new_voicestop: no
     new_releasesurface: no
     add_contents: no
+    bgloadex: yes
 
     achchktitle: no
     bgrelease: no
@@ -175,6 +177,7 @@ flags:
     new_voicestop: yes
     new_releasesurface: no
     add_contents: yes
+    new_voiceplay: yes
 
     achchktitle: yes
     effyuge: yes
@@ -212,6 +215,7 @@ flags:
     new_voicestop: yes
     new_releasesurface: no
     add_contents: yes
+    new_voiceplay: yes
 
     achchktitle: true
     effyuge: yes
@@ -247,7 +251,7 @@ flags:
     new_sseplay: no
     new_sseinit: no
     new_titlemenu: yes
-    new_voiceplay: no
+    new_voiceplay: yes
     new_voicestop: yes
     new_releasesurface: no
     add_contents: no
@@ -293,6 +297,7 @@ flags:
     new_voicestop: yes
     new_releasesurface: no
     bgrelease: yes
+    new_voiceplay: yes
     
     chaload: yes
     mescls: yes
@@ -326,6 +331,7 @@ flags:
     new_voicestop: yes
     new_releasesurface: no
     bgrelease: yes
+    new_voiceplay: yes
     
     chaload: yes
     mescls: yes
@@ -356,11 +362,12 @@ flags:
     new_setdic: yes
     new_setevflag: yes
     new_setflag: no
-    new_sseplay: yes
+    new_sseplay: no
     new_titlemenu: yes
     new_voicestop: yes
     new_releasesurface: no
     add_contents: yes
+    new_voiceplay: yes
 
     achchktitle: yes
     effyuge: no
@@ -403,6 +410,7 @@ flags:
     new_cpuboost: yes
     new_maptrigger: yes
     bgrelease: yes
+    new_voiceplay: yes
     
     nonameid: no
     chaload: yes
@@ -444,6 +452,7 @@ flags:
     new_releasesurface: yes
     new_cpuboost: yes
     bgrelease: yes
+    new_voiceplay: yes
     
     chaload: yes
     mescls: yes

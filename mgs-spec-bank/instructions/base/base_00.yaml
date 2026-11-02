@@ -349,6 +349,56 @@
   operands: []
   flags: []
 
+- pattern: 00 2A 1E
+  name: Save_1E
+  operands: []
+  flags: []
+
+- pattern: 00 2A 1F
+  name: Save_1F
+  operands: []
+  flags: []
+
+- pattern: 00 2A 20
+  name: Save_20
+  operands: []
+  flags: []
+
+- pattern: 00 2A 21
+  name: Save_21
+  operands: []
+  flags: []
+
+- pattern: 00 2A 22
+  name: Save_22
+  operands: []
+  flags: []
+
+- pattern: 00 2A 23
+  name: Save_23
+  operands: []
+  flags: []
+
+- pattern: 00 2A 24
+  name: Save_24
+  operands: []
+  flags: []
+
+- pattern: 00 2A 25
+  name: Save_25
+  operands: []
+  flags: []
+
+- pattern: 00 2A 32
+  name: Save_32
+  operands: []
+  flags: []
+
+- pattern: 00 2A 33
+  name: Save_33
+  operands: []
+  flags: []
+
 - pattern: 00 2A 00
   name: DeviceCheck
   operands: []
@@ -444,16 +494,6 @@
   operands: []
   flags: [new_save]
 
-- pattern: 00 2A 1E
-  name: Save_1E
-  operands: []
-  flags: [new_save]
-
-- pattern: 00 2A 1F
-  name: Save_1F
-  operands: []
-  flags: [new_save]
-
 - pattern: 00 2A 28
   name: Save_28
   operands: []
@@ -471,16 +511,6 @@
 
 - pattern: 00 2A 2F
   name: Save_2F
-  operands: []
-  flags: [new_save]
-
-- pattern: 00 2A 32
-  name: Save_32
-  operands: []
-  flags: [new_save]
-
-- pattern: 00 2A 33
-  name: Save_33
   operands: []
   flags: [new_save]
 
@@ -632,22 +662,27 @@
 - pattern: 00 37 00
   name: VoicePlay
   operands: [expr, expr]
-  flags: []
+  flags: [new_voiceplay]
 
 - pattern: 00 37 01
   name: VoicePlay2
   operands: [expr, expr]
-  flags: []
+  flags: [new_voiceplay]
 
 - pattern: 00 37 02
   name: VoicePlay3
   operands: [expr, expr]
-  flags: []
+  flags: [new_voiceplay]
 
 - pattern: 00 37 03
   name: VoicePlay4
   operands: [expr, expr]
-  flags: []
+  flags: [new_voiceplay]
+
+- pattern: 00 37
+  name: VoicePlay
+  operands: [int8, expr]
+  flags: [~new_voiceplay]
 
 - pattern: 00 38 00
   name: VoiceStop

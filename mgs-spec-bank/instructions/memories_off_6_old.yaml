@@ -12,12 +12,12 @@
 - pattern: 10 35 00
   name: Unk1035_00
   operands: []
-  flags: [~game_chlcc]
+  flags: [game_mo6tw]
 
 - pattern: 10 35 01
   name: Unk1035_01
   operands: [int16]
-  flags: [~game_chlcc]
+  flags: [game_mo6tw]
 
 - pattern: 10 37 01
   name: Unk1037_01

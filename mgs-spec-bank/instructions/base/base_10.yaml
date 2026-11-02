@@ -116,7 +116,7 @@
 - pattern: 10 0F
   name: EVload
   operands: [expr, expr, expr]
-  flags: [~oldev, ~bgrelease]
+  flags: [~old_ev, ~bgrelease]
 
 - pattern: 10 0F
   name: BGsetAnime
@@ -126,7 +126,7 @@
 - pattern: 10 10
   name: EVinit
   operands: [expr, expr]
-  flags: [~oldev, ~bgrelease]
+  flags: [~old_ev, ~bgrelease]
 
 - pattern: 10 10
   name: BGrelease
@@ -136,12 +136,12 @@
 - pattern: 10 11 00
   name: EVset
   operands: [expr, expr, expr]
-  flags: [~oldev, ~bgrelease]
+  flags: [~old_ev, ~bgrelease]
 
 - pattern: 10 11 01
   name: EVsetEx
   operands: [expr, expr, expr, expr, expr, expr, expr]
-  flags: [~oldev, ~bgrelease]
+  flags: [~old_ev, ~bgrelease]
 
 - pattern: 10 11
   name: CHArelease
@@ -151,7 +151,7 @@
 - pattern: 10 12
   name: EVend
   operands: []
-  flags: [~oldev, ~bgrelease]
+  flags: [~old_ev, ~bgrelease]
 
 - pattern: 10 0F 00
   name: EVload
@@ -223,7 +223,6 @@
   operands: []
   flags: []
 
-
 - pattern: 10 13 0A
   name: OptionInit2
   operands: [ ]
@@ -279,6 +278,11 @@
   operands: []
   flags: []
 
+- pattern: 10 1B 0A
+  name: AchievementInit2
+  operands: []
+  flags: []
+
 - pattern: 10 1C 00
   name: ActorVoiceInit
   operands: []
@@ -316,6 +320,11 @@
 
 - pattern: 10 1F 02
   name: AlbumSetEVCG
+  operands: []
+  flags: []
+
+- pattern: 10 1F 0A
+  name: AlbumInit2
   operands: []
   flags: []
 
@@ -439,11 +448,21 @@
   operands: []
   flags: []
   
-- pattern: 10 23 0A
-  name: SaveMenu0A
-  operands: [int8]
-  flags: []  
-  
+- pattern: 10 23 0A 00
+  name: QLoadMenuInit2
+  operands: []
+  flags: []
+
+- pattern: 10 23 0A 01
+  name: SaveMenuInit2
+  operands: []
+  flags: []
+
+- pattern: 10 23 0A 02
+  name: LoadMenuInit2
+  operands: []
+  flags: []
+
 - pattern: 10 23 0B
   name: SaveMenu0B
   operands: []
@@ -578,7 +597,7 @@
   name: EncycMenuSet
   operands: []
   flags: []
-  
+
 - pattern: 10 33 05
   name: EncycMenuInit2
   operands: []
