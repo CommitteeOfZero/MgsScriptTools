@@ -308,6 +308,11 @@
   name: MesRevVoiceStop
   operands: []
   flags: []
+  
+- pattern: 01 10 0A
+  name: MesRevInit2
+  operands: []
+  flags: []
 
 - pattern: 01 11 00
   name: MessWindowClose
@@ -454,39 +459,39 @@
   operands: [expr, int16]
   flags: []
 
-#- pattern: 01 22 00
-#  name: PlayMovieNoBGM
-#  operands: [expr, expr]
-#  flags: [~new_playmovie]
+- pattern: 01 22 00
+  name: PlayMovieNoBGM
+  operands: [int8, expr, expr]
+  flags: [~new_playmovie]
 
 - pattern: 01 22 01
   name: PlayMovie
-  operands: [expr, expr]
+  operands: [int8, expr, expr]
   flags: [~new_playmovie]
 
 - pattern: 01 22 03
   name: PlayMovieLoop
-  operands: [expr, expr]
+  operands: [int8, expr, expr]
   flags: [~new_playmovie]
 
 - pattern: 01 22 05
   name: PlayMovieLoopNoAudio
-  operands: [expr, expr]
+  operands: [int8, expr, expr]
   flags: [~new_playmovie]
 
 - pattern: 01 22 09
   name: PlayMovieMask
-  operands: [expr, expr]
+  operands: [int8, expr, expr]
   flags: [~new_playmovie]
 
 - pattern: 01 22 0B
   name: PlayMovieMaskLoop
-  operands: [expr, expr]
+  operands: [int8, expr, expr]
   flags: [~new_playmovie]
 
 - pattern: 01 22 0D
   name: PlayAlphaMovieLoopNoAudio
-  operands: [expr, expr]
+  operands: [int8, expr, expr]
   flags: [~new_playmovie]
 
 #- pattern: 01 22 00 00
@@ -592,27 +597,7 @@
 - pattern: 01 27
   name: Unk_01_27
   operands: []
-  flags: [~movie_01_27, ~game_chlcc]
-
-- pattern: 01 27 00
-  name: MovieRestart
-  operands: []
-  flags: [movie_01_27]
-
-- pattern: 01 27 01
-  name: MoviePause
-  operands: []
-  flags: [movie_01_27, ~game_chlcc]
-
-- pattern: 01 27 01 00
-  name: Unk_01_27_01_00
-  operands: [expr, expr]
-  flags: [game_chlcc]
-
-- pattern: 01 27 05 00
-  name: Unk_01_27_05_00
-  operands: [expr, expr]
-  flags: []
+  flags: [~movie_01_27, ~game_chlcc_ps3]
 
 - pattern: 01 28 00
   name: MovieMain_00
@@ -631,7 +616,67 @@
   operands: []
   flags: []
 
+- pattern: 01 29
+  name: LoadMovie2
+  operands: [expr]
+  flags: []
+
+- pattern: 01 2A 05 00
+  name: PlayMovieMemoryLoopNoAudio2
+  operands: [expr]
+  flags: []
+
+- pattern: 01 2A 63
+  name: PlayMovieMemoryRecover2
+  operands: [expr, expr, expr]
+  flags: []
+
+- pattern: 01 27 00
+  name: MovieRestart2
+  operands: [int8, expr, expr]
+  flags: [~new_playmovie, movie_01_27]
+
+- pattern: 01 27 01
+  name: MoviePause2
+  operands: [int8, expr, expr]
+  flags: [~new_playmovie, movie_01_27]
+
+- pattern: 01 27 03
+  name: PlayMovieLoop2
+  operands: [int8, expr, expr]
+  flags: [~new_playmovie, movie_01_27]
+
+- pattern: 01 27 05
+  name: PlayMovieLoopNoAudio2
+  operands: [int8, expr, expr]
+  flags: [~new_playmovie, movie_01_27]
+
+- pattern: 01 27 09
+  name: PlayMovieMask2
+  operands: [int8, expr, expr]
+  flags: [~new_playmovie, movie_01_27]
+
+- pattern: 01 27 0B
+  name: PlayMovieMaskLoop2
+  operands: [int8, expr, expr]
+  flags: [~new_playmovie, movie_01_27]
+
+- pattern: 01 27 0D
+  name: PlayAlphaMovieLoopNoAudio2
+  operands: [int8, expr, expr]
+  flags: [~new_playmovie, movie_01_27]
+
+- pattern: 01 27 63
+  name: PlayMovieRecover2
+  operands: [expr, expr, expr, expr]
+  flags: [~new_playmovie, movie_01_27]
+
 - pattern: 01 2B
   name: SFDpause
   operands: [int8]
+  flags: []
+  
+- pattern: 01 30
+  name: LoadFontMeta
+  operands: [int8, expr, expr, expr]
   flags: []

@@ -6,7 +6,12 @@
 - pattern: 10 01
   name: BGload
   operands: [expr, expr]
-  flags: []
+  flags: [~new_bgload]
+
+- pattern: 10 01 00
+  name: BGload
+  operands: [expr, expr]
+  flags: [new_bgload]
 
 - pattern: 10 02
   name: BGswap
@@ -111,7 +116,7 @@
 - pattern: 10 0F
   name: EVload
   operands: [expr, expr, expr]
-  flags: [~oldev, ~bgrelease]
+  flags: [~old_ev, ~bgrelease]
 
 - pattern: 10 0F
   name: BGsetAnime
@@ -121,7 +126,7 @@
 - pattern: 10 10
   name: EVinit
   operands: [expr, expr]
-  flags: [~oldev, ~bgrelease]
+  flags: [~old_ev, ~bgrelease]
 
 - pattern: 10 10
   name: BGrelease
@@ -131,12 +136,12 @@
 - pattern: 10 11 00
   name: EVset
   operands: [expr, expr, expr]
-  flags: [~oldev, ~bgrelease]
+  flags: [~old_ev, ~bgrelease]
 
 - pattern: 10 11 01
   name: EVsetEx
   operands: [expr, expr, expr, expr, expr, expr, expr]
-  flags: [~oldev, ~bgrelease]
+  flags: [~old_ev, ~bgrelease]
 
 - pattern: 10 11
   name: CHArelease
@@ -146,7 +151,7 @@
 - pattern: 10 12
   name: EVend
   operands: []
-  flags: [~oldev, ~bgrelease]
+  flags: [~old_ev, ~bgrelease]
 
 - pattern: 10 0F 00
   name: EVload
@@ -201,7 +206,12 @@
 - pattern: 10 13 04
   name: OptionDefault
   operands: []
-  flags: [~option_default_arg]
+  flags: [~option_default_arg, ~option_default_arg2]
+
+- pattern: 10 13 04
+  name: OptionDefault
+  operands: [int8]
+  flags: [~option_default_arg, option_default_arg2]
 
 - pattern: 10 13 04
   name: OptionDefault
@@ -212,6 +222,11 @@
   name: OptionDefaultAll
   operands: []
   flags: []
+
+- pattern: 10 13 0A
+  name: OptionInit2
+  operands: [ ]
+  flags: [ ]
 
 - pattern: 10 14 01
   name: SystemDataAllReset
@@ -233,13 +248,23 @@
   operands: []
   flags: []
 
+- pattern: 10 1A 02
+  name: ManualInit_02
+  operands: []
+  flags: []
+
+- pattern: 10 1A 03
+  name: ManualMain_03
+  operands: []
+  flags: []
+
 - pattern: 10 1A 0A
-  name: ManualInit
+  name: ManualInit_0A
   operands: []
   flags: []
 
 - pattern: 10 1A 0B
-  name: ManualMain
+  name: ManualMain_0B
   operands: []
   flags: []
 
@@ -250,6 +275,11 @@
 
 - pattern: 10 1B 01
   name: AchievementMain
+  operands: []
+  flags: []
+
+- pattern: 10 1B 0A
+  name: AchievementInit2
   operands: []
   flags: []
 
@@ -293,6 +323,11 @@
   operands: []
   flags: []
 
+- pattern: 10 1F 0A
+  name: AlbumInit2
+  operands: []
+  flags: []
+
 - pattern: 10 20 00
   name: MovieModeInit
   operands: []
@@ -315,6 +350,11 @@
 
 - pattern: 10 21 03
   name: ClistInit2
+  operands: []
+  flags: []
+  
+- pattern: 10 21 0A
+  name: ClistInitA
   operands: []
   flags: []
 
@@ -368,6 +408,11 @@
   operands: []
   flags: []
 
+- pattern: 10 22 28
+  name: AutoSave_28
+  operands: []
+  flags: []
+
 - pattern: 10 22 FF
   name: AutoSave_FF
   operands: []
@@ -400,6 +445,26 @@
 
 - pattern: 10 23 14
   name: SaveMenuLockCancel
+  operands: []
+  flags: []
+  
+- pattern: 10 23 0A 00
+  name: QLoadMenuInit2
+  operands: []
+  flags: []
+
+- pattern: 10 23 0A 01
+  name: SaveMenuInit2
+  operands: []
+  flags: []
+
+- pattern: 10 23 0A 02
+  name: LoadMenuInit2
+  operands: []
+  flags: []
+
+- pattern: 10 23 0B
+  name: SaveMenu0B
   operands: []
   flags: []
 
@@ -533,6 +598,11 @@
   operands: []
   flags: []
 
+- pattern: 10 33 05
+  name: EncycMenuInit2
+  operands: []
+  flags: []
+
 - pattern: 10 34
   name: TitleMenu
   operands: []
@@ -591,144 +661,144 @@
 - pattern: 10 3F 00
   name: MouseModeInit
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 01
   name: MouseModeSetTitleMenu
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 02
   name: MouseModeResetTitleMenu
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 03
   name: MouseModeSetSaveMenu
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 04
   name: MouseModeResetSaveMenu
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 05
   name: MouseModeSetTips
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 06
   name: MouseModeResetTips
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 07
   name: MouseModeSetCGlibrary
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 08
   name: MouseModeResetCGlibrary
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 09
   name: MouseModeSetMovieMenu
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 0A
   name: MouseModeResetMovieMenu
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 0B
   name: MouseModeSetMusicMenu
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 0C
   name: MouseModeResetMusicMenu
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 0D
   name: MouseModeSetGameMain
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 0E
   name: MouseModeResetGameMain
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 0F
   name: MouseMode_0F
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 10
   name: MouseMode_10
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 11
   name: MouseModeSetSysMenu
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 12
   name: MouseModeResetSysMenu
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 13
   name: MouseModeSetBacklog
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 14
   name: MouseModeResetBacklog
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 15
   name: MouseModeSetConfig
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 16
   name: MouseModeResetConfig
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 17
   name: MouseModeSetHelp
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 18
   name: MouseModeResetHelp
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 19
   name: MouseMode_19
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 1A
   name: MouseMode_1A
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 1B
   name: MouseModeSetClearList
   operands: []
-  flags: []
+  flags: [has_mouse]
 
 - pattern: 10 3F 1C
   name: MouseModeResetClearList
   operands: []
-  flags: []
+  flags: [has_mouse]

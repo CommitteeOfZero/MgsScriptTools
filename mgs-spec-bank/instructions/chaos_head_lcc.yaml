@@ -2,34 +2,74 @@
 - pattern: 10 2D 01
   name: DelusionTrigger_01
   operands: []
-  flags: [game_chlcc]
+  flags: [game_chlcc_ps3]
 
 - pattern: 10 2D 02
   name: DelusionTrigger_02
   operands: []
-  flags: [game_chlcc]
+  flags: [game_chlcc_ps3]
 
 - pattern: 10 2D 03
   name: DelusionTrigger_03
   operands: []
-  flags: [game_chlcc]
+  flags: [game_chlcc_ps3]
 
 - pattern: 10 2D 04
   name: DelusionTrigger_04
   operands: []
-  flags: [game_chlcc]
+  flags: [game_chlcc_ps3]
 
 - pattern: 10 2D 05
   name: DelusionTrigger_05
   operands: []
-  flags: [game_chlcc]
+  flags: [game_chlcc_ps3]
 
 - pattern: 10 2D 06
   name: DelusionTrigger_06
   operands: []
-  flags: [game_chlcc]
+  flags: [game_chlcc_ps3]
 
 - pattern: 10 2D 07
   name: DelusionTrigger_07
   operands: []
-  flags: [game_chlcc]
+  flags: [game_chlcc_ps3]
+
+- pattern: 10 35
+  name: AllClearChk
+  operands: [ ]
+  flags: [game_chlcc_ps3]
+  
+- pattern: 10 37 01
+  name: DelusionTrigger_01
+  operands: []
+  flags: [~game_chlcc_ps3, new_del_trigger]
+
+- pattern: 10 37 02
+  name: DelusionTrigger_02
+  operands: []
+  flags: [~game_chlcc_ps3, new_del_trigger]
+
+- pattern: 10 37 03
+  name: DelusionTrigger_03
+  operands: []
+  flags: [~game_chlcc_ps3, new_del_trigger]
+
+- pattern: 10 37 04
+  name: DelusionTrigger_04
+  operands: []
+  flags: [~game_chlcc_ps3, new_del_trigger]
+
+- pattern: 10 37 05
+  name: DelusionTrigger_05
+  operands: []
+  flags: [~game_chlcc_ps3, new_del_trigger]
+
+- pattern: 10 37 06
+  name: DelusionTrigger_06
+  operands: []
+  flags: [~game_chlcc_ps3, new_del_trigger]
+
+- pattern: 10 37 07
+  name: DelusionTrigger_07
+  operands: []
+  flags: [~game_chlcc_ps3, new_del_trigger]

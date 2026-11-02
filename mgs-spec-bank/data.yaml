@@ -103,6 +103,7 @@ flags:
     new_releasesurface: no
     add_contents: yes
     option_default_arg: no
+    new_voiceplay: yes
 
     effyuge: yes
     bgrelease: yes
@@ -114,7 +115,7 @@ flags:
     stringid_16: no
 
   chaos_head_lcc_ps3:
-    game_chlcc: yes
+    game_chlcc_ps3: yes
 
     new_bgmplay: yes
     new_bgmstop: yes
@@ -122,9 +123,9 @@ flags:
     new_createthread: no
     old_ev: yes
     new_messetid: no
-    new_playmovie: yes
+    new_playmovie: no
     new_presence: yes
-    new_save: yes
+    new_save: no
     new_resetflag: no
     new_scriptload: no
     new_seplay: yes
@@ -138,6 +139,7 @@ flags:
     new_voicestop: no
     new_releasesurface: no
     add_contents: no
+    bgloadex: yes
 
     achchktitle: no
     bgrelease: no
@@ -175,6 +177,7 @@ flags:
     new_voicestop: yes
     new_releasesurface: no
     add_contents: yes
+    new_voiceplay: yes
 
     achchktitle: yes
     effyuge: yes
@@ -212,6 +215,7 @@ flags:
     new_voicestop: yes
     new_releasesurface: no
     add_contents: yes
+    new_voiceplay: yes
 
     achchktitle: true
     effyuge: yes
@@ -247,11 +251,14 @@ flags:
     new_sseplay: no
     new_sseinit: no
     new_titlemenu: yes
-    new_voiceplay: no
+    new_voiceplay: yes
     new_voicestop: yes
     new_releasesurface: no
     add_contents: no
     bgrelease: yes
+    nonameid: no
+    new_maptrigger: no
+    multisystemmes2: no
 
     achchktitle: yes
     effyuge: no
@@ -290,6 +297,7 @@ flags:
     new_voicestop: yes
     new_releasesurface: no
     bgrelease: yes
+    new_voiceplay: yes
     
     chaload: yes
     mescls: yes
@@ -301,7 +309,7 @@ flags:
 
   iwakura_aria_windows:
     game_ia: yes
-    game_chlcc: no
+    game_chlcc_ps3: no
     
     new_bgmplay: yes
     new_bgmstop: yes
@@ -323,6 +331,7 @@ flags:
     new_voicestop: yes
     new_releasesurface: no
     bgrelease: yes
+    new_voiceplay: yes
     
     chaload: yes
     mescls: yes
@@ -353,11 +362,12 @@ flags:
     new_setdic: yes
     new_setevflag: yes
     new_setflag: no
-    new_sseplay: yes
+    new_sseplay: no
     new_titlemenu: yes
     new_voicestop: yes
     new_releasesurface: no
     add_contents: yes
+    new_voiceplay: yes
 
     achchktitle: yes
     effyuge: no
@@ -373,65 +383,86 @@ flags:
   chaos_child_lcc_switch:
     cc_common: yes
     game_cclcc: yes
+    game_chlcc_ps3: no
+    has_mouse: no
     
+    new_voicetable: yes
+    new_bgload: yes
     new_bgmplay: yes
     new_bgmstop: yes
     new_createthread: yes
+    new_loaddata: yes
     new_calc: yes
     new_messetid: yes
     new_playmovie: yes
     new_presence: yes
     new_resetflag: yes
     new_save: yes
-    new_scriptload: no
+    new_scriptload: yes
     new_seplay: yes
     new_setevflag: yes
     new_setflag: yes
-    new_sseplay: yes
+    new_sseplay: no
     new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     new_releasesurface: yes
+    new_cpuboost: yes
+    new_maptrigger: yes
     bgrelease: yes
+    new_voiceplay: yes
     
+    nonameid: no
     chaload: yes
     mescls: yes
     movie_01_27: yes
     return_labels: yes
-    multisystemmes: no
+    multisystemmes: yes
+    multisystemmes2: yes
     option_default_arg: no
-    stringid_16: no
+    option_default_arg2: yes
+    stringid_16: yes
+    achchktitle: yes
   
   chaos_head_lcc_switch:
+    game_chlcc_ps3: no
     game_chlcc: yes
+    has_mouse: no
     
+    new_voicetable: yes
+    new_bgload: yes
     new_bgmplay: yes
     new_bgmstop: yes
     new_createthread: yes
+    new_loaddata: yes
     new_calc: yes
     new_messetid: yes
     new_playmovie: yes
     new_presence: yes
     new_resetflag: yes
     new_save: yes
-    new_scriptload: no
+    new_scriptload: yes
     new_seplay: yes
     new_setevflag: yes
     new_setflag: yes
-    new_sseplay: yes
+    new_sseplay: no
     new_sseinit: yes
     new_titlemenu: yes
     new_voicestop: yes
     new_releasesurface: yes
+    new_cpuboost: yes
     bgrelease: yes
+    new_voiceplay: yes
     
     chaload: yes
     mescls: yes
     movie_01_27: yes
     return_labels: yes
-    multisystemmes: no
+    multisystemmes: yes
     option_default_arg: no
+    option_default_arg2: yes
     stringid_16: no
+    new_del_trigger: yes
 
   steins_gate_hd:
     game_sghd: yes
