@@ -117,6 +117,7 @@ flags:
   chaos_head_lcc_ps3:
     game_chlcc_ps3: yes
 
+    new_bgload: no
     new_bgmplay: yes
     new_bgmstop: yes
     new_createsurface: yes
@@ -233,6 +234,7 @@ flags:
     cc_common: yes
     game_cclcc: yes
 
+    new_bgload: no
     new_bgmplay: yes
     new_bgmstop: yes
     new_createsurface: yes
