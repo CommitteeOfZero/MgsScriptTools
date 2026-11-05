@@ -419,17 +419,17 @@
   flags: []
 
 - pattern: 10 23 00 00
-  name: QLoadMenuInit
+  name: QLoadMenuDirectInit
   operands: []
   flags: []
 
 - pattern: 10 23 00 01
-  name: SaveMenuInit
+  name: SaveMenuDirectInit
   operands: []
   flags: []
 
 - pattern: 10 23 00 02
-  name: LoadMenuInit
+  name: LoadMenuDirectInit
   operands: []
   flags: []
 
@@ -449,17 +449,17 @@
   flags: []
   
 - pattern: 10 23 0A 00
-  name: QLoadMenuInit2
+  name: QLoadMenuInit
   operands: []
   flags: []
 
 - pattern: 10 23 0A 01
-  name: SaveMenuInit2
+  name: SaveMenuInit
   operands: []
   flags: []
 
 - pattern: 10 23 0A 02
-  name: LoadMenuInit2
+  name: LoadMenuInit
   operands: []
   flags: []
 
