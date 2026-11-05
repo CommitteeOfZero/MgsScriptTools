@@ -121,6 +121,7 @@ flags:
     new_bgmstop: yes
     new_createsurface: yes
     new_createthread: no
+    new_loaddata: no
     old_ev: yes
     new_messetid: no
     new_playmovie: no
